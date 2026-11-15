@@ -280,6 +280,28 @@ body.coachon #v-console .scroll,body.coachon .panelbody{padding-bottom:130px}
 .op-ok{position:absolute;left:50%;top:42%;transform:translate(-50%,-50%);font:900 clamp(26px,8vw,48px) var(--mono);color:var(--green);text-shadow:0 0 20px var(--green);animation:opok .9s forwards;pointer-events:none}
 @keyframes opok{0%{transform:translate(-50%,-50%) scale(.4);opacity:0}25%{transform:translate(-50%,-50%) scale(1.15);opacity:1}100%{transform:translate(-50%,-80%) scale(1);opacity:0}}
 .op-sub2{font:800 clamp(10px,3vw,15px) var(--mono);letter-spacing:.22em;color:#bfefff;opacity:.85;margin-top:-6px}
+
+/* ---- Stage 3 deep space ---- */
+.b-fut{background:rgba(197,139,255,.15);color:#d9b3ff;border:1px solid rgba(197,139,255,.55)}
+.plab{position:absolute;left:0;top:0;pointer-events:none;font:700 10.5px var(--mono);color:#cfe3ff;text-shadow:0 0 4px #000,0 0 2px #000;white-space:nowrap;opacity:.85}
+.plab.pl{color:#e8f1ff;font-size:11px}.plab.dw{color:#b9c7e6}.plab.mo{color:#9fb0c8;font-size:9.5px}.plab.hub{color:var(--cyan)}.plab.sun{color:var(--gold);font-size:12px}
+.plab.arm{font:600 12px var(--mono);letter-spacing:.12em;text-transform:uppercase;color:rgba(170,195,255,.75)}
+.tlabel.dl{min-height:24px;padding:2px 8px;font-size:10.5px;gap:5px}.tlabel.dl small{color:var(--dim);font-weight:600}
+.deeptop{position:absolute;top:calc(58px + env(safe-area-inset-top));left:8px;right:58px;display:flex;flex-direction:column;gap:4px;pointer-events:none}
+.deeptop .scales{display:flex;gap:4px;flex-wrap:wrap;pointer-events:auto}.deeptop .chip{padding:4px 7px;font-size:10.5px;min-height:30px}.deeptop .scales{flex-wrap:nowrap}
+#deep-scale{font-size:11px;color:var(--cyan);text-shadow:0 0 4px #000}.deeptop .badges{display:flex;gap:4px;flex-wrap:wrap}.deeptop .badge{font-size:9.5px;padding:1px 6px}
+#v-deep .side{top:calc(62px + env(safe-area-inset-top));transform:none}
+#v-deep .side .ib{width:42px;height:42px}
+.deepsheet{max-height:40vh;overflow-y:auto;pointer-events:auto;-webkit-overflow-scrolling:touch}
+.deepsheet.min{max-height:96px;overflow:hidden}
+.sheettog{position:sticky;top:0;align-self:flex-end;flex:none;margin-bottom:-34px;z-index:2;background:rgba(3,10,24,.85);border:1px solid rgba(62,240,255,.4);color:var(--cyan);border-radius:10px;width:34px;height:28px}
+.deephead{align-items:center;gap:6px;flex-wrap:nowrap}.deephead b{font-size:14px;color:var(--gold);white-space:nowrap}.deephead .rates{flex:1;min-width:0}
+.hubrow{display:flex;gap:8px;align-items:flex-start;padding:6px 0;border-top:1px solid rgba(62,240,255,.12);font-size:12.5px}.hubrow .hi{font-size:18px;width:24px;text-align:center}.hubrow .dim{font-size:11px}
+.funnel{display:flex;gap:6px;align-items:center;flex-wrap:wrap;margin:8px 0;font:700 11.5px var(--mono)}.funnel span{padding:3px 7px;border-radius:8px;background:rgba(62,240,255,.08);border:1px solid rgba(62,240,255,.25)}.funnel span.dim{background:none;border:none}
+.tlist{margin-top:6px}.trow{display:flex;gap:8px;align-items:center;padding:4px 0;border-top:1px solid rgba(62,240,255,.08);font-size:12px}.trow .dim{font-size:11px}.trow.no{opacity:.55}.trow b{cursor:pointer}
+.statg{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin:6px 0}.statg div{display:flex;flex-direction:column;align-items:center;padding:6px 2px;border-radius:10px;background:rgba(62,240,255,.06)}.statg b{font:800 16px var(--mono);color:var(--green)}.statg span{font-size:10px;color:var(--dim);text-align:center}
+label.sl{display:flex;flex-direction:column;font-size:12px;margin:6px 0}label.sl b{color:var(--cyan)}label.sl input{width:100%}
+.s1btn.deep{border-color:var(--cyan);animation:none;background:linear-gradient(135deg,rgba(62,140,255,.18),rgba(197,139,255,.08))}.s1btn.deep b{color:var(--cyan)}
 </style></head><body>
 <canvas id="gl" aria-label="3D mission view"></canvas>
 <div id="dim"></div>
@@ -381,6 +403,13 @@ body.coachon #v-console .scroll,body.coachon .panelbody{padding-bottom:130px}
   <div class="side"><button class="ib" data-act="zoomIn" aria-label="Zoom in">＋</button><button class="ib" data-act="zoomOut" aria-label="Zoom out">－</button></div>
   <div class="bottom he3sheet"><div id="he3-body"></div></div>
 </section>
+<section class="view passthru" id="v-deep">
+  <div class="topbar" data-title="🌌 Stage 3 · Deep Space"></div>
+  <div class="ovl" id="lab-deep"></div>
+  <div class="hud deeptop"><div class="scales"><button class="chip" data-act="deepScale" data-v="solar">☀ Solar</button><button class="chip" data-act="deepScale" data-v="nb">✦ Stars</button><button class="chip" data-act="deepScale" data-v="arm">🌀 Orion Arm</button><button class="chip" data-act="deepScale" data-v="mw">🌌 Milky Way</button></div><div id="deep-scale" class="mono"></div><div class="badges"><span class="badge b-imp">NASA Exoplanet Archive · 2026-11-15</span><span class="badge b-fut">FUTURE TECH</span><span class="badge b-sim">SPECULATIVE · SIMULATED</span></div></div>
+  <div class="side"><button class="ib" data-act="zoomIn" aria-label="Zoom in">＋</button><button class="ib" data-act="zoomOut" aria-label="Zoom out">－</button></div>
+  <div class="bottom deepsheet"><button class="sheettog" data-act="deepSheet" aria-label="Collapse panel">▾</button><div id="deep-body"></div></div>
+</section>
 <section class="view" id="v-status"><div class="topbar" data-title="Mission Status &amp; Debrief"></div><div class="panelbody"><div class="inner" id="status-body"></div></div></section>
 
 <div id="modal"><div class="mbox" id="mbox"></div></div>
@@ -428,7 +457,8 @@ const TMAP = Object.fromEntries(TARGETS.map(t=>[t.id,t]));
 const PLANETS = [
  {name:'Mercury',a:0.39,r:0.22,c:'#9b938a',ang:140},{name:'Venus',a:0.72,r:0.4,c:'#e6c98f',ang:250},
  {name:'Earth',a:1.0,r:0.45,c:'#3a7bd5',ang:0},{name:'Mars',a:1.52,r:0.32,c:'#c1440e',ang:205},
- {name:'Jupiter',a:5.2,r:2.2,c:'#d8b48a',ang:100},{name:'Saturn',a:9.5,r:1.9,c:'#e3cf9c',ang:-120,ring:true}];
+ {name:'Jupiter',a:5.2,r:2.2,c:'#d8b48a',ang:100},{name:'Saturn',a:9.54,r:1.9,c:'#e3cf9c',ang:-120,ring:true},
+ {name:'Uranus',a:19.19,r:1.4,c:'#7fd8e8',ang:35},{name:'Neptune',a:30.07,r:1.35,c:'#4a6cf0',ang:-160}];
 const GROUPS = {
  miner:{name:'Miners',col:'#ffc640',rgb:[1,0.78,0.25],role:'Travel to asteroids and mine ore.'},
  flyback:{name:'Flyback',col:'#3ef0ff',rgb:[0.24,0.94,1],role:'Haul ore back and build/support drone factories.'},
@@ -540,7 +570,13 @@ const SOURCES = [
  ['NASA OSIRIS-APEX (Apophis)','https://science.nasa.gov/mission/osiris-apex/'],
  ['NASA NEAR Shoemaker (Eros)','https://science.nasa.gov/mission/near-shoemaker/'],
  ['NASA Basics of Space Flight (orbits, Hohmann transfers, rocket equation)','https://science.nasa.gov/learn/basics-of-space-flight/'],
- ['NASA Deep Space Network (communications)','https://www.nasa.gov/communicating-with-missions/dsn/']];
+ ['NASA Deep Space Network (communications)','https://www.nasa.gov/communicating-with-missions/dsn/'],
+ ['NASA Exoplanet Archive (Planetary Systems Composite table; bundled snapshot fetched 2026-11-15)','https://exoplanetarchive.ipac.caltech.edu/'],
+ ['JPL Approximate Positions of the Planets (mean orbital elements)','https://ssd.jpl.nasa.gov/planets/approx_pos.html'],
+ ['NASA Science: Solar System (planets, moons, dwarf planets)','https://science.nasa.gov/solar-system/'],
+ ['NASA Voyager (heliopause crossing, interstellar space)','https://science.nasa.gov/mission/voyager/'],
+ ['Breakthrough Starshot (laser light-sail concept — future tech)','https://breakthroughinitiatives.org/initiative/3'],
+ ['Project Daedalus, British Interplanetary Society (fusion probe study — future tech)','https://www.bis-space.com/what-we-do/projects/project-daedalus/']];
 // active reference values for a target, with provenance label
 function activeRef(id){
   const t=TMAP[id],snap=SBDB_SNAPSHOT.data[id];const mode=(typeof S!=='undefined'&&S&&S.data)?S.data.mode:'snapshot';
@@ -552,6 +588,53 @@ function activeRef(id){
     return {...b,...Object.fromEntries(Object.entries(u).filter(([,v])=>v!=null&&v!=='')),kind:mode==='live'?'live':'imp',src:(mode==='live'?'LIVE · ':'IMPORTED · ')+S.data.label};}
   return fromSnap();
 }
+
+// NASA Exoplanet Archive snapshot (Planetary Systems Composite Parameters, pscomppars), fetched 2026-11-15 via the TAP API.
+// https://exoplanetarchive.ipac.caltech.edu/  Fields: sy_dist (pc→ly), glon/glat, pl_rade, pl_bmasse, pl_orbper, pl_orbsmax, pl_eqt, discoverymethod, disc_year.
+const EXO_SNAPSHOT='2026-11-15';
+const EXO=[{"host":"Proxima Cen","ly":4.24,"l":313.926,"b":-1.918,"sp":"M5.5 V","teff":2900.0,"n":2,"pl":[{"n":"Proxima Cen b","R":1.02,"M":1.055,"P":11.18465,"a":0.04848,"T":218.0,"m":"Radial Velocity","y":2016},{"n":"Proxima Cen d","R":0.692,"M":0.26,"P":5.12338,"a":0.02881,"T":282.0,"m":"Radial Velocity","y":2025}]},{"host":"Barnard's star","ly":5.96,"l":31.048,"b":14.086,"sp":"M3.5-4 V","teff":3195.0,"n":4,"pl":[{"n":"Barnard b","R":0.72,"M":0.299,"P":3.1542,"a":0.0229,"T":438.0,"m":"Radial Velocity","y":2024}]},{"host":"eps Eri","ly":10.45,"l":195.841,"b":-48.055,"sp":"K2 V","teff":5020.38,"n":1,"pl":[{"n":"eps Eri b","R":13.8,"M":317.828407,"P":2680.0,"a":3.53,"T":112.26,"m":"Radial Velocity","y":2000}]},{"host":"Ross 128","ly":11.01,"l":270.157,"b":59.556,"sp":"M4","teff":3192.0,"n":1,"pl":[{"n":"Ross 128 b","R":1.11,"M":1.4,"P":9.8658,"a":0.0496,"T":301.0,"m":"Radial Velocity","y":2017}]},{"host":"GJ 1061","ly":11.98,"l":251.871,"b":-52.901,"sp":"M5.5 V","teff":2953.0,"n":3,"pl":[{"n":"GJ 1061 d","R":1.16,"M":1.67,"P":13.066,"a":0.054,"T":242.03,"m":"Radial Velocity","y":2020}]},{"host":"YZ Cet","ly":12.11,"l":149.724,"b":-78.755,"sp":"M4.5 V","teff":3151.0,"n":3,"pl":[{"n":"YZ Cet b","R":0.913,"M":0.7,"P":2.02087,"a":0.01634,"T":471.2,"m":"Radial Velocity","y":2017}]},{"host":"Teegarden's Star","ly":12.49,"l":160.29,"b":-37.031,"sp":"M7.0 V","teff":3034.0,"n":3,"pl":[{"n":"Teegarden's Star b","R":1.05,"M":1.16,"P":4.90634,"a":0.0259,"T":277.0,"m":"Radial Velocity","y":2019},{"n":"Teegarden's Star c","R":1.02,"M":1.05,"P":11.416,"a":0.0455,"T":209.0,"m":"Radial Velocity","y":2019}]},{"host":"Wolf 1061","ly":14.04,"l":3.347,"b":23.677,"sp":"M3.5","teff":3342.0,"n":3,"pl":[{"n":"Wolf 1061 c","R":1.66,"M":3.41,"P":17.8719,"a":0.089,"T":299.3,"m":"Radial Velocity","y":2015}]},{"host":"GJ 3323","ly":17.53,"l":206.432,"b":-27.474,"sp":"M4","teff":3159.0,"n":2,"pl":[{"n":"GJ 3323 b","R":1.23,"M":2.02,"P":5.3636,"a":0.03282,"T":290.06,"m":"Radial Velocity","y":2017}]},{"host":"GJ 273","ly":19.31,"l":212.345,"b":10.374,"sp":"M3.5","teff":3382.0,"n":2,"pl":[{"n":"GJ 273 b","R":1.51,"M":2.89,"P":18.6498,"a":0.091101,"T":292.47,"m":"Radial Velocity","y":2017}]},{"host":"GJ 581","ly":20.54,"l":354.072,"b":40.022,"sp":"M3.0 V","teff":3500.0,"n":3,"pl":[{"n":"GJ 581 c","R":2.5,"M":6.81,"P":12.9211,"a":0.0718,"T":346.13,"m":"Radial Velocity","y":2007}]},{"host":"LTT 1445 A","ly":22.4,"l":200.487,"b":-58.076,"sp":"M3.0","teff":3562.0,"n":2,"pl":[{"n":"LTT 1445 A b","R":1.34,"M":2.73,"P":5.3587635,"a":0.0381,"T":431.0,"m":"Transit","y":2019}]},{"host":"GJ 667 C","ly":23.63,"l":351.842,"b":1.41,"sp":"M1.5 V","teff":3350.0,"n":5,"pl":[{"n":"GJ 667 C c","R":1.77,"M":3.8,"P":28.14,"a":0.125,"T":null,"m":"Radial Velocity","y":2013}]},{"host":"TRAPPIST-1","ly":40.54,"l":69.715,"b":-56.649,"sp":"M8.0 V","teff":2566.0,"n":7,"pl":[{"n":"TRAPPIST-1 b","R":1.116,"M":1.374,"P":1.510826,"a":0.01154,"T":397.6,"m":"Transit","y":2016},{"n":"TRAPPIST-1 c","R":1.097,"M":1.308,"P":2.421937,"a":0.0158,"T":339.7,"m":"Transit","y":2016},{"n":"TRAPPIST-1 d","R":0.788,"M":0.388,"P":4.049219,"a":0.02227,"T":286.2,"m":"Transit","y":2016},{"n":"TRAPPIST-1 e","R":0.92,"M":0.692,"P":6.101013,"a":0.02925,"T":249.7,"m":"Transit","y":2017},{"n":"TRAPPIST-1 f","R":1.045,"M":1.039,"P":9.20754,"a":0.03849,"T":217.7,"m":"Transit","y":2017},{"n":"TRAPPIST-1 g","R":1.129,"M":1.321,"P":12.352446,"a":0.04683,"T":197.3,"m":"Transit","y":2017},{"n":"TRAPPIST-1 h","R":0.755,"M":0.326,"P":18.772866,"a":0.06189,"T":171.7,"m":"Transit","y":2017}]},{"host":"55 Cnc","ly":41.05,"l":196.795,"b":37.697,"sp":"G8 V","teff":5172.0,"n":7,"pl":[{"n":"55 Cnc e","R":1.875,"M":7.99,"P":0.7365474,"a":0.01544,"T":1958.0,"m":"Radial Velocity","y":2004}]},{"host":"HD 40307","ly":42.19,"l":268.815,"b":-30.341,"sp":"K2.5 V","teff":4956.0,"n":5,"pl":[{"n":"HD 40307 g","R":2.56,"M":7.1,"P":197.8,"a":0.6,"T":255.0,"m":"Radial Velocity","y":2013}]},{"host":"GJ 1214","ly":47.76,"l":26.162,"b":23.607,"sp":"M4 V","teff":3101.0,"n":1,"pl":[{"n":"GJ 1214 b","R":2.733,"M":8.41,"P":1.580404531,"a":0.01505,"T":567.0,"m":"Transit","y":2009}]},{"host":"LHS 1140","ly":48.88,"l":115.405,"b":-78.052,"sp":"M4.5 V","teff":3096.0,"n":2,"pl":[{"n":"LHS 1140 b","R":1.73,"M":5.6,"P":24.73723,"a":0.0946,"T":226.0,"m":"Transit","y":2017}]},{"host":"51 Peg","ly":50.43,"l":90.064,"b":-34.727,"sp":"G5V","teff":5761.0,"n":1,"pl":[{"n":"51 Peg b","R":14.1,"M":193.87532827,"P":4.2307966,"a":0.052,"T":1328.93,"m":"Radial Velocity","y":1995}]},{"host":"HD 189733","ly":64.46,"l":60.962,"b":-3.923,"sp":"K2 V","teff":5052.0,"n":1,"pl":[{"n":"HD 189733 b","R":12.66617,"M":359.1479,"P":2.21857567,"a":0.03126,"T":1209.0,"m":"Radial Velocity","y":2005}]},{"host":"LP 791-18","ly":86.41,"l":268.566,"b":39.106,"sp":"M(6.1 +/- 0.7) V","teff":2960.0,"n":3,"pl":[{"n":"LP 791-18 d","R":1.032,"M":0.91,"P":2.75485,"a":0.01992,"T":395.5,"m":"Transit","y":2023}]},{"host":"TOI-1452","ly":99.55,"l":104.665,"b":23.813,"sp":"M4 +/- 0.5 V","teff":3185.0,"n":1,"pl":[{"n":"TOI-1452 b","R":1.672,"M":4.82,"P":11.06201,"a":0.061,"T":326.0,"m":"Transit","y":2022}]},{"host":"TOI-700","ly":101.52,"l":275.468,"b":-26.881,"sp":"M2.5 V","teff":3459.0,"n":4,"pl":[{"n":"TOI-700 d","R":1.145,"M":1.58,"P":37.423457,"a":0.1642,"T":268.8,"m":"Transit","y":2020},{"n":"TOI-700 e","R":0.919,"M":0.718,"P":27.810124,"a":0.1336,"T":272.9,"m":"Transit","y":2023}]},{"host":"K2-18","ly":124.03,"l":254.633,"b":62.575,"sp":"M2.5 V","teff":3457.0,"n":2,"pl":[{"n":"K2-18 b","R":2.37,"M":8.92,"P":32.939623,"a":0.1429,"T":284.0,"m":"Transit","y":2015}]},{"host":"HR 8799","ly":134.52,"l":92.765,"b":-35.576,"sp":"A5 V","teff":7204.58,"n":4,"pl":[{"n":"HR 8799 b","R":13.0,"M":2000.0,"P":170000.0,"a":68.0,"T":1200.0,"m":"Imaging","y":2008}]},{"host":"HD 209458","ly":157.54,"l":76.753,"b":-28.527,"sp":"G0 V","teff":6091.0,"n":1,"pl":[{"n":"HD 209458 b","R":15.58051,"M":232.0159,"P":3.52474859,"a":0.04707,"T":1459.0,"m":"Radial Velocity","y":1999}]},{"host":"Kepler-16","ly":244.9,"l":82.785,"b":17.366,"sp":"","teff":4450.0,"n":1,"pl":[{"n":"Kepler-16 b","R":8.4493,"M":105.833,"P":228.776,"a":0.7048,"T":205.9,"m":"Transit","y":2011}]},{"host":"Kepler-1649","ly":300.69,"l":74.456,"b":11.129,"sp":"","teff":3240.0,"n":2,"pl":[{"n":"Kepler-1649 c","R":1.06,"M":1.2,"P":19.53527,"a":0.0649,"T":234.0,"m":"Transit","y":2020}]},{"host":"Kepler-186","ly":579.23,"l":78.52,"b":8.171,"sp":"M1","teff":3755.0,"n":5,"pl":[{"n":"Kepler-186 f","R":1.17,"M":1.71,"P":129.9441,"a":0.432,"T":177.0,"m":"Transit","y":2014}]},{"host":"Kepler-10","ly":605.04,"l":80.49,"b":18.816,"sp":"","teff":5708.0,"n":3,"pl":[{"n":"Kepler-10 b","R":1.47,"M":3.24,"P":0.8374907,"a":0.01685,"T":2188.0,"m":"Transit","y":2011}]},{"host":"Kepler-22","ly":634.84,"l":79.092,"b":15.792,"sp":"G5 V","teff":5596.0,"n":1,"pl":[{"n":"Kepler-22 b","R":2.1,"M":9.1,"P":289.863876,"a":0.812,"T":279.0,"m":"Transit","y":2011}]},{"host":"KELT-9","ly":666.84,"l":78.913,"b":0.249,"sp":"A","teff":9270.0,"n":1,"pl":[{"n":"KELT-9 b","R":21.70058664,"M":915.34581216,"P":1.4811235,"a":0.03368,"T":3921.0,"m":"Transit","y":2017}]},{"host":"WASP-121","ly":880.29,"l":250.294,"b":-13.325,"sp":"F6 V","teff":6628.0,"n":1,"pl":[{"n":"WASP-121 b","R":19.52604438,"M":371.85923619,"P":1.27492504,"a":0.02571,"T":2409.0,"m":"Transit","y":2016}]},{"host":"Kepler-62","ly":981.32,"l":75.037,"b":18.695,"sp":"K2 V","teff":4925.0,"n":5,"pl":[{"n":"Kepler-62 f","R":1.41,"M":35.0,"P":267.291,"a":0.718,"T":208.0,"m":"Transit","y":2013}]},{"host":"Kepler-442","ly":1193.62,"l":69.75,"b":14.984,"sp":"","teff":4402.0,"n":1,"pl":[{"n":"Kepler-442 b","R":1.34,"M":2.36,"P":112.3053,"a":0.409,"T":241.0,"m":"Transit","y":2015}]},{"host":"WASP-12","ly":1393.49,"l":184.083,"b":8.936,"sp":"","teff":6265.0,"n":1,"pl":[{"n":"WASP-12 b","R":22.02564708,"M":467.2101,"P":1.091418901,"a":0.0234,"T":2601.0,"m":"Transit","y":2008}]},{"host":"Kepler-452","ly":1799.49,"l":77.865,"b":9.988,"sp":"G2","teff":5757.0,"n":1,"pl":[{"n":"Kepler-452 b","R":1.63,"M":3.29,"P":384.843,"a":1.046,"T":265.0,"m":"Transit","y":2015}]},{"host":"PSR B1257+12","ly":1956.94,"l":311.31,"b":75.414,"sp":"","teff":null,"n":3,"pl":[{"n":"PSR B1257+12 c","R":1.91,"M":4.3,"P":66.5419,"a":0.36,"T":null,"m":"Pulsar Timing","y":1992}]},{"host":"Kepler-1647","ly":3954.48,"l":75.454,"b":6.836,"sp":"","teff":6210.0,"n":1,"pl":[{"n":"Kepler-1647 b","R":11.8739,"M":483.0,"P":1107.5923,"a":2.7205,"T":242.92,"m":"Transit","y":2016}]},{"host":"OGLE-2006-BLG-109L","ly":4924.96,"l":359.791,"b":-1.89,"sp":"","teff":null,"n":2,"pl":[{"n":"OGLE-2006-BLG-109L b","R":14.0,"M":231.0,"P":1788.5,"a":2.3,"T":82.0,"m":"Microlensing","y":2008}]},{"host":"OGLE-2014-BLG-0124L","ly":11415.47,"l":2.339,"b":-2.918,"sp":"","teff":null,"n":1,"pl":[{"n":"OGLE-2014-BLG-0124L b","R":14.1,"M":206.58846455,"P":null,"a":3.48,"T":null,"m":"Microlensing","y":2015}]},{"host":"OGLE-2005-BLG-390L","ly":21526.32,"l":359.733,"b":-2.362,"sp":"","teff":null,"n":1,"pl":[{"n":"OGLE-2005-BLG-390L b","R":2.21,"M":5.5,"P":3285.0,"a":2.6,"T":50.0,"m":"Microlensing","y":2005}]},{"host":"MOA-2011-BLG-262L","ly":23483.26,"l":359.631,"b":-3.924,"sp":"","teff":null,"n":1,"pl":[{"n":"MOA-2011-BLG-262L b","R":4.29,"M":17.0,"P":null,"a":0.95,"T":null,"m":"Microlensing","y":2014}]},{"host":"SWEEPS-11","ly":27723.29,"l":1.267,"b":-2.656,"sp":"","teff":null,"n":1,"pl":[{"n":"SWEEPS-11 b","R":12.666,"M":3082.82,"P":1.796,"a":0.03,"T":null,"m":"Transit","y":2006}]},{"host":"SWEEPS-4","ly":27723.29,"l":1.26,"b":-2.626,"sp":"","teff":null,"n":1,"pl":[{"n":"SWEEPS-4 b","R":9.079,"M":1207.7,"P":4.2,"a":0.055,"T":null,"m":"Transit","y":2006}]}];
+
+'use strict';
+// ---------- Stage 3 data: whole Solar System + interstellar targets ----------
+// Planet elements: JPL "Approximate Positions of the Planets" (J2000 mean elements, Standish), rounded.
+// a = semi-major axis (AU), e = eccentricity, i = inclination (deg), P = sidereal period (yr). Moon/dwarf facts: NASA Science pages.
+const SOL_PLANETS={
+ Mercury:{a:0.387,e:0.206,i:7.0,P:0.241,res:'Polar water ice in shadowed craters (MESSENGER). Sunlight is ~6.7× Earth’s.'},
+ Venus:{a:0.723,e:0.007,i:3.39,P:0.615,res:'CO₂ atmosphere, ~465 °C surface — no surface mining. Aerobraking/flyby assist only.'},
+ Earth:{a:1.0,e:0.017,i:0.0,P:1.0,res:'Home. Launch site for the first TCTA seed drones.'},
+ Mars:{a:1.524,e:0.093,i:1.85,P:1.881,res:'Subsurface water ice; CO₂ air → O₂ and methane propellant (MOXIE demonstrated O₂).'},
+ Jupiter:{a:5.203,e:0.048,i:1.30,P:11.86,res:'H₂/He gas giant: deep gravity well, intense radiation. Gravity-assist hub.'},
+ Saturn:{a:9.537,e:0.054,i:2.49,P:29.46,res:'H₂/He gas giant. Rings are mostly water ice (>90%).'},
+ Uranus:{a:19.19,e:0.047,i:0.77,P:84.0,res:'Ice giant: water, ammonia and methane ices. Atmospheric He-3 is FUTURE TECH only.'},
+ Neptune:{a:30.07,e:0.009,i:1.77,P:164.8,res:'Ice giant with the strongest winds known. Atmospheric He-3 is FUTURE TECH only.'}};
+// Moons — visual offsets from their parent are enlarged for visibility (not to scale).
+const SOL_MOONS=[
+ {id:'luna',n:'Moon (Luna)',p:'Earth',km:1737,c:'#cfcfcf',off:[0.9,0.35,0.7],res:'Water ice in permanently shadowed polar craters (LCROSS 2009); oxygen in regolith.'},
+ {id:'phobos',n:'Phobos',p:'Mars',km:11,c:'#8a7a6a',off:[0.6,0.1,-0.3],res:'Dark, carbon-rich-looking regolith; JAXA MMX will return samples.'},
+ {id:'europa',n:'Europa',p:'Jupiter',km:1561,c:'#d9c6a5',off:[3.0,0.3,1.2],res:'Ice shell over a salt-water ocean — protected for astrobiology (no mining). Europa Clipper.'},
+ {id:'ganymede',n:'Ganymede',p:'Jupiter',km:2634,c:'#a89a8a',off:[-3.6,0.4,2.4],res:'Largest moon: water-ice crust, subsurface ocean, own magnetic field. ESA JUICE.'},
+ {id:'callisto',n:'Callisto',p:'Jupiter',km:2410,c:'#6e655c',off:[1.8,-0.3,-5.0],res:'Ancient icy crust outside the worst radiation — best Jupiter base site (NASA HOPE study).'},
+ {id:'titan',n:'Titan',p:'Saturn',km:2575,c:'#e0a84f',off:[4.6,0.6,-1.4],res:'Thick N₂ air, methane/ethane lakes, rich organics. NASA Dragonfly.'},
+ {id:'enceladus',n:'Enceladus',p:'Saturn',km:252,c:'#f2f6ff',off:[-2.9,0.3,1.6],res:'Water-ice plumes from a subsurface ocean (Cassini) — easy ice; ocean itself protected.'},
+ {id:'triton',n:'Triton',p:'Neptune',km:1353,c:'#d8c7c0',off:[2.3,0.5,-1.2],res:'Nitrogen and water ice, active geysers (Voyager 2); likely a captured Kuiper object.'}];
+// Dwarf planets / Kuiper belt objects. nu = displayed true anomaly (deg), w = perihelion direction (deg) — approximate placement.
+const SOL_DWARFS=[
+ {id:'pluto',n:'Pluto',a:39.48,e:0.249,i:17.1,P:248,w:110,nu:77,km:1188,c:'#d9b99b',res:'N₂, CH₄, CO ices; water-ice mountains (New Horizons 2015).'},
+ {id:'eris',n:'Eris',a:67.8,e:0.44,i:44,P:559,w:150,nu:172,km:1163,c:'#e8e8e8',res:'Bright methane-ice surface; ~27% more massive than Pluto; ~96 AU from the Sun today.'},
+ {id:'makemake',n:'Makemake',a:45.4,e:0.16,i:29,P:306,w:300,nu:150,km:715,c:'#c98a6a',res:'Methane and ethane ices.'},
+ {id:'haumea',n:'Haumea',a:43.1,e:0.19,i:28.2,P:284,w:240,nu:150,km:816,c:'#f0f0f0',res:'Crystalline water-ice surface; spins in ~4 h; has a ring.'},
+ {id:'arrokoth',n:'Arrokoth',a:44.6,e:0.04,i:2.45,P:298,w:20,nu:10,km:18,c:'#b5654a',res:'Contact-binary planetesimal; methanol ice and red organics (New Horizons flyby 2019).'}];
+// Waystation chain from the belt to the interstellar jump-off.
+const DEEP_HUBS=[
+ {id:'belt',n:'Belt network',ic:'☄',a:2.7,at:null,where:'Main belt (your Stage 2 waystations)',res:'Water ice + metals → propellant'},
+ {id:'jupiter',n:'Jupiter hub',ic:'🟠',a:5.2,at:'callisto',where:'Callisto (low radiation)',res:'Water-ice crust'},
+ {id:'saturn',n:'Saturn hub',ic:'🪐',a:9.54,at:'titan',where:'Titan + Enceladus',res:'Methane, N₂, water-ice plumes'},
+ {id:'uranus',n:'Uranus hub',ic:'🔵',a:19.19,at:'Uranus',where:'Uranian moons (Titania/Oberon)',res:'Water + ammonia ices'},
+ {id:'neptune',n:'Neptune hub',ic:'🔷',a:30.07,at:'triton',where:'Triton',res:'Nitrogen + water ice'},
+ {id:'kuiper',n:'Kuiper hub',ic:'❄',a:42,at:'pluto',where:'Pluto / Arrokoth',res:'N₂, CH₄, CO, water ices'},
+ {id:'jump',n:'Interstellar jump-off',ic:'🚀',a:120,at:null,where:'~120 AU, at the heliopause (Voyager 1 crossed at ~121 AU)',res:'Probe assembly yard, propellant shipped down the chain'}];
+// Star-only target not in the planet table (no confirmed planets): SIMBAD position/distance.
+const EXTRA_STARS=[{host:'Alpha Centauri A & B',ly:4.37,l:315.73,b:-0.68,sp:'G2V + K1V',teff:5790,n:0,pl:[],star:1}];
 
 'use strict';
 // ---------- utils ----------
@@ -1440,7 +1523,7 @@ W.updateRocks=function(t){const m4=new THREE.Matrix4(),q=new THREE.Quaternion(),
 // ---------- camera ----------
 const ease=t=>t<0.5?4*t*t*t:1-Math.pow(-2*t+2,3)/2;
 W.flyTo=function(focus,dist,dur=1.6,follow=null){const c=W.cam;c.tw={f0:c.focus.clone(),f1:focus.clone(),d0:c.dist,d1:dist,t:0,dur};c.follow=follow;sfx('whoosh');};
-W.zoom=function(f){const c=W.cam;if(c.tw){c.tw.d1*=f;}c.dist=clamp(c.dist*f,W.minDist(),View.cur==='he3'?1500:600);};
+W.zoom=function(f){if(View.cur==='deep'){Deep.zoom(f);return;}const c=W.cam;if(View.cur==='solar'&&f>1.001&&c.dist>=1395&&!c.tw){Deep.enter(true);return;}if(c.tw){c.tw.d1*=f;}c.dist=clamp(c.dist*f,W.minDist(),View.cur==='he3'?1500:View.cur==='solar'?1400:600);};
 W.minDist=function(){if(View.cur==='solar'&&View.lock)return TMAP[View.lock].r*1.6;if(View.cur==='swarm')return 0.4;return 3;};
 W.camUpdate=function(dt){const c=W.cam;
   if(c.tw){c.tw.t+=dt/c.tw.dur;const k=ease(Math.min(1,c.tw.t));if(c.follow){c.tw.f1.copy(c.follow());}c.focus.lerpVectors(c.tw.f0,c.tw.f1,k);c.dist=Math.exp(lerp(Math.log(c.tw.d0),Math.log(c.tw.d1),k));if(c.tw.t>=1)c.tw=null;}
@@ -1578,7 +1661,7 @@ W.frame=function(dt,t){
   if(typeof Continuum!=='undefined')Continuum.frame(dt,t);
   if(View.cur==='pov')Pov.frame(dt,t);else{W.camUpdate(dt);W.dust.visible=false;W.beam.visible=false;W.beamGlow.visible=false;}
   if(W._shake>0){W._shake-=dt;camera.position.x+=(Math.random()-0.5)*W._shake*0.05*W.cam.dist*0.05;camera.position.y+=(Math.random()-0.5)*W._shake*0.05*W.cam.dist*0.05;}
-  renderer.render(scene,camera);
+  if(View.cur==='deep'&&Deep.built)Deep.render(renderer,dt);else renderer.render(scene,camera);
 };
 let pathKey='';
 W.updatePaths=function(){const key=S.phase+'|'+S.design.targets.join(',')+'|'+GKEYS.map(groupTarget).join(',')+'|'+S.design.multi;if(key===pathKey)return;pathKey=key;
@@ -1613,7 +1696,7 @@ function conceptNow(k){if(!S.m)return'';const m=S.m,d=S.design;const L=s=>`<div 
 function topbar(title){return `<button class="back" data-act="back" aria-label="Back to Console">◀ Console</button><div class="ttl">${title}<small class="scnline">—</small></div><span class="badge b-sim dsrc" data-act="openData">DATA</span><div class="clock clk">T+0 d<small>PLAN</small></div><button class="ib mute" data-act="mute">🔊</button><button class="ib pausebtn" data-act="pause">⏸</button>`;}
 function go(v){
   const prev=View.cur;View.cur=v;$$('.view').forEach(el=>el.classList.toggle('active',el.id==='v-'+v));
-  $('#dim').classList.toggle('off',v==='solar'||v==='swarm'||v==='pov'||v==='he3'||v==='opener');
+  $('#dim').classList.toggle('off',v==='solar'||v==='swarm'||v==='pov'||v==='he3'||v==='opener'||v==='deep');Deep.show(v==='deep');
   if(v==='he3'||He3.built)He3.show(v==='he3');
   if(v!=='console')S.flags&&(S.flags[v]=true);
   const W=World,c=W.cam;c.auto=0;c.follow=null;
@@ -1646,6 +1729,11 @@ function canvasInput(){
   cv.addEventListener('touchstart',e=>{e.preventDefault();audioInit();const t=e.touches;
     if(t.length===1&&!Gs.two)startSingle(t[0].clientX,t[0].clientY);
     if(t.length===2){Gs.two=true;Gs.down=false;clearTimeout(Gs.hold);if(S.rally)endRally();Gs.ay=(t[0].clientY+t[1].clientY)/2;Gs.pd=Math.hypot(t[0].clientX-t[1].clientX,t[0].clientY-t[1].clientY);}},{passive:false});
+  const two0=t=>{Gs.two=true;Gs.down=false;clearTimeout(Gs.hold);if(S.rally)endRally();Gs.ay=(t[0].clientY+t[1].clientY)/2;Gs.pd=Math.hypot(t[0].clientX-t[1].clientX,t[0].clientY-t[1].clientY);};
+  // two-finger zoom also works when a finger lands on a map label (labels sit in .ovl overlays)
+  $$('.ovl').forEach(ov=>{ov.addEventListener('touchstart',e=>{if(e.touches.length>=2){e.preventDefault();two0(e.touches);}},{passive:false});
+    ov.addEventListener('touchmove',e=>{if(Gs.two&&e.touches.length>=2){e.preventDefault();cv.dispatchEvent(new TouchEvent('touchmove',{touches:[...e.touches],cancelable:true}));}},{passive:false});
+    ov.addEventListener('touchend',e=>{if(e.touches.length===0&&Gs.two){Gs.two=false;}},{passive:true});});
   cv.addEventListener('touchmove',e=>{e.preventDefault();const t=e.touches;
     if(Gs.two&&t.length>=2){const ay=(t[0].clientY+t[1].clientY)/2,pd=Math.hypot(t[0].clientX-t[1].clientX,t[0].clientY-t[1].clientY);
       const dy=ay-Gs.ay; // swipe DOWN (dy>0) => zoom IN ; swipe UP => zoom OUT
@@ -1662,6 +1750,7 @@ function canvasInput(){
 let zhT=0;function showZoomHint(inn){const now=performance.now();if(now-zhT<600)return;zhT=now;const el=$('#v-'+View.cur+' .hint');if(el){el.innerHTML=inn?'🔍 <b>Zooming IN</b> (two-finger swipe down)':'🔭 <b>Zooming OUT</b> (two-finger swipe up)';clearTimeout(el._t);el._t=setTimeout(()=>App.refresh(),1500);}}
 function tap(x,y){
   if(View.cur==='opener'){Opener.tap(x,y);return;}
+  if(View.cur==='deep'){Deep.tap(x,y);return;}
   if(View.cur==='solar'){const id=World.pickTarget(x,y);if(id)selectTarget(id);return;}
   if(View.cur==='swarm'){const id=World.pickTarget(x,y,26);if(id){assignTo(id);return;}
     const p=World.pointOnFocusPlane(x,y);const sc=clamp(World.cam.dist*0.09,0.08,3);S.waypoint={pos:p.toArray(),groups:selGroups(),scale:sc,t0:performance.now(),reached:0};
@@ -1690,7 +1779,7 @@ function buildLabels(){['solar','swarm'].forEach(v=>{const ov=$('#lab-'+v);Label
 const _o={};
 function updateLabels(){const v=View.cur;if(v!=='solar'&&v!=='swarm')return;const d=S.design;
   Labels[v].forEach((b,k)=>{const t=TARGETS[k];World.project(World.T[t.id].pos,_o);
-    const show=_o.vis&&(v==='solar'||d.targets.includes(t.id)||World.cam.dist<30);b.style.display=show?'flex':'none';if(!show)return;
+    const show=_o.vis&&!(v==='solar'&&World.cam.dist>230&&!(View.lock===t.id))&&(v==='solar'||d.targets.includes(t.id)||World.cam.dist<30);b.style.display=show?'flex':'none';if(!show)return;
     b.style.transform=`translate(${_o.x}px,${_o.y}px) translate(-50%,-150%)`;
     const sel=d.targets.includes(t.id),prim=d.primary===t.id;const cls='tlabel'+(sel?' sel':'')+(prim?' prim':'');if(b.className!==cls)b.className=cls;
     const dots=GKEYS.filter(g=>World.groupTarget(g)===t.id&&sel).map(g=>`<i class="gd" style="background:${GROUPS[g].col}"></i>`).join('');const mf=S.mfac[t.id].online?'⛽':'';
@@ -1818,7 +1907,7 @@ const TILE_ROLE={solar:'sci',swarm:'flight',pov:'flight',fab:'eng',arch:'eng',st
 function renderConsole(){
   const order=['solar','swarm','pov','fab','arch','status'];
   renderStage1();_tiles(order);}
-function renderStage1(){const st1=Studio.ensure(S.design);$('#stage1').innerHTML=`<button class="s1btn ${st1.committed?'done':''}" data-act="open" data-v="studio"><b>STAGE 1 · 🧬 Drone Design Studio</b><span>${st1.committed?'✔ Designs committed · '+PKEYS.filter(k=>st1.drones[k].committed).length+' types · tap to review':'Engineer drones that make drones (TCTA) and set the fleet ratio — start here'}</span></button>`+(S.report?`<button class="s1btn he3" data-act="open" data-v="he3"><b>BONUS · ⚛ Helium-3 Engineering Round</b><span>Unlocked — plot He-3 mine sites along your routes (future tech)</span></button>`:'')+`<button class="chip replay" data-act="replayIntro" style="margin:6px 0 2px">▶ Replay arcade intro</button>`;}
+function renderStage1(){const st1=Studio.ensure(S.design);$('#stage1').innerHTML=`<button class="s1btn ${st1.committed?'done':''}" data-act="open" data-v="studio"><b>STAGE 1 · 🧬 Drone Design Studio</b><span>${st1.committed?'✔ Designs committed · '+PKEYS.filter(k=>st1.drones[k].committed).length+' types · tap to review':'Engineer drones that make drones (TCTA) and set the fleet ratio — start here'}</span></button>`+(S.report?`<button class="s1btn he3" data-act="open" data-v="he3"><b>BONUS · ⚛ Helium-3 Engineering Round</b><span>Unlocked — plot He-3 mine sites along your routes (future tech)</span></button>`:'')+`<button class="s1btn deep" data-act="openDeep"><b>STAGE 3 · 🌌 Deep Space</b><span>${S.deep&&S.deep.front?'Replication wave spreading · '+Object.keys(S.deep.col).length+' systems reached':'Extend the chain to the outer planets, then seed the stars — 8 planets, 8 moons, 5 dwarf planets, '+(EXO.length+EXTRA_STARS.length)+' real star systems'}</span></button>`+`<button class="chip replay" data-act="replayIntro" style="margin:6px 0 2px">▶ Replay arcade intro</button>`;}
 function _tiles(order){
   $('#tiles').innerHTML=order.map((v,i)=>`<button class="tile c${i+1}" data-act="open" data-v="${v}"><span class="alert"></span><div class="tn"><span>0${i+1}</span><span title="${ROLES[TILE_ROLE[v]].name}">${ROLES[TILE_ROLE[v]].icon} ${ROLES[TILE_ROLE[v]].short}</span></div>${ICONS[v]}<div><h3>${VIEWS[v]}</h3><div class="ts" id="ts-${v}">—</div></div></button>`).join('');}
 function phaseLabel(){return{plan:'PLANNING',cruise:'CRUISE',ops:'OPERATIONS',ended:'MISSION ENDED'}[S.phase];}
@@ -2009,12 +2098,12 @@ const He3={objs:{},route:null,lines:null,labels:[],built:false,
  unlocked(){return !!S.report;},
  pos(id){const W=World,V=THREE.Vector3;if(id==='moon')return W.planets.Earth.position.clone().add(new V(0.9,0.35,0.7));if(W.planets[id[0].toUpperCase()+id.slice(1)])return W.planets[id[0].toUpperCase()+id.slice(1)].position.clone();if(this.objs[id])return this.objs[id].position.clone();if(W.T[id])return W.T[id].pos.clone();return new V();},
  build(){if(this.built)return;this.built=true;const sc=World.scene;
-  [['uranus',19.2,1.4,'#7fd8e8',35],['neptune',30.1,1.35,'#4a6cf0',-160]].forEach(([id,a,r,c,ang])=>{const m=new THREE.Mesh(new THREE.SphereGeometry(r,32,20),new THREE.MeshStandardMaterial({color:c,roughness:0.8,emissive:c,emissiveIntensity:0.25}));const R=a*AU,A=ang*Math.PI/180;m.position.set(R*Math.cos(A),0,-R*Math.sin(A));m.visible=false;sc.add(m);this.objs[id]=m;
+  [['uranus',19.2,1.4,'#7fd8e8',35],['neptune',30.1,1.35,'#4a6cf0',-160]].forEach(([id,a,r,c,ang])=>{const m=new THREE.Mesh(new THREE.SphereGeometry(r,32,20),new THREE.MeshStandardMaterial({color:c,roughness:0.8,emissive:c,emissiveIntensity:0.25}));if(World.planets[id[0].toUpperCase()+id.slice(1)])return;const R=a*AU,A=ang*Math.PI/180;m.position.set(R*Math.cos(A),0,-R*Math.sin(A));m.visible=false;sc.add(m);this.objs[id]=m;
    const g=new THREE.BufferGeometry().setFromPoints(Array.from({length:181},(_,i)=>{const t=i/180*Math.PI*2;return new THREE.Vector3(R*Math.cos(t),0,R*Math.sin(t));}));const o=new THREE.Line(g,new THREE.LineBasicMaterial({color:0x335577,transparent:true,opacity:0.35}));o.visible=false;sc.add(o);this.objs[id+'_orb']=o;});
-  const moon=new THREE.Mesh(new THREE.SphereGeometry(0.16,20,14),new THREE.MeshStandardMaterial({color:'#cfcfcf',roughness:1}));moon.position.copy(this.pos('moon'));moon.visible=false;sc.add(moon);this.objs.moonMesh=moon;
+  
   this.lines=new THREE.Group();sc.add(this.lines);
   const ov=$('#lab-he3');this.labels=HE3_SITES.map(s=>{const b=document.createElement('button');b.className='tlabel he3l';b.dataset.act='he3Toggle';b.dataset.id=s.id;ov.appendChild(b);return b;});},
- show(on){this.build();['uranus','neptune','uranus_orb','neptune_orb','moonMesh'].forEach(k=>this.objs[k].visible=on);this.lines.visible=on;if(on)this.redraw();},
+ show(on){this.build();['uranus','neptune','uranus_orb','neptune_orb'].forEach(k=>{if(this.objs[k])this.objs[k].visible=on;});this.lines.visible=on;if(on)this.redraw();},
  routePts(){const W=World;const ch=Continuum.built();return[W.launchPos.clone(),...ch.map(id=>W.T[id].pos.clone()),W.planets.Jupiter.position.clone().multiplyScalar(0.62)];},
  nearest(p){const R=this.routePts();let best=null,bd=1e9;for(let i=0;i<R.length-1;i++){const a=R[i],b=R[i+1];const ab=b.clone().sub(a);const t=clamp(p.clone().sub(a).dot(ab)/ab.lengthSq(),0,1);const q=a.clone().addScaledVector(ab,t);const d=q.distanceTo(p);if(d<bd){bd=d;best=q;}}return{q:best,d:bd};},
  score(s){const p=this.pos(s.id);const nr=this.nearest(p);const routeS=Math.exp(-nr.d/25);let dv=s.dvx;if(dv==null){const e=dvEstimate(s.a,0,1);dv=e.dep+e.arr+(s.orb||0);}const dvS=Math.exp(-dv/15);const lt=Math.sqrt(s.a*s.a+1)*8.317;const cS=Math.exp(-lt/60);
@@ -2056,6 +2145,214 @@ function renderHe3(){const el=$('#he3-body');if(!el)return;
   <p><b>Where it is:</b> the Sun’s solar wind carries He-3. Earth’s magnetic field and atmosphere block it, so there is almost none here. The airless Moon has soaked it into its soil at parts-per-billion levels. Gas giants kept their original helium, so their atmospheres hold far more, but behind deep gravity wells. Asteroids are small and farther from the Sun, so they hold almost none.</p>
   <p><b>Why future tech:</b> D-He3 needs several times hotter plasma than deuterium–tritium fusion. No reactor has yet produced net power from D-He3. (D-T laser fusion reached target gain above 1 at NIF in 2022, but that is not a power plant.) Some D-D side reactions still make neutrons.</p>
   <p style="font-size:12px"><a href="https://en.wikipedia.org/wiki/Helium-3" target="_blank" rel="noopener">Helium-3 overview ↗</a> · <a href="https://lasers.llnl.gov/science/achieving-fusion-ignition" target="_blank" rel="noopener">LLNL: fusion ignition at NIF ↗</a> · <a href="https://ntrs.nasa.gov/citations/19940011955" target="_blank" rel="noopener">NASA NTRS: He-3 inventory of lunar samples ↗</a> · <a href="https://ntrs.nasa.gov/citations/20150006724" target="_blank" rel="noopener">NASA NTRS: lunar &amp; outer-planet resource utilization ↗</a></p></div>`;}
+
+'use strict';
+// ---------- Stage 3 · Deep Space: outer Solar System chain → interstellar seed probes → galaxy map ----------
+// Scene units in the galaxy map are light-years. Sun at origin; +X toward the Galactic Center; +Y toward the North Galactic Pole.
+const dEase=t=>t<0.5?4*t*t*t:1-Math.pow(-2*t+2,3)/2;
+const LY_AU=63241.08, R0_LY=26670; // Sun–Galactic Center ≈ 8.18 kpc (GRAVITY 2019)
+const GC_POS=new THREE.Vector3(R0_LY,0,0);
+function galPos(ly,l,b){const L=l*Math.PI/180,B=b*Math.PI/180;return new THREE.Vector3(ly*Math.cos(B)*Math.cos(L),ly*Math.sin(B),-ly*Math.cos(B)*Math.sin(L));}
+function plType(p){const R=p.R,M=p.M;if(R!=null)return R<1.6?'rocky':R<4?'sub':R<8?'nep':'giant';if(M!=null)return M<5?'rocky':M<20?'sub':M<50?'nep':'giant';return 'sub';}
+const PLT={rocky:{n:'Rocky',c:'#ffb36b'},sub:{n:'Super-Earth / sub-Neptune',c:'#ffe066'},nep:{n:'Neptune-like',c:'#6fc3ff'},giant:{n:'Gas giant',c:'#c58bff'},star:{n:'Star only (no confirmed planets)',c:'#ffffff'}};
+const DPROPS={
+ nep:{n:'Nuclear-electric',ic:'⚛',ve:0.0003,vmin:0.0003,vmax:0.003,v0:0.001,tag:'NEAR-TERM REFERENCE',ref:'Reactor-powered ion/plasma drive, exhaust ≈90 km/s (0.0003 c). Voyager 1 coasts at only 0.0057% c.'},
+ fusion:{n:'Fusion pulse',ic:'💥',ve:0.033,vmin:0.01,vmax:0.15,v0:0.05,tag:'FUTURE TECH',ref:'Project Daedalus (British Interplanetary Society, 1978): D-He3 pellet fusion, exhaust ≈0.033 c, flyby of Barnard’s Star at 12% c. Here the probe also brakes, so Δv = 2v.'},
+ sail:{n:'Laser sail + magsail brake',ic:'⛵',ve:0,vmin:0.01,vmax:0.2,v0:0.1,tag:'FUTURE TECH',ref:'Breakthrough Starshot: a ~100 GW ground laser pushes gram-scale sails to ~20% c. A seed factory weighs far more, so this assumes a much larger beam array; braking with a magnetic sail (Zubrin & Andrews) adds decades.'}};
+const DSCALES=[{id:'solar',n:'☀ Solar',d:0},{id:'nb',n:'✦ Neighborhood',d:28},{id:'arm',n:'🌀 Orion Arm',d:3200},{id:'mw',n:'🌌 Milky Way',d:140000}];
+function fmtYr(y){y=Math.max(0,y);if(y<100)return y.toFixed(y<10?1:0)+' yr';if(y<1000)return Math.round(y)+' yr · '+(y/100).toFixed(1)+' centuries';if(y<1e6)return fmt(Math.round(y))+' yr · '+(y/1000).toFixed(y<1e4?1:0)+' millennia';return (y/1e6).toFixed(y<1e7?2:1)+' million yr';}
+function fmtLy(d){return d<0.05?fmt(d*LY_AU)+' AU':d<10?d.toFixed(2)+' ly':fmt(Math.round(d))+' ly';}
+const Deep={
+ sys:null,solar:{},built:false,cam:null,scene:null,dist:28,focus:new THREE.Vector3(),lock:null,tw:null,enterT:0,labels:[],armL:[],_rt:0,_key:'',
+ init(){if(this.sys)return;
+  this.sys=[...EXO,...EXTRA_STARS].map((s,k)=>{const pls=s.pl.map(p=>({...p,t:plType(p),hz:p.T!=null&&p.T>=175&&p.T<=320}));
+   const types=pls.map(p=>p.t);const hz=pls.filter(p=>p.hz).length,rocky=types.filter(t=>t==='rocky').length,giant=types.filter(t=>t==='giant').length;
+   let val=s.star?1.5:0;pls.forEach(p=>{val+=({rocky:2.5,sub:1.4,nep:1,giant:1.8})[p.t]*(p.T!=null&&p.T>1200?0.4:1)+(p.hz?3:0);});
+   const pulsar=/^PSR/.test(s.host);const hot=pls.length&&pls.every(p=>p.T!=null&&p.T>700);
+   const fam=pulsar?['☢','Pulsar system — hostile radiation']:hz?['🌍','Habitable-zone candidate']:giant&&!rocky?['⛽','Gas-giant depot (speculative)']:hot?['🔥','Hostile hot worlds']:['🪨','Stepping stone'];
+   const dom=s.star?'star':pls.reduce((a,p)=>({giant:3,nep:2,sub:1,rocky:0})[p.t]>({giant:3,nep:2,sub:1,rocky:0})[a]?p.t:a,'rocky');
+   const pt=hz?pls.find(p=>p.hz).t:dom;
+   return{...s,k,id:'s'+k,pls,hz,rocky,giant,val:val*(pulsar?0.3:1),fam,type:s.star?'star':pt,pos:galPos(s.ly,s.l,s.b)};});
+  // SWEEPS-4 and SWEEPS-11 share a distance estimate — nudge one so both stay visible.
+  this.sys.forEach((s,i)=>this.sys.slice(0,i).forEach(o=>{if(o.pos.distanceTo(s.pos)<1)s.pos.x+=60;}));},
+ st(){if(!S.deep)S.deep={yr:0,rate:10,run:false,tab:'chain',hubs:{},hubT:{},sandbox:false,prop:'fusion',v:0.05,tmax:500,pick:{},probes:[],col:{},front:null,crew:null,crewN:0,log:[],sel:null,seen:0};return S.deep;},
+ log(m){const D=this.st();D.log.unshift({y:D.yr,m});if(D.log.length>40)D.log.length=40;},
+ // ---------- solar-system additions (moons, dwarfs, Kuiper belt, outward chain) ----------
+ initSolar(){const W=World,sc=W.scene,V=THREE.Vector3;this.init();const o=this.solar;o.moons={};o.dwarfs={};
+  SOL_MOONS.forEach(m=>{const P=W.planets[m.p];const r=clamp(Math.cbrt(m.km/1737)*0.16,0.05,0.24);const me=new THREE.Mesh(new THREE.SphereGeometry(r,16,12),new THREE.MeshStandardMaterial({color:m.c,roughness:1,emissive:m.c,emissiveIntensity:0.12}));me.position.copy(P.position).add(new V(...m.off));sc.add(me);o.moons[m.id]=me;});
+  SOL_DWARFS.forEach(d=>{const I=d.i*Math.PI/180,w=d.w*Math.PI/180;const pt=nu=>{const r=d.a*(1-d.e*d.e)/(1+d.e*Math.cos(nu))*AU;const a=nu+w;const q=r*Math.sin(a);return new V(r*Math.cos(a),q*Math.sin(I),-q*Math.cos(I));};
+   const pts=[];for(let k=0;k<=160;k++)pts.push(pt(k/160*Math.PI*2));const ln=new THREE.Line(new THREE.BufferGeometry().setFromPoints(pts),new THREE.LineBasicMaterial({color:0x4a5a7a,transparent:true,opacity:0.35}));sc.add(ln);
+   const r=clamp(Math.cbrt(d.km/1188)*0.9,0.35,0.9);const me=new THREE.Mesh(new THREE.SphereGeometry(r,16,12),new THREE.MeshStandardMaterial({color:d.c,roughness:1,emissive:d.c,emissiveIntensity:0.35}));me.position.copy(pt(d.nu*Math.PI/180));sc.add(me);o.dwarfs[d.id]=me;});
+  {const N=2600,p=new Float32Array(N*3),r=mulberry(77);for(let i=0;i<N;i++){const R=(30+Math.pow(r(),0.7)*20+(r()<0.12?r()*25:0))*AU,a=r()*Math.PI*2;p.set([R*Math.cos(a),(r()-0.5)*R*0.12,R*Math.sin(a)],i*3);}
+   const g=new THREE.BufferGeometry();g.setAttribute('position',new THREE.BufferAttribute(p,3));const pm=new THREE.Points(g,new THREE.PointsMaterial({color:0xa9c2e8,size:1.6,sizeAttenuation:true,transparent:true,opacity:0.55,depthWrite:false}));pm.frustumCulled=false;sc.add(pm);o.kuiper=pm;}
+  // jump-off marker
+  {const m=new THREE.Mesh(new THREE.OctahedronGeometry(3.2),new THREE.MeshBasicMaterial({color:0x3ef0ff,wireframe:true}));m.position.copy(this.hubPos('jump'));sc.add(m);o.jumpM=m;
+   const hp=new THREE.Mesh(new THREE.RingGeometry(120*AU-2,120*AU+2,160),new THREE.MeshBasicMaterial({color:0x3ef0ff,transparent:true,opacity:0.08,side:THREE.DoubleSide}));hp.rotation.x=-Math.PI/2;sc.add(hp);}
+  o.chain=new THREE.Group();sc.add(o.chain);this.redrawChain();
+  const ov=$('#lab-solar');o.lab=[];const add=(n,cls,get,min,max)=>{const b=document.createElement('div');b.className='plab '+cls;b.textContent=n;ov.appendChild(b);o.lab.push({b,get,min,max});};
+  ['Earth','Jupiter','Saturn','Uranus','Neptune','Mars','Venus','Mercury'].forEach(n=>add(n,'pl',()=>W.planets[n].position,0,1e9));
+  SOL_DWARFS.forEach(d=>add(d.n,'dw',()=>o.dwarfs[d.id].position,60,1e9));
+  SOL_MOONS.forEach(m=>add(m.n.split(' (')[0],'mo',()=>o.moons[m.id].position,0,45));
+  add('🚀 Jump-off · 120 AU','hub',()=>o.jumpM.position,150,1e9);add('Kuiper belt','dw',()=>new V(-45*AU*0.7,0,45*AU*0.7),150,1e9);},
+ hubPos(id){const W=World,V=THREE.Vector3,o=this.solar;const h=DEEP_HUBS.find(x=>x.id===id);
+  if(id==='belt'){const b=typeof Continuum!=='undefined'&&Continuum.built?Continuum.built():[];if(b.length&&W.T[b[b.length-1]])return W.T[b[b.length-1]].pos.clone();return W.T.ceres?W.T.ceres.pos.clone():new V(27,0,0);}
+  if(id==='jump'){const p=o.dwarfs&&o.dwarfs.pluto?o.dwarfs.pluto.position.clone().setY(0).normalize():new V(1,0,0);return p.multiplyScalar(120*AU);}
+  if(o.moons&&o.moons[h.at])return o.moons[h.at].position.clone();if(o.dwarfs&&o.dwarfs[h.at])return o.dwarfs[h.at].position.clone();if(W.planets[h.at])return W.planets[h.at].position.clone();return new V(h.a*AU,0,0);},
+ redrawChain(){const o=this.solar;if(!o.chain)return;while(o.chain.children.length){const c=o.chain.children.pop();c.geometry.dispose();c.material.dispose();}
+  const D=this.st();for(let i=0;i<DEEP_HUBS.length-1;i++){const a=this.hubPos(DEEP_HUBS[i].id),b=this.hubPos(DEEP_HUBS[i+1].id);const done=this.hubDone(DEEP_HUBS[i+1].id),act=!done&&this.hubActive(i+1);
+   const l=new THREE.Line(new THREE.BufferGeometry().setFromPoints([a,b]),new THREE.LineDashedMaterial({color:done?0x5dff8a:act?0xffc640:0x3ef0ff,dashSize:done?6:3,gapSize:done?1:4,transparent:true,opacity:done?0.9:act?0.85:0.3}));l.computeLineDistances();o.chain.add(l);}},
+ // ---------- chain progression ----------
+ beltDone(){const D=this.st();return D.sandbox||!!S.report||(typeof Continuum!=='undefined'&&Continuum.built&&Continuum.built().length>0);},
+ hubDone(id){if(id==='belt')return this.beltDone();return !!this.st().hubs[id];},
+ hubActive(i){return i>0&&this.hubDone(DEEP_HUBS[i-1].id)&&!this.hubDone(DEEP_HUBS[i].id)&&this.st().run;},
+ hubPlan(i){const h=DEEP_HUBS[i],p=DEEP_HUBS[i-1];const am=(h.a+p.a)/2;const hoh=0.5*Math.pow(am,1.5);const tr=hoh*0.4;const fission=h.a>5;const build=fission?7+Math.sqrt(h.a):5;return{hoh,tr,build,dur:tr+build,solar:100/(h.a*h.a),fission};},
+ chainDone(){return this.hubDone('jump');},
+ // ---------- interstellar math ----------
+ vOf(){const D=this.st(),P=DPROPS[D.prop];return clamp(D.v,P.vmin,P.vmax);},
+ brakeYr(v){return this.st().prop==='sail'?Math.max(5,v*400):0;},
+ massRatio(v){const P=DPROPS[this.st().prop];return P.ve?Math.exp(2*v/P.ve):1;},
+ feas(s,fromLy){const v=this.vOf(),d=fromLy!=null?fromLy:s.ly;const trip=d/v+this.brakeYr(v);const mr=this.massRatio(v);const D=this.st();const ok=trip<=D.tmax&&mr<=100;return{trip,mr,ok,why:mr>100?'mass ratio '+fmt(mr)+' > 100':trip>D.tmax?'trip '+fmtYr(trip)+' > limit':'',score:ok?s.val*(1-0.5*trip/D.tmax):0};},
+ buildYr(){const D=this.st();return D.prop==='sail'?55:D.prop==='nep'?70:45;},
+ hop(){return this.vOf()*this.st().tmax;},
+ waveV(){const h=8,v=this.vOf();return h/(h/v+this.buildYr());},
+ autoPick(){const D=this.st();D.pick={};this.sys.map(s=>[s,this.feas(s)]).filter(x=>x[1].ok).sort((a,b)=>b[1].score-a[1].score).slice(0,3).forEach(([s])=>D.pick[s.id]=1);},
+ launch(){const D=this.st();const ids=Object.keys(D.pick).filter(id=>D.pick[id]&&!D.col[id]&&!D.probes.some(p=>p.to===id&&!p.done));if(!ids.length){toast('Pick at least one admissible, unclaimed target first.','y');return;}
+  const v=this.vOf();ids.forEach(id=>{const s=this.byId(id);D.probes.push({from:null,to:id,t0:D.yr,t1:D.yr+s.ly/v+this.brakeYr(v),v,done:0});});D.pick={};D.run=true;D.seen=1;if(D.rate<100)D.rate=100;
+  this.log(`🚀 ${ids.length} seed probe${ids.length>1?'s':''} launched at ${(v*100).toFixed(1)}% c`);sfx('launch');toast(`🚀 <b>${ids.length} TCTA seed probe${ids.length>1?'s':''}</b> away. Each one builds a factory on arrival and sends more probes.`);this.netDirty=1;App.refresh(true);},
+ byId(id){return this.sys.find(s=>s.id===id);},
+ crewGo(){const D=this.st();if(D.crew&&!D.crew.done)return;const ready=this.sys.filter(s=>D.col[s.id]&&D.yr>=D.col[s.id].ready);if(!ready.length){toast('The Marauder’s Daughter needs a finished colony to fly to.','y');return;}
+  const tgt=(D.sel&&ready.find(s=>s.id===D.sel))||ready.sort((a,b)=>a.ly-b.ly)[0];const v=Math.min(this.vOf(),D.prop==='nep'?this.vOf():0.02);
+  D.crew={to:tgt.id,t0:D.yr,t1:D.yr+tgt.ly/v,v,done:0};D.crewN++;D.run=true;this.log(`🧑‍🚀 Marauder’s Daughter departs for ${tgt.host} at ${(v*100).toFixed(2)}% c`);sfx('launch');toast(`🧑‍🚀 <b>The Marauder’s Daughter</b> follows the waystation path to <b>${esc(tgt.host)}</b> — ${fmtYr(tgt.ly/v)} at ${(v*100).toFixed(1)}% c (FUTURE TECH: generation ship / hibernation).`);this.netDirty=1;App.refresh(true);},
+ tick(dt){const D=S.deep;if(!D||!D.run)return;const ddt=Math.min(dt,0.1)*D.rate;D.yr+=ddt;let ch=0;
+  for(let i=1;i<DEEP_HUBS.length;i++){const h=DEEP_HUBS[i];if(D.hubs[h.id])continue;if(!this.hubDone(DEEP_HUBS[i-1].id))break;if(!D.hubT[h.id])D.hubT[h.id]={t0:D.yr,dur:this.hubPlan(i).dur};
+   if(D.yr>=D.hubT[h.id].t0+D.hubT[h.id].dur){D.hubs[h.id]=1;ch=1;this.log(`${h.ic} ${h.n} online · ${h.where}`);toast(`${h.ic} <b>${h.n}</b> online at ${h.where}.${h.id==='jump'?' Interstellar seed probes unlocked!':''}`,'g');sfx('build');if(h.id==='jump'){Music.sting&&Music.sting();D.tab='target';if(!Object.keys(D.pick).length)this.autoPick();}}break;}
+  const bt=this.buildYr(),hop=this.hop(),v=this.vOf();
+  D.probes.forEach(p=>{if(p.done||D.yr<p.t1)return;p.done=1;ch=1;if(!D.col[p.to]){D.col[p.to]={arr:p.t1,ready:p.t1+bt,sent:0,via:'probe'};const s=this.byId(p.to);this.log(`🏭 Probe arrived at ${s.host} (${fmtLy(s.ly)}) — building factory + waystations`);}});
+  this.sys.forEach(s=>{const c=D.col[s.id];if(!c||c.sent||D.yr<c.ready)return;c.sent=1;ch=1;
+   if(!D.front){D.front={t0:c.ready,r0:s.ly};this.log(`🌊 First colony ready at ${s.host}: the replication wave begins`);toast(`🌊 <b>${esc(s.host)}</b> colony ready — its factories build new probes. The wave spreads!`,'g');Music.sting&&Music.sting();}
+   const cand=this.sys.filter(o=>o!==s&&!D.col[o.id]&&!D.probes.some(p=>p.to===o.id&&!p.done)).map(o=>[o,o.pos.distanceTo(s.pos)]).filter(x=>x[1]<=hop).sort((a,b)=>a[1]-b[1]).slice(0,2);
+   cand.forEach(([o,d])=>D.probes.push({from:s.id,to:o.id,t0:D.yr,t1:D.yr+d/v+this.brakeYr(v),v,done:0}));});
+  if(D.front){const R=this.frontR();this.sys.forEach(s=>{if(!D.col[s.id]&&s.ly<=R){const arr=D.front.t0+(s.ly-D.front.r0)/this.waveV();D.col[s.id]={arr,ready:arr+bt,sent:1,via:'wave'};ch=1;}});}
+  if(D.crew&&!D.crew.done&&D.yr>=D.crew.t1){D.crew.done=1;ch=1;const s=this.byId(D.crew.to);this.log(`🎉 Marauder’s Daughter arrived at ${s.host}`);toast(`🎉 <b>The Marauder’s Daughter</b> reached <b>${esc(s.host)}</b>, refuelled by the probe-built waystations.`,'g');Music.sting&&Music.sting();sfx('success');}
+  if(ch){this.netDirty=1;this.redrawChain();}},
+ frontR(){const D=this.st();if(!D.front)return 0;return Math.min(80000,D.front.r0+Math.max(0,D.yr-D.front.t0)*this.waveV());},
+ starsReached(R){if(R<=0)return 0;const n=0.004;const v=R<500?4/3*Math.PI*R*R*R:Math.PI*R*R*1000*Math.exp(-R/60000);return Math.min(2e11,v*n);},
+ // ---------- galaxy scene ----------
+ build(){if(this.built)return;this.built=true;this.init();const sc=new THREE.Scene();this.scene=sc;this.cam=new THREE.PerspectiveCamera(55,1,0.0001,4e5);
+  const VS=`attribute float size;attribute vec3 color;uniform float uFront;uniform float uPx;varying vec3 vC;void main(){vec4 mv=modelViewMatrix*vec4(position,1.0);gl_Position=projectionMatrix*mv;float f=(uFront>0.0&&length(position)<uFront)?1.0:0.0;vC=mix(color,vec3(0.3,1.0,0.5)*max(0.6,length(color)),f*0.85);gl_PointSize=size*uPx;}`;
+  const FS=`varying vec3 vC;void main(){vec2 q=gl_PointCoord-0.5;float d=length(q);float a=smoothstep(0.5,0.05,d);gl_FragColor=vec4(vC*a,a);}`;
+  const px=Math.min(2,window.devicePixelRatio||1);this.uni={uFront:{value:0},uPx:{value:px}};
+  const mk=(P,C,Z)=>{const g=new THREE.BufferGeometry();g.setAttribute('position',new THREE.BufferAttribute(P,3));g.setAttribute('color',new THREE.BufferAttribute(C,3));g.setAttribute('size',new THREE.BufferAttribute(Z,1));const m=new THREE.ShaderMaterial({uniforms:this.uni,vertexShader:VS,fragmentShader:FS,transparent:true,depthWrite:false,depthTest:false,blending:THREE.AdditiveBlending});const p=new THREE.Points(g,m);p.frustumCulled=false;return p;};
+  // procedural Milky Way: 4 log-spiral arms (12° pitch) + Orion Spur + bar/bulge + thin disk
+  const r=mulberry(4242),gs=()=>{let u=0;for(let k=0;k<4;k++)u+=r();return (u-2)/0.58;};const P=[],C=[],Z=[];const tp=Math.tan(12*Math.PI/180);
+  const put=(x,y,z,c,s)=>{P.push(x,y,z);C.push(...c);Z.push(s);};
+  const arms=[[33100,[0.55,0.7,1]],[21700,[0.7,0.8,1]],[15900,[0.6,0.72,1]],[11600,[0.75,0.7,1]]];this.arms=[];
+  arms.forEach(([rr,c],ai)=>{for(let k=0;k<4600;k++){const R=7000+Math.pow(r(),0.85)*50000;const th=Math.PI+Math.log(R/rr)/tp;const w=900+R*0.025;const x=R0_LY+R*Math.cos(th)+gs()*w,z=R*Math.sin(th)+gs()*w,y=gs()*(230+R*0.004);const br=0.35+r()*0.5;put(x,y,z,c.map(v=>v*br),1.2+r()*1.6);}});
+  for(let k=0;k<1800;k++){const R=23500+r()*6500;const th=Math.PI+Math.log(R/R0_LY)/Math.tan(10*Math.PI/180);const x=R0_LY+R*Math.cos(th)+gs()*500,z=R*Math.sin(th)+gs()*500,y=gs()*200;const br=0.35+r()*0.4;put(x,y,z,[0.75*br,0.85*br,br],1.2+r()*1.4);}
+  for(let k=0;k<5200;k++){const u=gs()*5200,v=gs()*1900,a=27*Math.PI/180;const x=R0_LY-(u*Math.cos(a)-v*Math.sin(a)),z=u*Math.sin(a)+v*Math.cos(a),y=gs()*1300*Math.exp(-Math.abs(u)/5000);const br=0.45+r()*0.5;put(x,y,z,[br,br*0.82,br*0.55],1.3+r()*2);}
+  for(let k=0;k<6000;k++){const R=-Math.log(1-r()*0.98)*11000+800,th=r()*Math.PI*2;put(R0_LY+R*Math.cos(th),gs()*350,R*Math.sin(th),[0.32,0.34,0.42].map(v=>v*(0.5+r())),1+r());}
+  const gal=mk(new Float32Array(P),new Float32Array(C),new Float32Array(Z));sc.add(gal);this.gal=gal;
+  // illustrative local stars within ~60 ly (NOT catalog data) + Oort cloud shell
+  {const P=[],C=[],Z=[];for(let k=0;k<700;k++){const d=Math.cbrt(r())*60,v=galPos(d,r()*360,Math.asin(2*r()-1)*180/Math.PI);const t=r();const c=t<0.75?[1,0.62,0.45]:t<0.93?[1,0.9,0.75]:[0.75,0.85,1];const br=0.35+r()*0.35;P.push(v.x,v.y,v.z);C.push(...c.map(x=>x*br));Z.push(1.4+r()*1.2);}
+   for(let k=0;k<1600;k++){const d=0.03+Math.pow(r(),0.6)*1.55,v=galPos(d,r()*360,Math.asin(2*r()-1)*180/Math.PI);P.push(v.x,v.y,v.z);C.push(0.08,0.1,0.15);Z.push(1);}
+   for(let k=0;k<1500;k++){const R=(30+Math.pow(r(),0.7)*20)/LY_AU,a=r()*Math.PI*2;P.push(R*Math.cos(a),(r()-0.5)*R*0.12,R*Math.sin(a));C.push(0.45,0.55,0.7);Z.push(1.3);}
+   sc.add(mk(new Float32Array(P),new Float32Array(C),new Float32Array(Z)));}
+  // planet orbits at true scale (AU → ly) + heliopause ring
+  [...PLANETS.map(p=>[p.a,0x2a4a70]),[120,0x3ef0ff]].forEach(([a,c])=>{const R=a/LY_AU;const pts=[];for(let k=0;k<=96;k++){const t=k/96*Math.PI*2;pts.push(new THREE.Vector3(R*Math.cos(t),0,R*Math.sin(t)));}sc.add(new THREE.Line(new THREE.BufferGeometry().setFromPoints(pts),new THREE.LineBasicMaterial({color:c,transparent:true,opacity:0.5,depthTest:false})));});
+  // catalog systems
+  {const N=this.sys.length+1,P=new Float32Array(N*3),C=new Float32Array(N*3),Z=new Float32Array(N);this.sys.forEach((s,i)=>{P.set([s.pos.x,s.pos.y,s.pos.z],i*3);Z[i]=s.star?7:8;});P.set([0,0,0],(N-1)*3);C.set([1,0.9,0.55],(N-1)*3);Z[N-1]=12;
+   const g=new THREE.BufferGeometry();g.setAttribute('position',new THREE.BufferAttribute(P,3));g.setAttribute('color',new THREE.BufferAttribute(C,3));g.setAttribute('size',new THREE.BufferAttribute(Z,1));
+   const m=new THREE.ShaderMaterial({uniforms:{uFront:{value:0},uPx:this.uni.uPx},vertexShader:VS,fragmentShader:FS,transparent:true,depthWrite:false,depthTest:false,blending:THREE.AdditiveBlending});const pp=new THREE.Points(g,m);pp.frustumCulled=false;pp.renderOrder=5;sc.add(pp);this.sysPts=pp;this.recolor();}
+  // soft glow for the galaxy disk at large scale
+  {const cv=document.createElement('canvas');cv.width=cv.height=64;const x=cv.getContext('2d');const gr=x.createRadialGradient(32,32,0,32,32,32);gr.addColorStop(0,'rgba(255,255,255,1)');gr.addColorStop(1,'rgba(255,255,255,0)');x.fillStyle=gr;x.fillRect(0,0,64,64);const tex=new THREE.CanvasTexture(cv);
+   this.glowM=new THREE.SpriteMaterial({map:tex,color:0x8899cc,transparent:true,opacity:0,blending:THREE.AdditiveBlending,depthWrite:false,depthTest:false});
+   const core=new THREE.Sprite(new THREE.SpriteMaterial({map:tex,color:0xffd9a0,transparent:true,opacity:0,blending:THREE.AdditiveBlending,depthWrite:false,depthTest:false}));core.position.copy(GC_POS);core.scale.setScalar(16000);sc.add(core);this.core=core;
+   for(let k=0;k<70;k++){const R=6000+r()*45000,ai=k%4,th=Math.PI+Math.log(R/arms[ai][0])/tp;const s=new THREE.Sprite(this.glowM);s.position.set(R0_LY+R*Math.cos(th),0,R*Math.sin(th));s.scale.setScalar(5000+r()*6000);sc.add(s);}}
+  // frontier sphere, probe lines, probe dots, crew marker
+  this.front=new THREE.Mesh(new THREE.IcosahedronGeometry(1,1),new THREE.MeshBasicMaterial({color:0x5dff8a,wireframe:true,transparent:true,opacity:0.09,depthTest:false}));this.front.visible=false;sc.add(this.front);
+  this.net=new THREE.Group();sc.add(this.net);
+  {const g=new THREE.BufferGeometry();g.setAttribute('position',new THREE.BufferAttribute(new Float32Array(300*3),3));this.dots=new THREE.Points(g,new THREE.PointsMaterial({color:0x3ef0ff,size:6,sizeAttenuation:false,transparent:true,depthTest:false}));this.dots.frustumCulled=false;sc.add(this.dots);}
+  {const g=new THREE.BufferGeometry();g.setAttribute('position',new THREE.BufferAttribute(new Float32Array(3),3));this.crewDot=new THREE.Points(g,new THREE.PointsMaterial({color:0xffc640,size:11,sizeAttenuation:false,transparent:true,depthTest:false}));this.crewDot.frustumCulled=false;this.crewDot.visible=false;sc.add(this.crewDot);}
+  // labels
+  const ov=$('#lab-deep');this.labels=this.sys.map(s=>{const b=document.createElement('button');b.className='tlabel dl';b.dataset.act='deepSel';b.dataset.id=s.id;b.style.display='none';ov.appendChild(b);return b;});
+  const sunL=document.createElement('div');sunL.className='plab sun';sunL.textContent='☀ Sun';ov.appendChild(sunL);this.sunL=sunL;
+  this.armL=[['Perseus Arm',33100],['Sagittarius–Carina Arm',21700],['Scutum–Centaurus Arm',15900],['Norma Arm',11600]].map(([n,rr],i)=>{const R=[40000,30000,24000,19000][i];const th=Math.PI+Math.log(R/rr)/tp;return{n,p:new THREE.Vector3(R0_LY+R*Math.cos(th),0,R*Math.sin(th))};});
+  this.armL.push({n:'Orion Spur (we are here)',p:new THREE.Vector3(1500,0,-2500),near:1},{n:'Galactic Center · Sgr A*',p:GC_POS.clone()},{n:'Central bar',p:new THREE.Vector3(R0_LY-4200,0,2200)});
+  this.armL.forEach(a=>{const d=document.createElement('div');d.className='plab arm';d.textContent=a.n;ov.appendChild(d);a.el=d;});},
+ recolor(){if(!this.sysPts)return;const D=this.st(),C=this.sysPts.geometry.attributes.color;this.sys.forEach((s,i)=>{const c=D.col[s.id];let col;if(c)col=D.yr>=c.ready?[0.36,1,0.54]:[0.2,0.75,0.95];else col=new THREE.Color(PLT[s.type].c).toArray();C.setXYZ(i,...col);});C.needsUpdate=true;},
+ rebuildNet(){const D=this.st();while(this.net.children.length){const c=this.net.children.pop();c.geometry.dispose();c.material.dispose();}
+  const segs=[],segsD=[];D.probes.forEach(p=>{const a=p.from?this.byId(p.from).pos:new THREE.Vector3(),b=this.byId(p.to).pos;(p.done?segsD:segs).push(a.x,a.y,a.z,b.x,b.y,b.z);});
+  const L=(arr,c,o)=>{if(!arr.length)return;const g=new THREE.BufferGeometry();g.setAttribute('position',new THREE.BufferAttribute(new Float32Array(arr),3));const l=new THREE.LineSegments(g,new THREE.LineBasicMaterial({color:c,transparent:true,opacity:o,depthTest:false}));l.frustumCulled=false;this.net.add(l);};
+  L(segsD,0x5dff8a,0.55);L(segs,0x3ef0ff,0.35);if(D.crew){const b=this.byId(D.crew.to).pos;L([0,0,0,b.x,b.y,b.z],0xffc640,0.8);}this.recolor();},
+ show(on){const el=$('#lab-deep');if(el)el.style.display=on?'':'none';},
+ enter(fromSolar){this.build();this.netDirty=1;const D=this.st();this.enterT=performance.now();this.lock=null;this.tw=null;
+  if(fromSolar){this.dist=0.004;this.focus.set(0,0,0);this.tween(9,2.2);}else if(this.dist<0.01)this.dist=28;go('deep');},
+ tween(d1,dur){this.tw={d0:this.dist,d1,t:0,dur:dur||1.2};},
+ scaleTo(id){if(id==='solar'){this.exitToSolar();return;}const s=DSCALES.find(x=>x.id===id);this.lock=null;this.tween(s.d,1.4);World.cam.phi=id==='mw'?0.55:id==='arm'?0.8:1.0;sfx('tap');},
+ exitToSolar(){go('solar');const W=World;W.cam.dist=1300;W.flyTo(new THREE.Vector3(0,0,0),420,1.6);},
+ zoom(f){if(this.tw){this.tw.d1*=Math.pow(f,2.4);}this.dist=clamp(this.dist*Math.pow(f,2.4),0.0018,240000);
+  if(this.dist<=0.0018&&f<1&&performance.now()-this.enterT>900)this.exitToSolar();},
+ scaleName(){const d=this.dist;return d<0.05?'Solar System':d<2?'Oort Cloud':d<150?'Solar Neighborhood':d<12000?'Orion Arm':'Milky Way';},
+ render(renderer,dt){const W=World,c=W.cam;if(this.tw){this.tw.t+=dt/this.tw.dur;const k=dEase(Math.min(1,this.tw.t));this.dist=Math.exp(lerp(Math.log(this.tw.d0),Math.log(this.tw.d1),k));if(this.tw.t>=1)this.tw=null;}
+  const sm=x=>x<=0?0:x>=1?1:x*x*(3-2*x);const k=sm((Math.log10(this.dist)-3.4)/1.3);const tgt=this.lock?this.byId(this.lock).pos.clone().multiplyScalar(1-k).addScaledVector(GC_POS,k*0.8):GC_POS.clone().multiplyScalar(k);this.focus.lerp(tgt,1-Math.exp(-dt*4));
+  const cam=this.cam;const sz=renderer.getSize(new THREE.Vector2());cam.aspect=sz.x/Math.max(1,sz.y);const v=new THREE.Vector3().setFromSphericalCoords(this.dist,c.phi,c.theta);cam.position.copy(this.focus).add(v);cam.up.set(0,1,0);cam.lookAt(this.focus);const top=this._hudB||0,bot=this._sheetT||sz.y;const yc=(top+bot)/2;const off=clamp(sz.y/2-yc,-sz.y*0.3,sz.y*0.3);if(Math.abs(off)>2)cam.setViewOffset(sz.x,sz.y,0,off,sz.x,sz.y);else cam.clearViewOffset();cam.near=Math.max(1e-6,this.dist*0.01);cam.far=4e5;cam.updateProjectionMatrix();
+  const D=this.st();const R=this.frontR();this.uni.uFront.value=R;this.front.visible=R>0;if(R>0)this.front.scale.setScalar(R);
+  this.glowM.opacity=0.07*sm((Math.log10(this.dist)-3.3)/1.2);this.core.material.opacity=0.5*sm((Math.log10(this.dist)-3.6)/1.0);
+  if(this.netDirty){this.netDirty=0;this.rebuildNet();}
+  const pa=this.dots.geometry.attributes.position;let n=0;D.probes.forEach(p=>{if(p.done||n>=300)return;const a=p.from?this.byId(p.from).pos:new THREE.Vector3(),b=this.byId(p.to).pos;const t=clamp((D.yr-p.t0)/(p.t1-p.t0),0,1);pa.setXYZ(n++,a.x+(b.x-a.x)*t,a.y+(b.y-a.y)*t,a.z+(b.z-a.z)*t);});pa.needsUpdate=true;this.dots.geometry.setDrawRange(0,n);
+  if(D.crew&&!D.crew.done){const b=this.byId(D.crew.to).pos,t=clamp((D.yr-D.crew.t0)/(D.crew.t1-D.crew.t0),0,1);this.crewDot.geometry.attributes.position.setXYZ(0,b.x*t,b.y*t,b.z*t);this.crewDot.geometry.attributes.position.needsUpdate=true;this.crewDot.visible=true;}else this.crewDot.visible=false;
+  if(D.run&&((this._rc=(this._rc||0)+1)%20===0))this.recolor();
+  renderer.render(this.scene,cam);},
+ project(p,o){const v=p.clone().project(this.cam);const sz=World.renderer.getSize(new THREE.Vector2());o.x=(v.x+1)/2*sz.x;o.y=(1-v.y)/2*sz.y;o.vis=v.z<1&&v.z>-1&&o.x>-20&&o.x<sz.x+20&&o.y>-20&&o.y<sz.y+20;return o;},
+ tap(x,y){if(!this.built)return;let best=null,bd=30;const o={};this.sys.forEach(s=>{this.project(s.pos,o);if(!o.vis)return;const d=Math.hypot(o.x-x,o.y-y);if(d<bd){bd=d;best=s;}});if(best)this.select(best.id);},
+ select(id){const D=this.st();D.sel=id;D.tab='info';const s=this.byId(id);this.lock=id;if(this.dist>s.ly*3+20||this.dist>9000)this.tween(Math.max(6,Math.min(s.ly*0.6,3000)),1.3);sfx('select');App.refresh(true);},
+ updLabels(){const v=View.cur;if(v==='solar'&&this.solar.lab)this.solLabels();if(v!=='deep'||!this.built)return;
+  const D=this.st(),o={};const sh=document.querySelector('#v-deep .deepsheet');const top=sh?sh.getBoundingClientRect().top:1e9;this._sheetT=sh?top:0;const hd=document.querySelector('#v-deep .deeptop');const hb=hd?hd.getBoundingClientRect().bottom:96;this._hudB=hb;const placed=[];const free=(x,y,w)=>{for(const p of placed)if(Math.abs(p[0]-x)<(w+p[2])/2&&Math.abs(p[1]-y)<22)return false;placed.push([x,y,w]);return true;};
+  this.project(new THREE.Vector3(),o);const sv=o.vis&&o.y<top-6&&o.y>hb+8;this.sunL.textContent=this.dist>2500?'☀ You are here':'☀ Sun';this.sunL.style.display=sv?'':'none';if(sv){this.sunL.style.transform=`translate(${o.x}px,${o.y}px) translate(-50%,-160%)`;free(o.x,o.y,60);}
+  const ord=[...this.sys].sort((a,b)=>(b.id===D.sel)-(a.id===D.sel)||(!!D.col[b.id])-(!!D.col[a.id])||a.ly-b.ly);
+  ord.forEach(s=>{const b=this.labels[s.k];this.project(s.pos,o);let vis=o.vis&&o.y<top-6&&o.y>hb+8;const nm=s.host;const w=nm.length*7+34;if(vis)vis=free(o.x,o.y,w);b.style.display=vis?'flex':'none';if(!vis)return;b.style.transform=`translate(${o.x}px,${o.y}px) translate(-50%,-150%)`;
+   const c=D.col[s.id];const h=`<i class="gd" style="background:${c?(D.yr>=c.ready?'var(--green)':'var(--cyan)'):PLT[s.type].c}"></i>${esc(nm)} <small>${fmtLy(s.ly)}</small>`;if(b._h!==h){b.innerHTML=h;b._h=h;}b.classList.toggle('sel',s.id===D.sel);b.style.pointerEvents=this.dist>8000?'none':'';});
+  this.armL.forEach(a=>{this.project(a.p,o);const vis=o.vis&&o.y<top-6&&o.y>hb+8&&(a.near?this.dist>2500&&this.dist<90000:this.dist>12000);const v2=vis&&free(o.x,o.y+20,a.n.length*8);a.el.style.display=v2?'':'none';if(v2)a.el.style.transform=`translate(${o.x}px,${o.y}px) translate(-50%,-50%)`;});
+  const sb=$('#deep-scale');if(sb){const t=`${this.scaleName()} · view ≈ ${fmtLy(this.dist*1.04)} across`;if(sb._t!==t){sb._t=t;sb.textContent=t;}}
+  const yb=$('#deep-yr');if(yb){const t=`+${fmtYr(D.yr)}`;if(yb._t!==t){yb._t=t;yb.textContent=t;}}},
+ solLabels(){const o={},W=World;const sh=document.querySelector('#v-solar .bottom');const top=sh?sh.getBoundingClientRect().top:1e9;const d=W.cam.dist;
+  const placed=[];this.solar.lab.forEach(L=>{const vis0=d>=L.min&&d<=L.max;if(!vis0){if(L.b.style.display!=='none')L.b.style.display='none';return;}W.project(L.get(),o);let vis=o.vis&&o.y<top-6&&o.y>70;if(vis){for(const q of placed)if(Math.abs(q[0]-o.x)<60&&Math.abs(q[1]-o.y)<16){vis=false;break;}if(vis)placed.push([o.x,o.y]);}L.b.style.display=vis?'':'none';if(vis)L.b.style.transform=`translate(${o.x}px,${o.y}px) translate(-50%,40%)`;});},
+ frame(dt){this.tick(dt);}
+};
+function renderDeep(){const el=$('#deep-body');if(!el)return;const Dp=Deep;Dp.init();const D=Dp.st();
+ const now=performance.now();if(document.activeElement&&document.activeElement.type==='range'&&el.contains(document.activeElement))return;
+ const rates=[1,10,100,1000,1e4,1e5,1e6];
+ const head=`<div class="row deephead"><b id="deep-yr" class="mono">+${fmtYr(D.yr)}</b><button class="chip ${D.run?'on':''}" data-act="deepRun">${D.run?'⏸':'▶'}</button><div class="hscroll rates">${rates.map(r=>`<button class="chip ${D.rate===r?'on':''}" data-act="deepRate" data-v="${r}">${r>=1000?fmt(r/1000)+'k':r} yr/s</button>`).join('')}</div></div>
+ <div class="hscroll" style="margin:4px 0">${[['chain','🛰 Solar chain'],['target','🎯 TCTA targets'],['net','🌊 Network & crew'],['info','🪐 System']].map(([k,n])=>`<button class="chip tab ${D.tab===k?'on':''}" data-act="deepTab" data-v="${k}">${n}</button>`).join('')}</div>`;
+ let body='';
+ if(D.tab==='chain'){const rows=DEEP_HUBS.map((h,i)=>{const done=Dp.hubDone(h.id);let st,pl=i?Dp.hubPlan(i):null;if(done)st='<b style="color:var(--green)">✔ online</b>';else if(i&&Dp.hubDone(DEEP_HUBS[i-1].id)&&D.hubT[h.id]){const t=D.hubT[h.id];st=`<b style="color:var(--gold)">${Math.round(clamp((D.yr-t.t0)/t.dur,0,1)*100)}%</b>`;}else st='<span class="dim">pending</span>';
+   return`<div class="hubrow"><span class="hi">${h.ic}</span><div><b>${h.n}</b> ${st}<div class="dim">${h.where} · ${h.a} AU · sunlight ${(100/(h.a*h.a)).toFixed(h.a>9?2:1)}%${pl?` · transfer ${fmtYr(pl.tr)} (Hohmann ${fmtYr(pl.hoh)}) + build ${fmtYr(pl.build)}${pl.fission?' · ⚛ fission power (solar too weak)':''}`:''}</div><div class="dim">${h.res} · radio delay ${fmt(h.a*8.317)} min</div></div></div>`;}).join('');
+  body=`<div class="card"><h4>🛰 Waystation chain: belt → outer planets → interstellar jump-off</h4><p class="dim" style="font-size:12px">Each hub turns local ice into propellant for the next leg, just like your belt waystations. Transfers use faster-than-Hohmann trajectories (more Δv). Times are estimates · <span class="badge b-sim">SIMULATED</span></p>${rows}
+  ${Dp.chainDone()?'<button class="btn" data-act="deepTab" data-v="target">🎯 Choose star targets ▸</button>':!Dp.beltDone()?`<p class="dim" style="font-size:12px">Your belt network isn't built yet. Build a waystation in Stage 2 (or finish a mission), or try a sandbox belt.</p><button class="btn ghost" data-act="deepSandbox">☄ Use a simulated belt network (sandbox)</button>`:D.run?'<p class="dim" style="font-size:12px">Chain extending… raise the time rate to watch centuries pass.</p>':'<button class="btn" data-act="deepChain">▶ Extend the chain outward</button>'}</div>`;}
+ if(D.tab==='target'){const v=Dp.vOf(),P=DPROPS[D.prop];const rows=Dp.sys.map(s=>[s,Dp.feas(s)]).sort((a,b)=>(b[1].ok-a[1].ok)||(b[1].score-a[1].score)||(a[0].ly-b[0].ly));const adm=rows.filter(x=>x[1].ok).length,pk=Object.keys(D.pick).filter(k=>D.pick[k]).length;
+  body=`<div class="card"><h4>🎯 TCTA star targeting · Ω → C → Ψ → R</h4>
+  <div class="hscroll">${Object.entries(DPROPS).map(([k,p])=>`<button class="chip ${D.prop===k?'on':''}" data-act="deepProp" data-v="${k}">${p.ic} ${p.n}</button>`).join('')}</div>
+  <p style="font-size:12px;margin:6px 0"><span class="badge ${P.tag==='FUTURE TECH'?'b-fut':'b-imp'}">${P.tag}</span> ${P.ref}</p>
+  <label class="sl">Cruise speed <b>${(v*100).toFixed(v<0.01?2:1)}% c</b><input type="range" data-inp="deepV" min="${Math.log(P.vmin)}" max="${Math.log(P.vmax)}" step="0.01" value="${Math.log(v)}"></label>
+  <label class="sl">Max trip time <b>${fmtYr(D.tmax)}</b><input type="range" data-inp="deepT" min="${Math.log(50)}" max="${Math.log(20000)}" step="0.01" value="${Math.log(D.tmax)}"></label>
+  <div class="dim" style="font-size:12px">Rocket equation, accelerate + brake: mass ratio = e<sup>2v/vₑ</sup> = <b>${P.ve?fmt(Dp.massRatio(v)):'≈1 (beam-pushed)'}</b>${P.ve?` (vₑ = ${(P.ve*100).toFixed(2)}% c)`:''} · admissible if ≤ 100 and within the trip limit. Hop range from each colony: <b>${fmtLy(Dp.hop())}</b>.</div>
+  <div class="funnel"><span>Ω all systems <b>${Dp.sys.length}</b></span>›<span>C admissible <b>${adm}</b></span>›<span>R picked <b>${pk}</b></span><span class="dim">narrowed ${adm?fmt(Dp.sys.length/Math.max(1,pk||adm)):'∞'}×</span></div>
+  <div class="row"><button class="btn ghost" data-act="deepAuto">✨ Auto-pick best 3</button><button class="btn" data-act="deepLaunch" ${Dp.chainDone()?'':'disabled'}>🚀 Launch seed probes</button></div>${Dp.chainDone()?'':'<p class="dim" style="font-size:12px">Finish the waystation chain to the jump-off first (🛰 tab).</p>'}
+  <div class="tlist">${rows.map(([s,f])=>{const c=D.col[s.id],flying=D.probes.some(p=>p.to===s.id&&!p.done);return`<div class="trow ${f.ok?'':'no'}"><button class="chip ${D.pick[s.id]?'on':''}" data-act="deepPick" data-id="${s.id}" ${f.ok&&!c&&!flying?'':'disabled'}>${c?'🏭':flying?'🛸':D.pick[s.id]?'✔':'＋'}</button><div><b data-act="deepSel" data-id="${s.id}">${esc(s.host)}</b> <span class="dim">${fmtLy(s.ly)} · ${s.fam[0]} ${s.fam[1]}</span><div class="dim">${f.ok?`trip ${fmtYr(f.trip)} · mass ratio ${fmt(f.mr)} · value ${s.val.toFixed(1)}`:'✕ '+f.why}</div></div></div>`;}).join('')}</div></div>`;}
+ if(D.tab==='net'){const cols=Dp.sys.filter(s=>D.col[s.id]),ready=cols.filter(s=>D.yr>=D.col[s.id].ready);const fl=D.probes.filter(p=>!p.done).length;const R=Dp.frontR(),wv=Dp.waveV();
+  const cr=D.crew;const crS=cr?(cr.done?`🎉 Arrived at <b>${esc(Dp.byId(cr.to).host)}</b> after ${fmtYr(cr.t1-cr.t0)}`:`En route to <b>${esc(Dp.byId(cr.to).host)}</b>: ${Math.round(clamp((D.yr-cr.t0)/(cr.t1-cr.t0),0,1)*100)}% · arrives in ${fmtYr(cr.t1-D.yr)}`):'Docked at the jump-off';
+  body=`<div class="card"><h4>🌊 Von Neumann replication wave</h4><div class="statg"><div><b>${D.probes.length}</b><span>probes launched</span></div><div><b>${fl}</b><span>in flight</span></div><div><b>${cols.length}/${Dp.sys.length}</b><span>catalog systems reached</span></div><div><b>${ready.length}</b><span>colonies building probes</span></div></div>
+  <p style="font-size:12px">Wave front: <b>${R?fmtLy(R):'not started'}</b> from the Sun · front speed ≈ <b>${(wv*100).toFixed(2)}% c</b> (8 ly hops + ${Dp.buildYr()} yr factory bootstrap) · crossing the Milky Way (~100,000 ly) ≈ <b>${fmtYr(1e5/wv)}</b>.${R?` Est. stars inside the front: <b>${fmt(Dp.starsReached(R))}</b> <span class="badge b-sim">ESTIMATE</span>`:''}</p>
+  <p class="dim" style="font-size:12px">Light-time: news from a colony takes as many years as it is light-years away — Proxima’s first report arrives 4.2 yr after it is sent. Colony resources are <span class="badge b-sim">SPECULATIVE · SIMULATED</span>.</p></div>
+  <div class="card"><h4>🧑‍🚀 The Marauder’s Daughter</h4><p style="font-size:12px">${crS}. Follows the probe-built waystation path at ${D.prop==='nep'?(Dp.vOf()*100).toFixed(2):'2'}% c · <span class="badge b-fut">FUTURE TECH</span> generation ship / hibernation.</p><button class="btn" data-act="deepCrew" ${(cr&&!cr.done)||!ready.length?'disabled':''}>🧑‍🚀 Launch crew to ${ready.length?esc(((D.sel&&ready.find(s=>s.id===D.sel))||ready.slice().sort((a,b)=>a.ly-b.ly)[0]).host):'(no colony ready)'}</button></div>
+  <div class="card"><h4>📜 Log</h4>${D.log.slice(0,8).map(l=>`<div class="dim" style="font-size:12px">+${fmtYr(l.y)} · ${esc(l.m)}</div>`).join('')||'<span class="dim">Nothing yet.</span>'}</div>`;}
+ if(D.tab==='info'){const s=D.sel&&Dp.byId(D.sel);if(!s)body=`<div class="card"><h4>🪐 Tap a star system</h4><p class="dim">Tap any labeled system on the map. Colors: <span style="color:${PLT.rocky.c}">● rocky</span> <span style="color:${PLT.sub.c}">● super-Earth/sub-Neptune</span> <span style="color:${PLT.nep.c}">● Neptune-like</span> <span style="color:${PLT.giant.c}">● gas giant</span> <span style="color:var(--green)">● colonized</span>.</p></div>`;
+  else{const f=Dp.feas(s),c=D.col[s.id];body=`<div class="card"><h4>${s.fam[0]} ${esc(s.host)} <span class="dim">${s.sp?esc(s.sp):''}</span></h4>
+  <div class="dim" style="font-size:12px">${fmtLy(s.ly)} · galactic l ${s.l.toFixed(1)}°, b ${s.b.toFixed(1)}° · signal delay ${fmtYr(s.ly)} each way · ${s.fam[1]}</div>
+  <div style="font-size:12px;margin:4px 0">${s.star?'No confirmed planets — a stepping-stone star for asteroid/comet resources (speculative).':s.pls.map(p=>`• <b>${esc(p.n)}</b> — ${PLT[p.t].n}${p.R!=null?`, ${p.R.toFixed(2)} R⊕`:''}${p.M!=null?`, ${p.M.toFixed(p.M<10?2:0)} M⊕`:''}${p.P!=null?`, orbit ${p.P<2?p.P.toFixed(2):fmt(p.P)} d`:''}${p.a!=null?` (${p.a<0.1?p.a.toFixed(3):p.a.toFixed(2)} AU)`:''}${p.T!=null?`, T<sub>eq</sub> ≈ ${Math.round(p.T)} K${p.hz?' 🌍':''}`:''} · ${esc(p.m)} ${p.y}`).join('<br>')}</div>
+  <div style="font-size:12px">Probe trip at ${(Dp.vOf()*100).toFixed(1)}% c (${DPROPS[D.prop].n}): <b>${fmtYr(f.trip)}</b> · mass ratio ${fmt(f.mr)} ${f.ok?'✔ admissible':'✕ '+f.why}${c?` · ${D.yr>=c.ready?'🏭 colony ready':'🛠 building (ready +'+fmtYr(c.ready)+')'} via ${c.via}`:''}</div>
+  <p style="font-size:11px" class="dim"><span class="badge b-imp">IMPORTED · NASA Exoplanet Archive snapshot ${EXO_SNAPSHOT}</span> ${s.star?'(star from SIMBAD)':''} · resources <span class="badge b-sim">SPECULATIVE · SIMULATED</span></p></div>`;}}
+ el.innerHTML=head+body+`<p class="dim disc" style="font-size:11px;margin:6px 2px">Interstellar propulsion is FUTURE TECH; nothing here is flight-certified. Planet data: NASA Exoplanet Archive; galaxy arms are a procedural model.</p>`;}
 
 'use strict';
 // ---------- Arcade opener: automated mini-run of the whole loop, with optional control prompts ----------
@@ -2132,7 +2429,7 @@ const Opener={alive:0,phase:'',prompt:null,hits:{},
 
 'use strict';
 const App={last:0,acc:0,hudT:0,panelT:0,ptr:false,demo:false,CRUISE_SEC:24,OPS_DPS:1.6,
- refresh(full){const v=View.cur;updateHUD();if(v==='console'){renderStage1();}if(v==='swarm')renderSwarmUI();if(v==='solar'){renderSolarUI();if(View.lock&&full!==false)renderInfo(View.lock);}if(v==='arch'&&full)renderArch();if(v==='fab')renderFab();if(v==='status')renderStatus();if(v==='studio')renderStudio();if(v==='he3')renderHe3();if(v==='pov')Pov.renderTypes();}};
+ refresh(full){const v=View.cur;updateHUD();if(v==='console'){renderStage1();}if(v==='swarm')renderSwarmUI();if(v==='solar'){renderSolarUI();if(View.lock&&full!==false)renderInfo(View.lock);}if(v==='arch'&&full)renderArch();if(v==='fab')renderFab();if(v==='status')renderStatus();if(v==='studio')renderStudio();if(v==='he3')renderHe3();if(v==='deep')renderDeep();if(v==='pov')Pov.renderTypes();}};
 window.addEventListener('pointerdown',()=>App.ptr=true,true);window.addEventListener('pointerup',()=>setTimeout(()=>App.ptr=false,60),true);
 // ---------- coach (90-second demo / tutorial) ----------
 const Coach={i:-1,steps:[
@@ -2159,7 +2456,7 @@ function briefModal(){const k=S.design.scenario,sc=SCENARIOS[k],t=TMAP[sc.primar
 function aboutModal(){showModal(`<h2>📚 About & data sources</h2><p>Target orbital and physical values come from a <b>bundled snapshot of the JPL Small-Body Database API</b>, fetched ${SBDB_SNAPSHOT.date}. They are labeled <span class="badge b-imp">IMPORTED · JPL SBDB snapshot</span>. Sensor readings during play are <span class="badge b-sim">SIMULATED</span> and never measurements. Live fetches are only labeled <span class="badge b-cy">LIVE</span> if a request to JPL actually succeeds.</p>
  <table class="tb"><tr><th>Target</th><th>a (AU)</th><th>e</th><th>i°</th><th>Period (d)</th><th>D (km)</th><th>Type</th></tr>${TARGETS.map(t=>{const s=SBDB_SNAPSHOT.data[t.id];return`<tr><td>${esc(s.fullname)}</td><td>${s.a}</td><td>${s.e}</td><td>${s.i}</td><td>${s.per_d}</td><td>${s.diameter_km}</td><td>${[s.spec_B,s.spec_T].filter(Boolean).join('/')}</td></tr>`;}).join('')}</table>
  <div class="lbl" style="margin-top:8px">Sources</div>${SOURCES.map(([n,u])=>`<div style="font-size:13px;margin:4px 0">• <a href="${u}" target="_blank" rel="noopener">${n}</a></div>`).join('')}
- <div class="lbl" style="margin-top:8px">Models used</div><p style="font-size:13px">Hohmann transfer time and Δv; Tsiolkovsky rocket equation; solar flux ∝ 1/r²; radio light-time 8.317 min/AU; equilibrium temperature T ≈ 278 K·(1−A)<sup>¼</sup>/√a; water electrolysis minimum ≈ 4.4 kWh/kg. Game rates (mining, build speed, events, composition fractions) are simplified and labeled simulated. Not a flight-certified planning system.</p>`);}
+ <div class="lbl" style="margin-top:8px">Models used</div><p style="font-size:13px">Hohmann transfer time and Δv; Tsiolkovsky rocket equation; solar flux ∝ 1/r²; radio light-time 8.317 min/AU; equilibrium temperature T ≈ 278 K·(1−A)<sup>¼</sup>/√a; water electrolysis minimum ≈ 4.4 kWh/kg. Game rates (mining, build speed, events, composition fractions) are simplified and labeled simulated. Stage 3 (deep space): probe trip time = distance ÷ cruise speed; accelerate-and-brake mass ratio = e<sup>2v/vₑ</sup>; light-time = 1 year per light-year; exoplanet values from the bundled NASA Exoplanet Archive snapshot (${EXO_SNAPSHOT}); the spiral-arm map is a procedural model; interstellar propulsion and colony resources are FUTURE TECH / SPECULATIVE. Not a flight-certified planning system.</p>`);}
 function dataModal(){const cur=S.data.mode;showModal(`<h2>🛰 Data source</h2><p>Choose where target reference values come from. Active: <b>${esc(activeRef(S.design.primary).src)}</b></p>
  <div class="opts">${[['snapshot','JPL SBDB snapshot',`Bundled real values fetched ${SBDB_SNAPSHOT.date} (IMPORTED).`],['sim','Simulated','Built-in game model values — labeled SIMULATED.'],['user','Your import',S.data.label&&cur==='user'?esc(S.data.label):'Paste or load SBDB JSON / CSV below.']].map(([k,a,b])=>`<button class="opt ${cur===k?'on':''}" data-act="dataMode" data-val="${k}"><b>${a}</b><small>${b}</small></button>`).join('')}</div>
  <div class="card" style="margin-top:10px"><h4>Import NASA/JPL data</h4><p style="font-size:12.5px">Accepts SBDB API JSON (e.g. <a href="https://ssd-api.jpl.nasa.gov/sbdb.api?sstr=psyche&phys-par=1" target="_blank" rel="noopener">sbdb.api?sstr=psyche&amp;phys-par=1</a>), an array of those, SBDB Query API JSON ({fields,data}), or CSV with columns name,a,e,i,diameter,albedo,rot_per.</p>
@@ -2285,6 +2582,18 @@ const ACT={
  tutorial:()=>{hideModal();go('console');Coach.start();toast('Tutorial: follow the gold coach card at the bottom.','y');},
  demo:()=>{hideModal();startDemo();},planStart:()=>{hideModal();go('studio');briefModal();},
  he3Toggle:el=>He3.toggle(el.dataset.id),
+ deepTab:el=>{Deep.st().tab=el.dataset.v;$('#deep-body')&&($('#deep-body').parentElement.scrollTop=0);App.refresh(true);},
+ deepRate:el=>{const D=Deep.st();D.rate=+el.dataset.v;D.run=true;App.refresh(true);},
+ deepRun:()=>{const D=Deep.st();D.run=!D.run;App.refresh(true);},
+ deepChain:()=>{const D=Deep.st();D.run=true;if(D.rate<10)D.rate=10;Deep.log('🛰 Waystation chain extending beyond the belt');App.refresh(true);},
+ deepSandbox:()=>{const D=Deep.st();D.sandbox=true;D.run=true;if(D.rate<10)D.rate=10;Deep.log('☄ Sandbox: simulated belt network assumed');toast('☄ Sandbox belt network assumed — the chain starts extending outward.','y');Deep.redrawChain();App.refresh(true);},
+ deepProp:el=>{const D=Deep.st();D.prop=el.dataset.v;D.v=DPROPS[D.prop].v0;App.refresh(true);},
+ deepPick:el=>{const D=Deep.st();D.pick[el.dataset.id]=!D.pick[el.dataset.id];App.refresh(true);},
+ deepAuto:()=>{Deep.autoPick();App.refresh(true);},
+ deepLaunch:()=>Deep.launch(),deepCrew:()=>Deep.crewGo(),
+ deepSel:el=>Deep.select(el.dataset.id),deepScale:el=>Deep.scaleTo(el.dataset.v),
+ deepSheet:el=>{const s=$('#v-deep .deepsheet');s.classList.toggle('min');el.textContent=s.classList.contains('min')?'▴':'▾';},
+ openDeep:()=>Deep.enter(false),
  stTab:el=>{Studio.tab=el.dataset.k;App.refresh(true);},stP:el=>{Studio.cur=el.dataset.k;App.refresh(true);},stT:el=>Studio.apply(el.dataset.id),stUndo:()=>Studio.undo(),stReset:()=>Studio.reset(),stBranch:el=>Studio.branch(+el.dataset.k),
  stAuto:()=>{if(S.phase!=='plan')return;const ok=Studio.autoPath(Studio.cur);Studio.D().committed=false;toast(ok?'Suggested path applied — each step stayed inside Ω(𝒞). Review, then commit.':'No admissible path found from here — try Baseline.',ok?'':'y');App.refresh(true);},
  stCommit:()=>{if(S.phase!=='plan')return;Studio.commitOne(Studio.cur);App.refresh(true);},stAutoAll:()=>{if(S.phase!=='plan')return;Studio.autoAll();toast('Remaining drone types auto-designed and committed. Stage 1 complete.','g');App.refresh(true);},
@@ -2293,7 +2602,7 @@ const ACT={
 };
 document.addEventListener('click',e=>{const el=e.target.closest('[data-act]');if(!el)return;if(e.target.closest('#modal')&&!e.target.closest('.mbox')){return;}const f=ACT[el.dataset.act];if(f){audioInit();if(!['pause','mute'].includes(el.dataset.act))sfx('tap');f(el,e);}});
 $('#modal').addEventListener('click',e=>{if(e.target.id==='modal'&&!$('#modal').dataset.sticky)hideModal();});
-document.addEventListener('input',e=>{const k=e.target.dataset.inp;if(k==='mvol'||k==='svol'){audioInit();(k==='mvol'?Music.setVol:setSfxVol).call(Music,+e.target.value);const b=e.target.parentElement.querySelector('b');if(b)b.textContent=Math.round(e.target.value*100)+'%';return;}if(k==='he3isp'){He3.st().isp=+e.target.value;const y=$('#he3-body').scrollTop;renderHe3();$('#he3-body').scrollTop=y;return;}if(!k||S.phase!=='plan')return;const v=+e.target.value;const d=S.design;
+document.addEventListener('input',e=>{const k=e.target.dataset.inp;if(k==='mvol'||k==='svol'){audioInit();(k==='mvol'?Music.setVol:setSfxVol).call(Music,+e.target.value);const b=e.target.parentElement.querySelector('b');if(b)b.textContent=Math.round(e.target.value*100)+'%';return;}if(k==='deepV'||k==='deepT'){const D=Deep.st();if(k==='deepV')D.v=Math.exp(+e.target.value);else D.tmax=Math.round(Math.exp(+e.target.value));const b=e.target.parentElement.querySelector('b');if(b)b.textContent=k==='deepV'?(Deep.vOf()*100).toFixed(Deep.vOf()<0.01?2:1)+'% c':fmtYr(D.tmax);clearTimeout(Deep._it);Deep._it=setTimeout(()=>{e.target.blur();renderDeep();},450);return;}if(k==='he3isp'){He3.st().isp=+e.target.value;const y=$('#he3-body').scrollTop;renderHe3();$('#he3-body').scrollTop=y;return;}if(!k||S.phase!=='plan')return;const v=+e.target.value;const d=S.design;
   if(k.startsWith('mix_')){Studio.setMix(k.slice(4),v);clearTimeout(App._inT);App._inT=setTimeout(()=>{const y=$('#v-studio .panelbody').scrollTop;renderStudio();$('#v-studio .panelbody').scrollTop=y;},120);return;}
   if(k==='terraN'){d.studio.terraN=[0,50,30,20,10,5,3][v];Studio.sync();const y=$('#v-studio .panelbody').scrollTop;renderStudio();$('#v-studio .panelbody').scrollTop=y;return;}
   if(k==='closure'||k==='kits')d.rep[k]=v;else if(k==='altitude')d.altitude=v;else if(k==='total'){d.fleet.total=v;Studio.ensure(d);Studio.normMix(d);Studio.sync();if(View.cur==='studio'){const y=$('#v-studio .panelbody').scrollTop;renderStudio();$('#v-studio .panelbody').scrollTop=y;return;}}else if(GKEYS.includes(k)){d.fleet[k]=Math.min(v,d.fleet.total);rebalanceFleet(d,k);}
@@ -2312,15 +2621,15 @@ function loop(now){requestAnimationFrame(loop);const t=now/1000;let dt=Math.min(
   // waypoint expiry
   if(S.waypoint){const wp=S.waypoint;const c=World.groupCentroid(wp.groups[0]);const p=new V3().fromArray(wp.pos);if(!wp.reached&&c.distanceTo(p)<wp.scale*1.4){wp.reached=performance.now();}
     if((wp.reached&&performance.now()-wp.reached>3500)||performance.now()-wp.t0>25000){S.waypoint=null;toast('Waypoint reached — drones resume their assignments.');App.refresh();}}
-  World.frame(S.paused&&View.cur!=='pov'?dt*0.15:dt,t);updateLabels();He3.updLabels();
+  World.frame(S.paused&&View.cur!=='pov'?dt*0.15:dt,t);updateLabels();He3.updLabels();Deep.frame(dt);Deep.updLabels();
   App.hudT+=dt;if(App.hudT>0.25){App.hudT=0;updateHUD();Coach.tick();}
-  App.panelT+=dt;if(App.panelT>1){App.panelT=0;if(!App.ptr&&!$('#modal').classList.contains('show')||View.cur==='swarm'){if(View.cur==='swarm')renderSwarmUI();if(View.cur==='fab'&&!App.ptr)renderFab();if(View.cur==='status'&&!App.ptr){const y=$('#v-status .panelbody').scrollTop;renderStatus();$('#v-status .panelbody').scrollTop=y;}if(View.cur==='solar'){renderSolarUI();}}
+  App.panelT+=dt;if(App.panelT>1){App.panelT=0;if(!App.ptr&&!$('#modal').classList.contains('show')||View.cur==='swarm'){if(View.cur==='swarm')renderSwarmUI();if(View.cur==='fab'&&!App.ptr)renderFab();if(View.cur==='status'&&!App.ptr){const y=$('#v-status .panelbody').scrollTop;renderStatus();$('#v-status .panelbody').scrollTop=y;}if(View.cur==='solar'){renderSolarUI();}if(View.cur==='deep'&&S.deep&&S.deep.run&&!App.ptr){const sh=$('#v-deep .deepsheet');const y=sh.scrollTop;renderDeep();sh.scrollTop=y;}}
     if(S.phase!=='plan'&&Math.random()<0.1)saveMission(false);}
 }
 function boot(){
   S=newState('psyche');
   $$('.topbar[data-title]').forEach(el=>el.innerHTML=topbar(el.dataset.title));
-  World.init();renderConsole();buildLabels();canvasInput();Opener.bind();bindPov();applyDesignToState();setMute(AUD.muted);
+  World.init();Deep.initSolar();renderConsole();buildLabels();canvasInput();Opener.bind();bindPov();applyDesignToState();setMute(AUD.muted);
   window.addEventListener('resize',()=>World.resize());window.addEventListener('orientationchange',()=>setTimeout(()=>World.resize(),200));
   document.addEventListener('visibilitychange',()=>{if(document.hidden&&S.phase!=='plan')saveMission(false);});
   go('console');requestAnimationFrame(loop);
