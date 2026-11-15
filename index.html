@@ -1,7 +1,7 @@
 <!DOCTYPE html><html lang="en"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,user-scalable=no">
-<meta name="theme-color" content="#02040b"><meta name="description" content="Asteroid Belt Mining Continuum — a mobile-first arcade mission-design game: self-replicating drone swarms build propellant waystations for crewed ships. Built on JPL Small-Body Database data.">
-<title>Asteroid Belt Mining Continuum</title>
+<meta name="theme-color" content="#02040b"><meta name="description" content="Operation Cosmoform (Asteroid Belt Mining Continuum) — a mobile-first arcade mission-design game: self-replicating drone swarms build propellant waystations for crewed ships. Built on JPL Small-Body Database data.">
+<title>Operation Cosmoform · Asteroid Belt Mining Continuum</title>
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ccircle cx='50' cy='50' r='30' fill='%233ef0ff'/%3E%3C/svg%3E">
 <style>:root{--bg:#02040b;--panel:rgba(7,18,38,.82);--panel2:rgba(12,30,58,.9);--line:rgba(62,240,255,.28);--cyan:#3ef0ff;--green:#5dff8a;--gold:#ffc640;--red:#ff5470;--mag:#ff5ad8;--txt:#e2f6ff;--dim:#8fb0c8;--mono:ui-monospace,"SF Mono",Menlo,Consolas,"Roboto Mono",monospace;--sat:env(safe-area-inset-top,0px);--sab:env(safe-area-inset-bottom,0px)}
 *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
@@ -279,6 +279,7 @@ body.coachon #v-console .scroll,body.coachon .panelbody{padding-bottom:130px}
 .op-end.show{opacity:1}
 .op-ok{position:absolute;left:50%;top:42%;transform:translate(-50%,-50%);font:900 clamp(26px,8vw,48px) var(--mono);color:var(--green);text-shadow:0 0 20px var(--green);animation:opok .9s forwards;pointer-events:none}
 @keyframes opok{0%{transform:translate(-50%,-50%) scale(.4);opacity:0}25%{transform:translate(-50%,-50%) scale(1.15);opacity:1}100%{transform:translate(-50%,-80%) scale(1);opacity:0}}
+.op-sub2{font:800 clamp(10px,3vw,15px) var(--mono);letter-spacing:.22em;color:#bfefff;opacity:.85;margin-top:-6px}
 </style></head><body>
 <canvas id="gl" aria-label="3D mission view"></canvas>
 <div id="dim"></div>
@@ -291,7 +292,7 @@ body.coachon #v-console .scroll,body.coachon .panelbody{padding-bottom:130px}
     <button class="ib pausebtn" data-act="pause" aria-label="Pause">⏸</button>
   </div>
   <div class="scroll">
-    <div class="hero"><div class="logo">Asteroid Belt<br>Mining Continuum</div><div class="sub">Swarm mining mission control · arcade sim</div></div>
+    <div class="hero"><div class="logo">Operation<br>Cosmoform</div><div class="sub" style="opacity:.75">Asteroid Belt Mining Continuum</div><div class="sub">Swarm mining mission control · arcade sim</div></div>
     <div class="mstrip" id="mstrip"></div>
     <div id="stage1"></div><div class="tiles" id="tiles"></div>
     <div class="crow">
@@ -365,7 +366,7 @@ body.coachon #v-console .scroll,body.coachon .panelbody{padding-bottom:130px}
 <section class="view" id="v-studio"><div class="topbar" data-title="Stage 1 · Drone Design Studio"></div><div class="panelbody"><div class="inner" id="studio-body"></div></div></section>
 <section class="view passthru" id="v-opener">
   <div class="ovl" id="lab-opener"></div>
-  <div id="op-title" class="op-title" data-act="opStart"><div class="op-logo">ASTEROID BELT<br>MINING CONTINUUM</div><div class="op-sub">DRONES THAT MAKE DRONES · AUTOMATED ASSISTED TRAVEL</div><div class="op-press">▶ TAP TO START</div><div class="op-hint4">Four-finger swipe to skip</div></div>
+  <div id="op-title" class="op-title" data-act="opStart"><div class="op-logo">OPERATION<br>COSMOFORM</div><div class="op-sub2">ASTEROID BELT MINING CONTINUUM</div><div class="op-sub">DRONES THAT MAKE DRONES · AUTOMATED ASSISTED TRAVEL</div><div class="op-press">▶ TAP TO START</div><div class="op-hint4">Four-finger swipe to skip</div></div>
   <div id="op-cap" class="op-cap"></div>
   <div id="op-gen" class="op-gen"></div>
   <div id="op-prompt" class="op-prompt"><div class="op-ptxt"></div><div class="op-bar"><i></i></div></div>
@@ -928,7 +929,7 @@ const Continuum={
     // terraformer life support: food (hydroponics), water (recycling), air (O2 from electrolysis), shelter (regolith-buried habitat), power
     const H=w.hab||(w.hab={food:0,water:0,air:0,shelter:0,power:0});const hr=0.014*clamp(d.sm?d.sm.hab:0.3,0,2.5)*cf*dd;const wet=w.water>1?1:0.3;
     H.food=Math.min(1,H.food+hr*wet*0.9);H.water=Math.min(1,H.water+hr*wet*1.2);H.air=Math.min(1,H.air+hr*wet);H.shelter=Math.min(1,H.shelter+hr*0.8);H.power=Math.min(1,H.power+hr*1.3*pEff);
-    if(!w._habT&&this.ready(tid)){w._habT=1;Music.jingle();log(`🌿 ${TMAP[tid].name} waystation is now habitable: crewed ships can stop here.`,'good');toast(`<b>${TMAP[tid].name} habitat ready</b> — life support passes the crew-stop threshold.`,'g');}}
+    if(!w._habT&&this.ready(tid)){w._habT=1;Music.jingle();log(`🌿 ${TMAP[tid].name} waystation is now habitable: the Marauder’s Daughter can stop here.`,'good');toast(`<b>${TMAP[tid].name} habitat ready</b> — life support passes the crew-stop threshold.`,'g');}}
   // replication: each factory builds drones from delivered ore + Earth "vitamins" (chips) not made locally
   const nf=this.factories();
   if(nf>0){S.prodTimer+=dd*nf*(d.sm?d.sm.fab:1)*(d.systems.fab?1.6:1)*pEff*cf/(1+this.closure(d)/200);
@@ -965,9 +966,9 @@ const Continuum={
    return{base,extra,total,needEarth,ratio:needEarth/SHIP.tank,stops,dests};},
  dispatch(){if(S.ship.status==='flying')return;const ch=this.chain();if(!ch.length)return toast(this.built().length?'No waystation is habitable yet — crews can only stop where life support (food, water, air, shelter, power) is ≥50%. Add terraformers or habitat builders.':'Build at least one waystation (mining factory) first — the ship needs somewhere to refuel.','y');
    S.ship={status:'flying',stop:0,seg:0,t:0,route:[World.launchPos.clone(),...ch.map(id=>World.T[id].pos.clone().add(new THREE.Vector3(0,TMAP[id].r*2,0))),World.planets.Jupiter.position.clone().multiplyScalar(0.62)],refuels:[],ids:ch};
-   World.ship.visible=true;World.ship.position.copy(S.ship.route[0]);log('👩‍🚀 Crewed ship departs Earth on the automated refuel chain.','good');toast('<b>Crewed ship launched!</b> Watch it refuel at each waystation.','g');sfx('launch');
+   World.ship.visible=true;World.ship.position.copy(S.ship.route[0]);log('👩‍🚀 The Marauder’s Daughter (crewed ship) departs Earth on the automated refuel chain.','good');toast('<b>Crewed ship launched!</b> Watch it refuel at each waystation.','g');sfx('launch');
    if(View.cur==='solar'||View.cur==='swarm'){World.cam.follow=()=>World.ship.position;World.flyTo(World.ship.position,View.cur==='solar'?14:6,1.4,()=>World.ship.position);}},
- frame(dt,t){const sh=S.ship;if(!sh||sh.status!=='flying')return;const R=sh.route;const a=R[sh.seg],b=R[sh.seg+1];if(!b){sh.status='done';const c=this.shipCalc();S.shipResult=c;Music.sting();log(`🏁 Crewed ship completed the chain: Δv budget ${fmt(c.total,1)} km/s vs ${fmt(c.base,1)} km/s without waystations.`,'good');toast(`<b>Refuel chain complete!</b> Δv ${fmt(c.total,1)} km/s vs ${fmt(c.base,1)} km/s from Earth alone.`,'g');sfx('success');return;}
+ frame(dt,t){const sh=S.ship;if(!sh||sh.status!=='flying')return;const R=sh.route;const a=R[sh.seg],b=R[sh.seg+1];if(!b){sh.status='done';const c=this.shipCalc();S.shipResult=c;Music.sting();log(`🏁 The Marauder’s Daughter completed the chain: Δv budget ${fmt(c.total,1)} km/s vs ${fmt(c.base,1)} km/s without waystations.`,'good');toast(`<b>Refuel chain complete!</b> Δv ${fmt(c.total,1)} km/s vs ${fmt(c.base,1)} km/s from Earth alone.`,'g');sfx('success');return;}
    sh.t+=dt/(App.opener?1.6:3.2);const k=Math.min(1,sh.t);const e=k<0.5?2*k*k:1-Math.pow(-2*k+2,2)/2;World.ship.position.lerpVectors(a,b,e);World.ship.lookAt(b);World.ship.rotateY(-Math.PI/2);
    World.ship.userData.eng.material.opacity=0.6+0.4*Math.sin(t*30);
    if(sh.t>=1){sh.t=0;sh.seg++;const id=sh.ids[sh.seg-1];if(id&&sh.seg<=sh.ids.length){const w=S.ways[id];const f=Math.min(SHIP.tank,w.fuel);w.fuel-=f;sh.refuels.push({id,f});World.burst(World.ship.position,[0.6,0.9,1],50,0.5);World.floatText(World.ship.position,`⛽ +${fmt(f,1)} t propellant @ ${TMAP[id].name}`,'#5dff8a');sfx('build');log(`⛽ Ship refueled at ${TMAP[id].name}: +${fmt(f,1)} t (autonomous transfer).`,'good');}}},
@@ -977,7 +978,7 @@ const Continuum={
    {n:'Land, swarm & transform',done:mOn>=1,hint:'Factory drones dock together into a mining factory / waystation.'},
    {n:'Mine & replicate',done:S.gen.built>=5,hint:'Drone factories turn delivered ore into new drones.'},
    {n:'Expand: seed new factories',done:mOn>=2,hint:'Fabrication → Seed a new waystation with haulers.'},
-   {n:'Refuel a crewed ship',done:S.ship&&S.ship.status==='done',hint:'Status → Dispatch crewed ship along the chain.'}];},
+   {n:'Refuel the Marauder’s Daughter',done:S.ship&&S.ship.status==='done',hint:'Status → Dispatch the Marauder’s Daughter (crewed ship) along the chain.'}];},
  siteScore(id){const r=activeRef(id),t=TMAP[id];const e=dvEstimate(r.a,r.i,1);const dv=e.arr+e.plane*0.5;const sun=1/(r.a*r.a);
    const fuel=t.ice,parts=t.metal;const s=clamp(fuel*2.2+parts*0.9+sun*0.35-dv*0.035+0.25,0,1);return{s,dv,sun,fuel,parts};}
 };
@@ -1423,6 +1424,7 @@ W.init=function(){
   {const g=new THREE.Group();const hull=new THREE.Mesh(new THREE.ConeGeometry(0.12,0.6,12),new THREE.MeshStandardMaterial({color:0xf0f4ff,metalness:0.6,roughness:0.3}));hull.rotation.z=-Math.PI/2;g.add(hull);
    const eng=new THREE.Sprite(new THREE.SpriteMaterial({map:glowTex,color:0xff7a3c,transparent:true,opacity:0.9,blending:THREE.AdditiveBlending,depthWrite:false}));eng.position.x=-0.36;eng.scale.setScalar(0.7);g.add(eng);g.userData.eng=eng;
    const halo=new THREE.Sprite(new THREE.SpriteMaterial({map:glowTex,color:0xffffff,transparent:true,opacity:0.5,blending:THREE.AdditiveBlending,depthWrite:false}));halo.scale.setScalar(2.4);g.add(halo);
+   {const tc=document.createElement('canvas');tc.width=512;tc.height=96;const x=tc.getContext('2d');x.font='800 40px ui-monospace,Menlo,monospace';x.textAlign='center';x.textBaseline='middle';x.shadowColor='#3ef0ff';x.shadowBlur=14;x.fillStyle='#ffffff';x.fillText('MARAUDER’S DAUGHTER',256,48);const tl=new THREE.Sprite(new THREE.SpriteMaterial({map:new THREE.CanvasTexture(tc),transparent:true,depthWrite:false,depthTest:false}));tl.scale.set(2.4,0.45,1);tl.position.y=0.55;tl.renderOrder=10;g.add(tl);g.userData.label=tl;}
    g.visible=false;scene.add(g);W.ship=g;}
   W.resize();
   W.drones=[];W.player={p:new V3(),v:new V3(),q:new THREE.Quaternion(),init:false,yaw:0,pitch:0};
@@ -1950,12 +1952,12 @@ function renderStatus(){const d=S.design,m=S.m||computeMetrics(d);const g=goalPr
    <canvas id="hist" class="spark"></canvas>
    ${S.mods.filter(x=>x.until>S.day).length?`<div class="lbl" style="margin-top:6px">Active effects</div>`+S.mods.filter(x=>x.until>S.day).map(x=>`<span class="pill">${esc(x.label)} · ${fmt(x.until-S.day)} d</span>`).join(''):''}</div>
   <div class="card"><h4>⛽ Assisted-travel refuel chain <span class="tip" data-act="concept" data-k="refuel">?</span></h4>
-   <p>Crewed ship (illustrative): ${SHIP.dry} t dry, ${SHIP.tank} t tank, H₂/O₂ engine Isp ${SHIP.isp} s. Earth fuel alone gives <b>${fmt(sc.base,2)} km/s</b> of Δv.</p>
+   <p>Crewed ship <b>the Marauder’s Daughter</b> (illustrative): ${SHIP.dry} t dry, ${SHIP.tank} t tank, H₂/O₂ engine Isp ${SHIP.isp} s. Earth fuel alone gives <b>${fmt(sc.base,2)} km/s</b> of Δv.</p>
    ${Continuum.built().filter(id=>!Continuum.ready(id)).map(id=>`<div class="warnline">⛔ ${TMAP[id].name}: life support ${fmt(Continuum.readiness(id)*100)}% — crew can’t stop yet (needs 50%).</div>`).join('')}${sc.stops.length?sc.stops.map(s=>`<div class="mh" style="display:flex;justify-content:space-between;font-size:13px"><span>⛽ ${TMAP[s.tid].name}</span><b>${fmt(s.fuel,1)} t → +${fmt(s.dv,2)} km/s</b></div>`).join(''):'<p class="warnline">No waystations yet — build a mining factory on an ice-bearing asteroid.</p>'}
-   <p>With the chain: <b style="color:var(--green)">${fmt(sc.total,2)} km/s</b>. To get that from Earth in one go the ship would need <b>${fmt(sc.needEarth)} t</b> of propellant (${fmt(sc.ratio,1)}× its tank) — the rocket equation’s logarithm punishes carrying everything.</p>
+   <p>With the chain: <b style="color:var(--green)">${fmt(sc.total,2)} km/s</b>. To get that from Earth in one go the Marauder’s Daughter would need <b>${fmt(sc.needEarth)} t</b> of propellant (${fmt(sc.ratio,1)}× its tank) — the rocket equation’s logarithm punishes carrying everything.</p>
    <table class="tb"><tr><th>Destination (approx. Δv)</th><th>Earth fuel only</th><th>With waystations</th></tr>${sc.dests.map(x=>`<tr><td>${x.n} · ${fmt(x.need,1)} km/s</td><td>${x.without?'✅':'❌'}</td><td>${x.withC?'✅':'❌'}</td></tr>`).join('')}</table>
    <p style="font-size:11.5px;color:var(--dim)">Δv to destinations from Hohmann + plane-change estimates (approximate, from heliocentric Earth orbit; ignores launch, gravity assists and capture).</p>
-   <button class="btn g big" data-act="ship" ${S.ship.status==='flying'?'disabled':''}>👩‍🚀 ${S.ship.status==='done'?'Fly the chain again':'Dispatch crewed ship'}</button> ${S.ship.status==='flying'?'<span class="lbl">ship en route…</span>':''}</div>
+   <button class="btn g big" data-act="ship" ${S.ship.status==='flying'?'disabled':''}>👩‍🚀 ${S.ship.status==='done'?'Fly the chain again':'Dispatch the Marauder’s Daughter'}</button> ${S.ship.status==='flying'?'<span class="lbl">Marauder’s Daughter en route…</span>':''}</div>
   <div class="card"><h4>Data source</h4><p>Target reference values: <span class="badge ${S.data.mode==='sim'?'b-sim':S.data.mode==='live'?'b-cy':'b-imp'}">${esc(activeRef(d.primary).src)}</span>. Sensor readings during play are always <span class="badge b-sim">SIMULATED</span>.</p><button class="btn" data-act="openData">🛰 Change / import data</button> <button class="btn" data-act="openAbout">📚 Data sources</button></div>
   <div class="card"><h4>Mission log</h4><div class="log">${S.log.map(l=>`<div><span class="t">D${l.d}</span> ${l.msg}</div>`).join('')||'<div>No events yet.</div>'}</div></div>
   <div class="row" style="margin-bottom:12px">${S.phase==='ops'?'<button class="btn r" data-act="endMission">🏁 End mission & debrief</button>':''}${S.phase==='plan'?'<button class="btn solid" data-act="open" data-v="arch">Plan mission ▶</button>':''}<button class="btn" data-act="openBoard">🏆 Leaderboard</button></div>
@@ -1981,7 +1983,7 @@ function missionStory(){const d=S.design,r=S.report,t=TMAP[d.primary];const sc=C
   const p=[];p.push(`Day 0. A ${LVS[d.lv].name} lifted ${d.fleet.total} replicator drones off Earth on ${PROPS[d.prop].name.toLowerCase()} propulsion, bound for ${t.name} — a world first charted in open data by ${t.visited.split('(')[0].trim()}. The cruise took ${S.cruiseDays} days, set by orbital mechanics.`);
   const evs=S.decisions.map(x=>`on ops day ${x.day} the crew faced “${x.title}” and chose to ${x.choice.toLowerCase()}`);if(evs.length)p.push('Along the way, '+evs.slice(0,4).join('; ')+'.');
   p.push(ways.length?`The swarm landed, docked into factories, and built waystations at ${ways.join(', ')}. ${S.gen.built} new drones were born from asteroid ore (${Continuum.doublings()} doublings).`:`The swarm reached ${t.name} but never completed a waystation — ${S.groups.factory.n<10?'too few factory drones remained':'construction ran out of time'}.`);
-  p.push(sc.stops.length?`The payoff: a crewed ship can now carry ${fmt(sc.total,1)} km/s of Δv along the chain instead of ${fmt(sc.base,1)} km/s on Earth fuel alone. Carrying that from Earth would take ${fmt(sc.needEarth)} t of propellant. That is assisted travel, automated.`:`Without a refuel chain, crewed ships still have to haul all their propellant from Earth — ${fmt(sc.base,1)} km/s and no more.`);
+  p.push(sc.stops.length?`The payoff: the crewed ship, the Marauder’s Daughter, can now carry ${fmt(sc.total,1)} km/s of Δv along the chain instead of ${fmt(sc.base,1)} km/s on Earth fuel alone. Carrying that from Earth would take ${fmt(sc.needEarth)} t of propellant. That is assisted travel, automated.`:`Without a refuel chain, crewed ships still have to haul all their propellant from Earth — ${fmt(sc.base,1)} km/s and no more.`);
   return p;}
 
 'use strict';
@@ -2040,7 +2042,7 @@ function renderHe3(){const el=$('#he3-body');if(!el)return;
  ${c.sel.length?c.sel.map(s=>{const x=He3.score(s);return`<div class="card he3c"><h4>${s.ic} ${s.n} <span class="lbl">${s.kind}</span> <b style="float:right;color:${x.total>0.3?'var(--green)':x.total>0.15?'var(--gold)':'var(--red)'}">${fmt(x.total*100)}/100</b></h4>
   <div class="he3g"><span>He-3 abundance</span>${bar(s.aS,'#c58bff')}<span>Extraction ease</span>${bar(s.eS,'#ffc640')}<span>Near the route (${fmt(x.dist,1)} AU off)</span>${bar(x.routeS,'#3ef0ff')}<span>Δv access ≈ ${fmt(x.dv,1)} km/s</span>${bar(x.dvS,'#5dff8a')}<span>Power</span>${bar(s.pS,'#ffe08a')}<span>Comms (${s.ltxt} one-way)</span>${bar(x.cS,'#7fd8ff')}</div>
   <p style="font-size:12px;margin:6px 0 0"><b>Where:</b> ${s.ab}<br><b>Extraction:</b> ${s.ex}${s.dvn?'<br><b>Δv:</b> '+s.dvn:''}<br><b>Power:</b> ${s.pw}</p></div>`;}).join(''):'<div class="card"><p>No sites linked yet. Start with the one you think is best — then try an asteroid and see why it scores low.</p></div>'}
- <div class="card"><h4>Projected crewed-ship Δv · rocket equation <span class="badge b-sim">MODEL</span></h4>
+ <div class="card"><h4>Projected Δv for the Marauder’s Daughter · rocket equation <span class="badge b-sim">MODEL</span></h4>
   <div class="meter"><div class="mh"><span>Conceptual fusion exhaust Isp (literature range 10⁴–10⁵ s)</span><b>${fmt(st.isp)} s</b></div><input type="range" min="10000" max="100000" step="5000" value="${st.isp}" data-inp="he3isp"></div>
   <div class="meter"><div class="mh"><span>He-3 supply readiness from linked sites</span><b>${fmt(c.supply*100)}%</b></div>${bar(c.supply,'#c58bff')}</div>
   <table class="tb"><tr><th>Engine</th><th>Isp</th><th>Δv with your chain</th></tr>
@@ -2111,7 +2113,7 @@ const Opener={alive:0,phase:'',prompt:null,hits:{},
   // 6 · WAYSTATION + crewed ship
   ['ceres','vesta'].forEach(id=>{const w=S.ways[id]||(S.ways[id]={fuel:0,parts:0,water:0,proc:0});w.fuel=Math.max(w.fuel,id==='ceres'?260:180);w.water=Math.max(w.water,200);w.hab={food:1,water:1,air:1,shelter:1,power:1};w._habT=1;});
   Music.jingle();this.cap('WAYSTATION ONLINE','Ice → H₂/O₂ propellant · habitat ready for crew');W.burst(W.T.ceres.pos,[0.4,1,0.6],120,1.4);if(!await this.wait(1400,tok))return;
-  Continuum.dispatch();this.cap('REFUEL','A crewed ship tops up along the chain');this.follow(()=>W.ship.position,9,1.2);
+  Continuum.dispatch();this.cap('REFUEL','The Marauder’s Daughter tops up along the chain');this.follow(()=>W.ship.position,9,1.2);
   await this.until(()=>S.ship&&S.ship.status==='done',13000,tok);if(!this.ok(tok))return;
   // END
   gen.classList.remove('show');$('#op-cap').classList.remove('show');$('#op-end').classList.add('show');sfx('success');
@@ -2138,14 +2140,14 @@ const Coach={i:-1,steps:[
  {t:'② Open <b>Swarm Operations</b>. <b>Tap</b> empty space = waypoint. <b>Press & hold</b> = rally. Release = resume.',done:()=>Coach.rallied},
  {t:'③ Open <b>Drone POV</b>. Steer with the stick, hold <b>THRUST</b>, aim at a rock and hold <b>MINE</b>, then <b>TRANSFER</b>.',done:()=>Coach.transferred},
  {t:'④ Open <b>Drone Fabrication</b>: drones build drones. Watch the generation counter and waystation fuel stocks.',done:()=>View.cur==='fab'},
- {t:'⑤ Open <b>Mission Status</b>: dispatch the crewed ship along the refuel chain, then <b>End mission</b> for the debrief.',done:()=>S.phase==='ended'}],
+ {t:'⑤ Open <b>Mission Status</b>: dispatch the crewed ship <b>the Marauder’s Daughter</b> along the refuel chain, then <b>End mission</b> for the debrief.',done:()=>S.phase==='ended'}],
  start(){this.i=0;this.rallied=false;this.transferred=false;this.show();},
  show(){let el=$('#coach');if(!el){el=document.createElement('div');el.id='coach';el.style.cssText='position:fixed;left:50%;transform:translateX(-50%);bottom:calc(12px + env(safe-area-inset-bottom,0px));z-index:30;width:min(520px,94vw);background:rgba(6,18,40,.96);border:1px solid var(--gold);border-radius:14px;padding:10px 12px;font-size:13.5px;box-shadow:0 0 24px rgba(255,198,64,.3);display:flex;gap:8px;align-items:center';document.body.appendChild(el);}
   if(this.i<0||this.i>=this.steps.length){el.remove();document.body.classList.remove('coaching','coachon');return;}document.body.classList.toggle('coaching',!['console','fab','arch','status'].includes(View.cur));document.body.classList.add('coachon');el.innerHTML=`<div style="flex:1"><span class="lbl">Demo ${this.i+1}/${this.steps.length}</span><br>${this.steps[this.i].t}</div><button class="ib" data-act="coachNext">▶</button><button class="ib" data-act="coachX">✕</button>`;
   el.style.bottom=(View.cur==='console'||View.cur==='fab'||View.cur==='arch'||View.cur==='status')?'calc(12px + env(safe-area-inset-bottom,0px))':'auto';el.style.top=el.style.bottom==='auto'?'calc(60px + env(safe-area-inset-top,0px))':'auto';},
  tick(){if(this.i<0)return;if(this.steps[this.i]&&this.steps[this.i].done()){this.i++;sfx('success');this.show();}else if(this._v!==View.cur){this._v=View.cur;this.show();}}};
 // ---------- modals ----------
-function introModal(){showModal(`<div class="logo" style="font-size:26px;text-align:left">Asteroid Belt<br>Mining Continuum</div>
+function introModal(){showModal(`<div class="logo" style="font-size:26px;text-align:left">Operation<br>Cosmoform</div><div class="lbl">Asteroid Belt Mining Continuum</div>
  <p><b>Mission thesis: automate assisted travel.</b> Replicator drones launch, pick the best site, land and swarm, turn themselves into factories, mine, and build more drones. New drones carry seed payloads onward and build <b>waystations</b> that turn water ice into propellant — so crewed ships can refuel along the way.</p>
  <p style="font-size:13px"><b>Stage 1</b> starts in the Drone Design Studio: engineer four drone families (replicators, builders, miners, payload transporters) plus terraformer kits, using the TCTA design method, then set the fleet ratio.</p>
  <p style="font-size:13px;color:var(--dim)">Built on open NASA/JPL data (JPL Small-Body Database snapshot) with simulated sensors, clearly labeled. Arcade game — not a flight-certified planner. No login, works offline.</p>
@@ -2275,7 +2277,7 @@ const ACT={
  loadDesign:el=>loadDesignObj(LS.get('abmc_designs',[])[+el.dataset.i].d),delDesign:el=>{const l=LS.get('abmc_designs',[]);l.splice(+el.dataset.i,1);LS.set('abmc_designs',l);savesModal();},
  copyCode:()=>{const t=$('#scode');t.select();(navigator.clipboard?navigator.clipboard.writeText(t.value):Promise.reject()).then(()=>toast('Share code copied.','g')).catch(()=>{try{document.execCommand('copy');toast('Share code copied.','g');}catch(e){toast('Select the code and copy it manually.','y');}});},
  loadCode:()=>{try{loadDesignObj(fromCode($('#scode').value));}catch(e){toast('That share code is not valid.','r');}},
- exportJSON:()=>{const b=new Blob([JSON.stringify({game:'Asteroid Belt Mining Continuum',v:3,design:S.design,metrics:S.m},null,2)],{type:'application/json'});const a=document.createElement('a');a.href=URL.createObjectURL(b);a.download=(S.design.name||'abmc-design')+'.json';a.click();toast('Design exported.','g');},
+ exportJSON:()=>{const b=new Blob([JSON.stringify({game:'Operation Cosmoform',v:3,design:S.design,metrics:S.m},null,2)],{type:'application/json'});const a=document.createElement('a');a.href=URL.createObjectURL(b);a.download=(S.design.name||'abmc-design')+'.json';a.click();toast('Design exported.','g');},
  saveMission:()=>{saveMission(true);},loadMission:()=>{loadMission();},
  saveScore:()=>{const b=LS.get('abmc_board',{});const k=`${S.design.scenario}|${S.design.difficulty}|${S.design.physics}`;(b[k]=b[k]||[]).push({name:$('#lbname').value||'Crew',score:S.report.score,grade:S.report.grade,date:new Date().toLocaleDateString()});b[k].sort((x,y)=>y.score-x.score);b[k]=b[k].slice(0,20);LS.set('abmc_board',b);toast('Score saved to leaderboard.','g');boardModal();},
  newMission:()=>{hideModal();const scn=S.design.scenario,df=S.design.difficulty,ph=S.design.physics;S=newState(scn);S.design.difficulty=df;S.design.physics=ph;applyDesignToState();World.resetSwarm();View.lock=null;renderInfo(null);go('console');toast('New mission ready. Plan it in Mission Architecture.','g');},

@@ -1,5 +1,7 @@
-# Asteroid Belt Mining Continuum
+# Operation Cosmoform
+
+*Asteroid Belt Mining Continuum*: a mobile-first mission game about drones that build drones, mine asteroids, and build refueling waystations for the crewed ship, the Marauder’s Daughter.
 
 Play: https://nhartman000.github.io/asteroid-belt-mining-continuum-play/
 
-All values simulated unless labeled imported; not a flight-certified planning system.
+All values are simulated unless labeled imported. This is not a flight-certified planning system.
