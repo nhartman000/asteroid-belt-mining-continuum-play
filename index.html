@@ -306,6 +306,16 @@ label.sl{display:flex;flex-direction:column;font-size:12px;margin:6px 0}label.sl
 .shipl small{color:var(--txt);font-weight:600;font-size:10px}.shipl .bars{display:flex;gap:6px}.shipl .bars i{font-style:normal;font-size:9.5px;color:var(--txt);padding:1px 4px;border-radius:5px;background:linear-gradient(90deg,color-mix(in srgb,var(--c) 45%,transparent) var(--v),rgba(255,255,255,.06) var(--v))}
 .plab.dep{color:var(--cyan);font-size:9.5px}
 .shipg{display:grid;grid-template-columns:auto 1fr;gap:4px 8px;align-items:center;font-size:11.5px;margin:4px 0}
+
+/* ---- saved games ---- */
+.savelist{display:flex;flex-direction:column;gap:10px;margin-top:10px}
+.savecard{display:grid;grid-template-columns:96px 1fr;gap:6px 10px;padding:10px;border-radius:14px;border:1px solid var(--line);background:rgba(62,240,255,.05)}
+.savecard img,.savecard .noimg{width:96px;height:54px;border-radius:8px;object-fit:cover;border:1px solid var(--line);background:#020814;display:flex;align-items:center;justify-content:center;font-size:24px}
+.savecard .si{min-width:0;font-size:12.5px;display:flex;flex-direction:column;gap:3px}.savecard .sn{font-size:14px;word-break:break-word}.savecard .st{font-size:11px}
+.savecard .sa{grid-column:1/-1;display:flex;flex-wrap:wrap;gap:6px;align-items:center}.savecard .sa .btn{min-height:40px;padding:8px 10px;font-size:12.5px}
+.savecard .sa .sp{flex:1 1 12px;min-width:12px}.savecard .svdel{margin-left:auto;opacity:.85}
+.vault{margin:6px 0;padding:6px 8px;border-radius:10px;border:1px dashed rgba(255,92,240,.45);background:rgba(255,92,240,.05)}
+.savecard .si .badge{align-self:flex-start}
 </style></head><body>
 <canvas id="gl" aria-label="3D mission view"></canvas>
 <div id="dim"></div>
@@ -325,11 +335,11 @@ label.sl{display:flex;flex-direction:column;font-size:12px;margin:6px 0}label.sl
       <button class="btn y" data-act="openCrew">👥 Crew &amp; Teams</button>
       <button class="btn" data-act="openLearn">📘 Learn</button>
       <button class="btn" data-act="tutorial">🎓 Tutorial</button>
-      <button class="btn" data-act="openSaves">💾 Save / Share</button>
+      <button class="btn" data-act="openSaves">💾 Saved games</button>
       <button class="btn" data-act="openBoard">🏆 Leaderboard</button>
       <button class="btn" data-act="openSettings">⚙ Settings</button>
     </div>
-    <div class="foot" id="foot">All values in this game are <b>simulated</b> or approximate reference values for learning. This is an arcade game, <b>not a flight-certified mission planning system</b>. Team play is local (shared device) — there is no online connection. Sizes and distances are not to scale.</div>
+    <div class="foot" id="foot">All values in this game are <b>simulated</b> or approximate reference values for learning. This is an arcade game, <b>not a flight-certified mission planning system</b>. Team play is local (shared device) — there is no online connection. Sizes and distances are not to scale. NASA Space Apps Challenge entry · not affiliated with or endorsed by NASA.</div>
   </div>
 </section>
 
@@ -899,7 +909,7 @@ const ARRIVAL={id:'arrival',title:'Arrival: choose how close to operate',
 function randomEvent(cruise){if(App.opener)return;
   const pool=cruise?EVENTS.filter(e=>e.id==='blackout'||e.id==='dust'):EVENTS;
   let tot=pool.reduce((a,e)=>a+e.w,0),r=R()()*tot,ev=pool[0];for(const e of pool){r-=e.w;if(r<=0){ev=e;break;}}
-  if(S._decision)return;
+  if(S._decision||S._pendDec)return;
   S.evCount++;ev.start();log(`⚠ ${ev.title}`,'bad');sfx('alert');
   const tile=$('#tiles .tile[data-v="status"]');tile&&tile.classList.add('alerting');
   openDecision(ev);
@@ -910,6 +920,8 @@ function arrivalDecision(){if(S.phase==='ops')openDecision(ARRIVAL);}
 function players(){return S.team.mode==='solo'?[{name:'You',roles:RKEYS}]:S.team.players;}
 function roleOwner(r){return players().findIndex(p=>p.roles.includes(r));}
 function openDecision(ev){if(App.opener)return;
+  if($('#modal').classList.contains('show')&&$('#mbox').querySelector('[data-act^="sv"],#svren,#svcode')){S._pendDec=ev;return;} // don't pop over the Saved games screen; show it when that closes
+  S._pendDec=null;
   S._decision={ev,votes:{},t0:performance.now(),viewer:0};
   if(S.team.mode!=='solo')concept('teamwork');
   renderDecision();
@@ -1016,7 +1028,7 @@ const Continuum={
     // terraformer life support: food (hydroponics), water (recycling), air (O2 from electrolysis), shelter (regolith-buried habitat), power
     const H=w.hab||(w.hab={food:0,water:0,air:0,shelter:0,power:0});const hr=0.014*clamp(d.sm?d.sm.hab:0.3,0,2.5)*cf*dd;const wet=w.water>1?1:0.3;
     H.food=Math.min(1,H.food+hr*wet*0.9);H.water=Math.min(1,H.water+hr*wet*1.2);H.air=Math.min(1,H.air+hr*wet);H.shelter=Math.min(1,H.shelter+hr*0.8);H.power=Math.min(1,H.power+hr*1.3*pEff);
-    if(!w._habT&&this.ready(tid)){w._habT=1;Music.jingle();log(`🌿 ${TMAP[tid].name} waystation is now habitable: the Marauder’s Daughter can stop here.`,'good');toast(`<b>${TMAP[tid].name} habitat ready</b> — life support passes the crew-stop threshold.`,'g');}}
+    if(!w._habT&&this.ready(tid)){w._habT=1;Music.jingle();log(`🌿 ${TMAP[tid].name} waystation is now habitable: the Marauder can stop here.`,'good');toast(`<b>${TMAP[tid].name} habitat ready</b> — life support passes the crew-stop threshold.`,'g');}}
   // replication: each factory builds drones from delivered ore + Earth "vitamins" (chips) not made locally
   const nf=this.factories();
   if(nf>0){S.prodTimer+=dd*nf*(d.sm?d.sm.fab:1)*(d.systems.fab?1.6:1)*pEff*cf/(1+this.closure(d)/200);
@@ -1053,9 +1065,9 @@ const Continuum={
    return{base,extra,total,needEarth,ratio:needEarth/SHIP.tank,stops,dests};},
  dispatch(){if(S.ship.status==='flying')return;const ch=this.chain();if(!ch.length)return toast(this.built().length?'No waystation is habitable yet — crews can only stop where life support (food, water, air, shelter, power) is ≥50%. Add terraformers or habitat builders.':'Build at least one waystation (mining factory) first — the ship needs somewhere to refuel.','y');
    S.ship={status:'flying',stop:0,seg:0,t:0,route:[World.launchPos.clone(),...ch.map(id=>World.T[id].pos.clone().add(new THREE.Vector3(0,TMAP[id].r*2,0))),World.planets.Jupiter.position.clone().multiplyScalar(0.62)],refuels:[],ids:ch};
-   World.ship.visible=true;World.ship.position.copy(S.ship.route[0]);log('👩‍🚀 The Marauder’s Daughter (crewed ship) departs Earth on the automated refuel chain.','good');toast('<b>Crewed ship launched!</b> Watch it refuel at each waystation.','g');sfx('launch');
+   World.ship.visible=true;World.ship.position.copy(S.ship.route[0]);log('👩‍🚀 The Marauder (crewed ship) departs Earth on the automated refuel chain.','good');toast('<b>Crewed ship launched!</b> Watch it refuel at each waystation.','g');sfx('launch');
    if(View.cur==='solar'||View.cur==='swarm'){World.cam.follow=()=>World.ship.position;World.flyTo(World.ship.position,View.cur==='solar'?14:6,1.4,()=>World.ship.position);}},
- frame(dt,t){const sh=S.ship;if(!sh||sh.status!=='flying')return;const R=sh.route;const a=R[sh.seg],b=R[sh.seg+1];if(!b){sh.status='done';const c=this.shipCalc();S.shipResult=c;Music.sting();log(`🏁 The Marauder’s Daughter completed the chain: Δv budget ${fmt(c.total,1)} km/s vs ${fmt(c.base,1)} km/s without waystations.`,'good');toast(`<b>Refuel chain complete!</b> Δv ${fmt(c.total,1)} km/s vs ${fmt(c.base,1)} km/s from Earth alone.`,'g');sfx('success');return;}
+ frame(dt,t){const sh=S.ship;if(!sh||sh.status!=='flying')return;const R=sh.route;const a=R[sh.seg],b=R[sh.seg+1];if(!b){sh.status='done';const c=this.shipCalc();S.shipResult=c;Music.sting();log(`🏁 The Marauder completed the chain: Δv budget ${fmt(c.total,1)} km/s vs ${fmt(c.base,1)} km/s without waystations.`,'good');toast(`<b>Refuel chain complete!</b> Δv ${fmt(c.total,1)} km/s vs ${fmt(c.base,1)} km/s from Earth alone.`,'g');sfx('success');return;}
    sh.t+=dt/(App.opener?1.6:3.2);const k=Math.min(1,sh.t);const e=k<0.5?2*k*k:1-Math.pow(-2*k+2,2)/2;World.ship.position.lerpVectors(a,b,e);World.ship.lookAt(b);World.ship.rotateY(-Math.PI/2);
    World.ship.userData.eng.material.opacity=0.6+0.4*Math.sin(t*30);
    if(sh.t>=1){sh.t=0;sh.seg++;const id=sh.ids[sh.seg-1];if(id&&sh.seg<=sh.ids.length){const w=S.ways[id];const f=Math.min(SHIP.tank,w.fuel);w.fuel-=f;sh.refuels.push({id,f});World.burst(World.ship.position,[0.6,0.9,1],50,0.5);World.floatText(World.ship.position,`⛽ +${fmt(f,1)} t propellant @ ${TMAP[id].name}`,'#5dff8a');sfx('build');log(`⛽ Ship refueled at ${TMAP[id].name}: +${fmt(f,1)} t (autonomous transfer).`,'good');}}},
@@ -1065,7 +1077,7 @@ const Continuum={
    {n:'Land, swarm & transform',done:mOn>=1,hint:'Factory drones dock together into a mining factory / waystation.'},
    {n:'Mine & replicate',done:S.gen.built>=5,hint:'Drone factories turn delivered ore into new drones.'},
    {n:'Expand: seed new factories',done:mOn>=2,hint:'Fabrication → Seed a new waystation with haulers.'},
-   {n:'Refuel the Marauder’s Daughter',done:S.ship&&S.ship.status==='done',hint:'Status → Dispatch the Marauder’s Daughter (crewed ship) along the chain.'}];},
+   {n:'Refuel the Marauder',done:S.ship&&S.ship.status==='done',hint:'Status → Dispatch the Marauder (crewed ship) along the chain.'}];},
  siteScore(id){const r=activeRef(id),t=TMAP[id];const e=dvEstimate(r.a,r.i,1);const dv=e.arr+e.plane*0.5;const sun=1/(r.a*r.a);
    const fuel=t.ice,parts=t.metal;const s=clamp(fuel*2.2+parts*0.9+sun*0.35-dv*0.035+0.25,0,1);return{s,dv,sun,fuel,parts};}
 };
@@ -1511,7 +1523,7 @@ W.init=function(){
   {const g=new THREE.Group();const hull=new THREE.Mesh(new THREE.ConeGeometry(0.12,0.6,12),new THREE.MeshStandardMaterial({color:0xf0f4ff,metalness:0.6,roughness:0.3}));hull.rotation.z=-Math.PI/2;g.add(hull);
    const eng=new THREE.Sprite(new THREE.SpriteMaterial({map:glowTex,color:0xff7a3c,transparent:true,opacity:0.9,blending:THREE.AdditiveBlending,depthWrite:false}));eng.position.x=-0.36;eng.scale.setScalar(0.7);g.add(eng);g.userData.eng=eng;
    const halo=new THREE.Sprite(new THREE.SpriteMaterial({map:glowTex,color:0xffffff,transparent:true,opacity:0.5,blending:THREE.AdditiveBlending,depthWrite:false}));halo.scale.setScalar(2.4);g.add(halo);
-   {const tc=document.createElement('canvas');tc.width=512;tc.height=96;const x=tc.getContext('2d');x.font='800 40px ui-monospace,Menlo,monospace';x.textAlign='center';x.textBaseline='middle';x.shadowColor='#3ef0ff';x.shadowBlur=14;x.fillStyle='#ffffff';x.fillText('MARAUDER’S DAUGHTER',256,48);const tl=new THREE.Sprite(new THREE.SpriteMaterial({map:new THREE.CanvasTexture(tc),transparent:true,depthWrite:false,depthTest:false}));tl.scale.set(2.4,0.45,1);tl.position.y=0.55;tl.renderOrder=10;g.add(tl);g.userData.label=tl;}
+   {const tc=document.createElement('canvas');tc.width=512;tc.height=96;const x=tc.getContext('2d');x.font='800 40px ui-monospace,Menlo,monospace';x.textAlign='center';x.textBaseline='middle';x.shadowColor='#3ef0ff';x.shadowBlur=14;x.fillStyle='#ffffff';x.fillText('THE MARAUDER',256,48);const tl=new THREE.Sprite(new THREE.SpriteMaterial({map:new THREE.CanvasTexture(tc),transparent:true,depthWrite:false,depthTest:false}));tl.scale.set(2.4,0.45,1);tl.position.y=0.55;tl.renderOrder=10;g.add(tl);g.userData.label=tl;}
    g.visible=false;scene.add(g);W.ship=g;}
   W.resize();
   W.drones=[];W.player={p:new V3(),v:new V3(),q:new THREE.Quaternion(),init:false,yaw:0,pitch:0};
@@ -1686,7 +1698,7 @@ const View={cur:'console',lock:null,track:'fleet'};
 const VIEWS={solar:'Solar System & Targets',swarm:'Swarm Operations',pov:'Individual Drone POV',fab:'Drone Fabrication',arch:'Mission Architecture',status:'Mission Status & Debrief'};
 function toast(html,cls=''){if(App.opener)return;const el=document.createElement('div');el.className='toast '+cls;el.innerHTML=html;$('#toasts').appendChild(el);setTimeout(()=>{el.style.transition='opacity .4s';el.style.opacity='0';setTimeout(()=>el.remove(),400);},cls==='r'?5000:3600);while($('#toasts').children.length>2)$('#toasts').firstChild.remove();}
 function showModal(html,sticky=false){$('#mbox').innerHTML=(sticky?'':'<button class="ib" style="float:right" data-act="closeModal" aria-label="Close">✕</button>')+html;$('#modal').classList.add('show');$('#modal').dataset.sticky=sticky?'1':'';}
-function hideModal(){$('#modal').classList.remove('show');}
+function hideModal(){$('#modal').classList.remove('show');if(S&&S._pendDec){const e=S._pendDec;S._pendDec=null;setTimeout(()=>{if(!S._decision)openDecision(e);},0);}}
 function concept(k){if(App.opener)return;if(!S.concepts)S.concepts={};if(S.concepts[k]||localStorage.getItem('abmc_tips')==='0')return;const c=CONCEPTS[k];if(!c)return;
   const now=Date.now();if(now-(window._lastC||0)<9000){return;}window._lastC=now;S.concepts[k]=1;setTimeout(()=>toast(`💡 <b>${c.t}</b> — ${c.x.split('. ')[0]}. <button data-act="concept" data-k="${k}">Learn more</button>`,''),400);}
 function conceptModal(k){const c=CONCEPTS[k];showModal(`<h2>💡 ${c.t}</h2><p>${c.x}</p>${conceptNow(k)}<p><a href="${c.l}" target="_blank" rel="noopener">Learn more (NASA) ↗</a></p>`);}
@@ -2045,12 +2057,12 @@ function renderStatus(){const d=S.design,m=S.m||computeMetrics(d);const g=goalPr
    <canvas id="hist" class="spark"></canvas>
    ${S.mods.filter(x=>x.until>S.day).length?`<div class="lbl" style="margin-top:6px">Active effects</div>`+S.mods.filter(x=>x.until>S.day).map(x=>`<span class="pill">${esc(x.label)} · ${fmt(x.until-S.day)} d</span>`).join(''):''}</div>
   <div class="card"><h4>⛽ Assisted-travel refuel chain <span class="tip" data-act="concept" data-k="refuel">?</span></h4>
-   <p>Crewed ship <b>the Marauder’s Daughter</b> (illustrative): ${SHIP.dry} t dry, ${SHIP.tank} t tank, H₂/O₂ engine Isp ${SHIP.isp} s. Earth fuel alone gives <b>${fmt(sc.base,2)} km/s</b> of Δv.</p>
+   <p>Crewed ship <b>the Marauder</b> (illustrative): ${SHIP.dry} t dry, ${SHIP.tank} t tank, H₂/O₂ engine Isp ${SHIP.isp} s. Earth fuel alone gives <b>${fmt(sc.base,2)} km/s</b> of Δv.</p>
    ${Continuum.built().filter(id=>!Continuum.ready(id)).map(id=>`<div class="warnline">⛔ ${TMAP[id].name}: life support ${fmt(Continuum.readiness(id)*100)}% — crew can’t stop yet (needs 50%).</div>`).join('')}${sc.stops.length?sc.stops.map(s=>`<div class="mh" style="display:flex;justify-content:space-between;font-size:13px"><span>⛽ ${TMAP[s.tid].name}</span><b>${fmt(s.fuel,1)} t → +${fmt(s.dv,2)} km/s</b></div>`).join(''):'<p class="warnline">No waystations yet — build a mining factory on an ice-bearing asteroid.</p>'}
-   <p>With the chain: <b style="color:var(--green)">${fmt(sc.total,2)} km/s</b>. To get that from Earth in one go the Marauder’s Daughter would need <b>${fmt(sc.needEarth)} t</b> of propellant (${fmt(sc.ratio,1)}× its tank) — the rocket equation’s logarithm punishes carrying everything.</p>
+   <p>With the chain: <b style="color:var(--green)">${fmt(sc.total,2)} km/s</b>. To get that from Earth in one go the Marauder would need <b>${fmt(sc.needEarth)} t</b> of propellant (${fmt(sc.ratio,1)}× its tank) — the rocket equation’s logarithm punishes carrying everything.</p>
    <table class="tb"><tr><th>Destination (approx. Δv)</th><th>Earth fuel only</th><th>With waystations</th></tr>${sc.dests.map(x=>`<tr><td>${x.n} · ${fmt(x.need,1)} km/s</td><td>${x.without?'✅':'❌'}</td><td>${x.withC?'✅':'❌'}</td></tr>`).join('')}</table>
    <p style="font-size:11.5px;color:var(--dim)">Δv to destinations from Hohmann + plane-change estimates (approximate, from heliocentric Earth orbit; ignores launch, gravity assists and capture).</p>
-   <button class="btn g big" data-act="ship" ${S.ship.status==='flying'?'disabled':''}>👩‍🚀 ${S.ship.status==='done'?'Fly the chain again':'Dispatch the Marauder’s Daughter'}</button> ${S.ship.status==='flying'?'<span class="lbl">Marauder’s Daughter en route…</span>':''}</div>
+   <button class="btn g big" data-act="ship" ${S.ship.status==='flying'?'disabled':''}>👩‍🚀 ${S.ship.status==='done'?'Fly the chain again':'Dispatch the Marauder'}</button> ${S.ship.status==='flying'?'<span class="lbl">Marauder en route…</span>':''}</div>
   <div class="card"><h4>Data source</h4><p>Target reference values: <span class="badge ${S.data.mode==='sim'?'b-sim':S.data.mode==='live'?'b-cy':'b-imp'}">${esc(activeRef(d.primary).src)}</span>. Sensor readings during play are always <span class="badge b-sim">SIMULATED</span>.</p><button class="btn" data-act="openData">🛰 Change / import data</button> <button class="btn" data-act="openAbout">📚 Data sources</button></div>
   <div class="card"><h4>Mission log</h4><div class="log">${S.log.map(l=>`<div><span class="t">D${l.d}</span> ${l.msg}</div>`).join('')||'<div>No events yet.</div>'}</div></div>
   <div class="row" style="margin-bottom:12px">${S.phase==='ops'?'<button class="btn r" data-act="endMission">🏁 End mission & debrief</button>':''}${S.phase==='plan'?'<button class="btn solid" data-act="open" data-v="arch">Plan mission ▶</button>':''}<button class="btn" data-act="openBoard">🏆 Leaderboard</button></div>
@@ -2076,7 +2088,7 @@ function missionStory(){const d=S.design,r=S.report,t=TMAP[d.primary];const sc=C
   const p=[];p.push(`Day 0. A ${LVS[d.lv].name} lifted ${d.fleet.total} replicator drones off Earth on ${PROPS[d.prop].name.toLowerCase()} propulsion, bound for ${t.name} — a world first charted in open data by ${t.visited.split('(')[0].trim()}. The cruise took ${S.cruiseDays} days, set by orbital mechanics.`);
   const evs=S.decisions.map(x=>`on ops day ${x.day} the crew faced “${x.title}” and chose to ${x.choice.toLowerCase()}`);if(evs.length)p.push('Along the way, '+evs.slice(0,4).join('; ')+'.');
   p.push(ways.length?`The swarm landed, docked into factories, and built waystations at ${ways.join(', ')}. ${S.gen.built} new drones were born from asteroid ore (${Continuum.doublings()} doublings).`:`The swarm reached ${t.name} but never completed a waystation — ${S.groups.factory.n<10?'too few factory drones remained':'construction ran out of time'}.`);
-  p.push(sc.stops.length?`The payoff: the crewed ship, the Marauder’s Daughter, can now carry ${fmt(sc.total,1)} km/s of Δv along the chain instead of ${fmt(sc.base,1)} km/s on Earth fuel alone. Carrying that from Earth would take ${fmt(sc.needEarth)} t of propellant. That is assisted travel, automated.`:`Without a refuel chain, crewed ships still have to haul all their propellant from Earth — ${fmt(sc.base,1)} km/s and no more.`);
+  p.push(sc.stops.length?`The payoff: the crewed ship, the Marauder, can now carry ${fmt(sc.total,1)} km/s of Δv along the chain instead of ${fmt(sc.base,1)} km/s on Earth fuel alone. Carrying that from Earth would take ${fmt(sc.needEarth)} t of propellant. That is assisted travel, automated.`:`Without a refuel chain, crewed ships still have to haul all their propellant from Earth — ${fmt(sc.base,1)} km/s and no more.`);
   return p;}
 
 'use strict';
@@ -2135,7 +2147,7 @@ function renderHe3(){const el=$('#he3-body');if(!el)return;
  ${c.sel.length?c.sel.map(s=>{const x=He3.score(s);return`<div class="card he3c"><h4>${s.ic} ${s.n} <span class="lbl">${s.kind}</span> <b style="float:right;color:${x.total>0.3?'var(--green)':x.total>0.15?'var(--gold)':'var(--red)'}">${fmt(x.total*100)}/100</b></h4>
   <div class="he3g"><span>He-3 abundance</span>${bar(s.aS,'#c58bff')}<span>Extraction ease</span>${bar(s.eS,'#ffc640')}<span>Near the route (${fmt(x.dist,1)} AU off)</span>${bar(x.routeS,'#3ef0ff')}<span>Δv access ≈ ${fmt(x.dv,1)} km/s</span>${bar(x.dvS,'#5dff8a')}<span>Power</span>${bar(s.pS,'#ffe08a')}<span>Comms (${s.ltxt} one-way)</span>${bar(x.cS,'#7fd8ff')}</div>
   <p style="font-size:12px;margin:6px 0 0"><b>Where:</b> ${s.ab}<br><b>Extraction:</b> ${s.ex}${s.dvn?'<br><b>Δv:</b> '+s.dvn:''}<br><b>Power:</b> ${s.pw}</p></div>`;}).join(''):'<div class="card"><p>No sites linked yet. Start with the one you think is best — then try an asteroid and see why it scores low.</p></div>'}
- <div class="card"><h4>Projected Δv for the Marauder’s Daughter · rocket equation <span class="badge b-sim">MODEL</span></h4>
+ <div class="card"><h4>Projected Δv for the Marauder · rocket equation <span class="badge b-sim">MODEL</span></h4>
   <div class="meter"><div class="mh"><span>Conceptual fusion exhaust Isp (literature range 10⁴–10⁵ s)</span><b>${fmt(st.isp)} s</b></div><input type="range" min="10000" max="100000" step="5000" value="${st.isp}" data-inp="he3isp"></div>
   <div class="meter"><div class="mh"><span>He-3 supply readiness from linked sites</span><b>${fmt(c.supply*100)}%</b></div>${bar(c.supply,'#c58bff')}</div>
   <table class="tb"><tr><th>Engine</th><th>Isp</th><th>Δv with your chain</th></tr>
@@ -2237,8 +2249,8 @@ const Deep={
   path.forEach(cid=>{this.legDepots(D,prev,cid).forEach(d=>stops.push({k:'dep',id:d.id,n:d.n,pos:d.pos}));stops.push({k:'col',id:cid,n:this.byId(cid).host+' waystation'});prev=cid;});return stops;},
  shipGo(){const D=this.st();if(D.ship&&!D.ship.done)return;const tgt=this.shipTarget();if(!tgt){toast('The uncrewed Marauder’s Daughter needs a probe-built colony waystation to fly to.','y');return;}
   const v=Math.min(this.vOf(),0.05);const stops=this.buildRoute(tgt);
-  D.ship={to:tgt.id,v,stops,i:0,mode:'svc',left:this.SVC_YR,fuel:100,wear:0,spares:100,t0:D.yr,done:0,served:0,waited:0,warn:{}};D.shipN=(D.shipN||0)+1;D.run=true;
-  this.log(`🛰 Uncrewed Marauder’s Daughter departs for ${tgt.host}: ${stops.length-1} waystation hops at ${(v*100).toFixed(1)}% c`);sfx('launch');
+  D.ship={to:tgt.id,vault:!!D.vault,v,stops,i:0,mode:'svc',left:this.SVC_YR,fuel:100,wear:0,spares:100,t0:D.yr,done:0,served:0,waited:0,warn:{}};D.shipN=(D.shipN||0)+1;D.run=true;
+  this.log(`🛰 The Marauder’s Daughter, built at the jump-off by the swarm the Marauder’s waystations made possible, departs uncrewed for ${tgt.host}: ${stops.length-1} waystation hops at ${(v*100).toFixed(1)}% c${D.vault?' · 🧬 seed vault armed (hypothetical)':''}`);sfx('launch');
   toast(`🛰 <b>The Marauder’s Daughter</b> flies <b>UNCREWED · autonomous</b> to <b>${esc(tgt.host)}</b>, hopping ${stops.length-1} waystations for refuel, repair and resupply.`);this.netDirty=1;App.refresh(true);},
  crewGo(){this.shipGo();},
  shipTick(D,t0,t1){const sh=D.ship;if(!sh||sh.done)return 0;let T=t0,ch=0,g=0;
@@ -2247,7 +2259,7 @@ const Deep={
     if(T<rt){const w=Math.min(t1,rt)-T;sh.waited+=w;sh.wear=Math.min(100,sh.wear+w*0.25);sh.waiting=1;if(!sh.warn['w'+sh.i]){sh.warn['w'+sh.i]=1;this.log(`⏳ Marauder’s Daughter holding at ${st.n}: waystation still being built (wear rising)`);ch=1;}T+=w;continue;}
     sh.waiting=0;const s=Math.min(t1-T,sh.left);const k=s/sh.left;sh.fuel+=(100-sh.fuel)*k;sh.wear-=sh.wear*k;sh.spares+=(100-sh.spares)*k;sh.left-=s;T+=s;
     if(sh.left<=1e-9){sh.served++;ch=1;if(sh.i>0)this.log(`🔧 Serviced at ${st.n}: refuelled, repaired, resupplied`);
-     if(sh.i===sh.stops.length-1){sh.done=1;sh.t1=T;this.log(`🎉 Uncrewed Marauder’s Daughter reached ${this.byId(sh.to).host} after ${sh.stops.length-1} hops`);toast(`🎉 <b>The Marauder’s Daughter</b> (uncrewed) reached <b>${esc(this.byId(sh.to).host)}</b>: ${sh.served-1} waystation services kept it fuelled and repaired.`,'g');Music.sting&&Music.sting();sfx('success');break;}
+     if(sh.i===sh.stops.length-1){sh.done=1;sh.t1=T;if(sh.vault){D.seeded=D.seeded||{};D.seeded[sh.to]=T;this.log(`🧬 Seed vault delivered to ${this.byId(sh.to).host} (hypothetical directed panspermia)`);}this.log(`🎉 Uncrewed Marauder’s Daughter reached ${this.byId(sh.to).host} after ${sh.stops.length-1} hops`);toast(`🎉 <b>The Marauder’s Daughter</b> (uncrewed) reached <b>${esc(this.byId(sh.to).host)}</b>: ${sh.served-1} waystation services kept it fuelled and repaired.${sh.vault?' 🧬 Seed vault released (hypothetical).':''}`,'g');Music.sting&&Music.sting();sfx('success');break;}
      sh.mode='cruise';const L=this.stopPos(st).distanceTo(this.stopPos(sh.stops[sh.i+1]));sh.legL=L;sh.legT=L/sh.v;sh.left=sh.legT;}
     continue;}
    const s=Math.min(t1-T,sh.left);const ly=s*sh.v;sh.fuel=Math.max(0,sh.fuel-ly/this.SHIP_RANGE*100);sh.wear=Math.min(100,sh.wear+ly*1.6);sh.spares=Math.max(0,sh.spares-ly*1.2);sh.left-=s;T+=s;
@@ -2314,7 +2326,7 @@ const Deep={
   this.armL=[['Perseus Arm',33100],['Sagittarius–Carina Arm',21700],['Scutum–Centaurus Arm',15900],['Norma Arm',11600]].map(([n,rr],i)=>{const R=[40000,30000,24000,19000][i];const th=Math.PI+Math.log(R/rr)/tp;return{n,p:new THREE.Vector3(R0_LY+R*Math.cos(th),0,R*Math.sin(th))};});
   this.armL.push({n:'Orion Spur (we are here)',p:new THREE.Vector3(1500,0,-2500),near:1},{n:'Galactic Center · Sgr A*',p:GC_POS.clone()},{n:'Central bar',p:new THREE.Vector3(R0_LY-4200,0,2200)});
   this.armL.forEach(a=>{const d=document.createElement('div');d.className='plab arm';d.textContent=a.n;ov.appendChild(d);a.el=d;});},
- recolor(){if(!this.sysPts)return;const D=this.st(),C=this.sysPts.geometry.attributes.color;this.sys.forEach((s,i)=>{const c=D.col[s.id];let col;if(c)col=D.yr>=c.ready?[0.36,1,0.54]:[0.2,0.75,0.95];else col=new THREE.Color(PLT[s.type].c).toArray();C.setXYZ(i,...col);});C.needsUpdate=true;},
+ recolor(){if(!this.sysPts)return;const D=this.st(),C=this.sysPts.geometry.attributes.color;this.sys.forEach((s,i)=>{const c=D.col[s.id];let col;if(D.seeded&&D.seeded[s.id])col=[1,0.36,0.94];else if(c)col=D.yr>=c.ready?[0.36,1,0.54]:[0.2,0.75,0.95];else col=new THREE.Color(PLT[s.type].c).toArray();C.setXYZ(i,...col);});C.needsUpdate=true;},
  rebuildNet(){const D=this.st();while(this.net.children.length){const c=this.net.children.pop();c.geometry.dispose();c.material.dispose();}
   const segs=[],segsD=[];D.probes.forEach(p=>{const a=p.from?this.byId(p.from).pos:new THREE.Vector3(),b=this.byId(p.to).pos;(p.done?segsD:segs).push(a.x,a.y,a.z,b.x,b.y,b.z);});
   const L=(arr,c,o)=>{if(!arr.length)return;const g=new THREE.BufferGeometry();g.setAttribute('position',new THREE.BufferAttribute(new Float32Array(arr),3));const l=new THREE.LineSegments(g,new THREE.LineBasicMaterial({color:c,transparent:true,opacity:o,depthTest:false}));l.frustumCulled=false;this.net.add(l);};
@@ -2351,7 +2363,7 @@ const Deep={
    this.depL.forEach((el,i)=>{const d=deps[i];let vis=false;if(d&&this.dist<90){this.project(new THREE.Vector3().fromArray(d.pos),o);vis=o.vis&&o.y<top-6&&o.y>hb+8&&free(o.x,o.y,150);if(vis){const t=`◇ ${d.n} · ${D.yr>=d.ready?'⛽ fuel + 🔧 spares':'🛠 building'}`;if(el._t!==t){el._t=t;el.textContent=t;}el.style.transform=`translate(${o.x}px,${o.y}px) translate(-50%,-150%)`;}}el.style.display=vis?'':'none';});}
   const ord=[...this.sys].sort((a,b)=>(b.id===D.sel)-(a.id===D.sel)||(!!D.col[b.id])-(!!D.col[a.id])||a.ly-b.ly);
   ord.forEach(s=>{const b=this.labels[s.k];this.project(s.pos,o);let vis=o.vis&&o.y<top-6&&o.y>hb+8;const nm=s.host;const w=nm.length*7+34;if(vis)vis=free(o.x,o.y,w);b.style.display=vis?'flex':'none';if(!vis)return;b.style.transform=`translate(${o.x}px,${o.y}px) translate(-50%,-150%)`;
-   const c=D.col[s.id];const h=`<i class="gd" style="background:${c?(D.yr>=c.ready?'var(--green)':'var(--cyan)'):PLT[s.type].c}"></i>${esc(nm)} <small>${fmtLy(s.ly)}${c?(D.yr>=c.ready?' · ⛽🔧📦 waystation':' · 🛠 building'):''}</small>`;if(b._h!==h){b.innerHTML=h;b._h=h;}b.classList.toggle('sel',s.id===D.sel);b.style.pointerEvents=this.dist>8000?'none':'';});
+   const c=D.col[s.id];const h=`<i class="gd" style="background:${c?(D.yr>=c.ready?'var(--green)':'var(--cyan)'):PLT[s.type].c}"></i>${esc(nm)} <small>${fmtLy(s.ly)}${c?(D.yr>=c.ready?' · ⛽🔧📦 waystation':' · 🛠 building'):''}${D.seeded&&D.seeded[s.id]?' · 🧬 seeded':''}</small>`;if(b._h!==h){b.innerHTML=h;b._h=h;}b.classList.toggle('sel',s.id===D.sel);b.style.pointerEvents=this.dist>8000?'none':'';});
   this.armL.forEach(a=>{this.project(a.p,o);const vis=o.vis&&o.y<top-6&&o.y>hb+8&&(a.near?this.dist>2500&&this.dist<90000:this.dist>12000);const v2=vis&&free(o.x,o.y+20,a.n.length*8);a.el.style.display=v2?'':'none';if(v2)a.el.style.transform=`translate(${o.x}px,${o.y}px) translate(-50%,-50%)`;});
   const sb=$('#deep-scale');if(sb){const t=`${this.scaleName()} · view ≈ ${fmtLy(this.dist*1.04)} across`;if(sb._t!==t){sb._t=t;sb.textContent=t;}}
   const yb=$('#deep-yr');if(yb){const t=`+${fmtYr(D.yr)}`;if(yb._t!==t){yb._t=t;yb.textContent=t;}}},
@@ -2386,16 +2398,17 @@ function renderDeep(){const el=$('#deep-body');if(!el)return;const Dp=Deep;Dp.in
   body=`<div class="card"><h4>🌊 Von Neumann replication wave</h4><div class="statg"><div><b>${D.probes.length}</b><span>probes launched</span></div><div><b>${fl}</b><span>in flight</span></div><div><b>${cols.length}/${Dp.sys.length}</b><span>catalog systems reached</span></div><div><b>${ready.length}</b><span>colonies building probes</span></div></div>
   <p style="font-size:12px">Wave front: <b>${R?fmtLy(R):'not started'}</b> from the Sun · front speed ≈ <b>${(wv*100).toFixed(2)}% c</b> (8 ly hops + ${Dp.buildYr()} yr factory bootstrap) · crossing the Milky Way (~100,000 ly) ≈ <b>${fmtYr(1e5/wv)}</b>.${R?` Est. stars inside the front: <b>${fmt(Dp.starsReached(R))}</b> <span class="badge b-sim">ESTIMATE</span>`:''}</p>
   <p class="dim" style="font-size:12px">Light-time: news from a colony takes as many years as it is light-years away — Proxima’s first report arrives 4.2 yr after it is sent. Colony resources are <span class="badge b-sim">SPECULATIVE · SIMULATED</span>.</p></div>
-  <div class="card"><h4>🛰 The Marauder’s Daughter <span class="badge b-cy">UNCREWED · autonomous</span></h4><p style="font-size:12px">No humans aboard in deep space. The ship is a robotic freighter that hops waystation to waystation along the probe network; each stop refuels, repairs and resupplies it. Legs are at most ~7 ly because its tank holds ~${Dp.SHIP_RANGE} ly of cruise. <span class="badge b-fut">FUTURE TECH</span></p><p style="font-size:12px">${shS}</p>
+  <div class="card"><h4>🛰 The Marauder’s Daughter <span class="badge b-cy">UNCREWED · autonomous</span><span class="badge b-fut">FUTURE TECH</span></h4><p style="font-size:12px">The crewed <b>Marauder</b> stays home in the belt. Its daughter ship was built at the jump-off by the swarm the Marauder’s waystations made possible. No humans aboard: it is a robotic interstellar freighter that hops waystation to waystation along the probe network; each stop refuels, repairs and resupplies it. Legs are at most ~7 ly because its tank holds ~${Dp.SHIP_RANGE} ly of cruise. <span class="badge b-fut">FUTURE TECH</span></p><p style="font-size:12px">${shS}</p>
   ${sh&&!sh.done?`<div class="shipg"><span>⛽ Fuel ${Math.round(sh.fuel)}%</span>${bar(sh.fuel,sh.fuel<25?'var(--red)':'var(--cyan)')}<span>🔧 Hull ${Math.round(100-sh.wear)}%</span>${bar(100-sh.wear,sh.wear>70?'var(--red)':'var(--green)')}<span>📦 Spares ${Math.round(sh.spares)}%</span>${bar(sh.spares,sh.spares<25?'var(--red)':'var(--gold)')}</div>${sh.fuel<25?'<div class="warnline">⚠ Low fuel: must reach the next waystation</div>':''}${sh.wear>70?'<div class="warnline">⚠ Heavy wear: overdue for repair</div>':''}${sh.waiting?'<div class="warnline">⏳ Waystation unfinished: holding position, wear rising</div>':''}`:''}
+  <div class="vault"><button class="chip ${D.vault?'on':''}" data-act="deepVault" ${sh&&!sh.done?'disabled':''}>🧬 Seed vault: ${D.vault?'ARMED':'OFF'}</button> <span class="badge b-sim">SPECULATIVE · HYPOTHETICAL</span><div class="dim" style="font-size:11px;margin-top:4px">Optional <b>directed panspermia</b> payload: hardy microbes, extremophile spores and a genetic archive, released at the destination. <b>Ethics:</b> NASA and COSPAR planetary-protection policy exists to prevent forward contamination. Seeding a world that may already host life could harm it and spoil the search for it. Some scientists argue for it as “life insurance”; many argue against. Off by default. Nothing like this is planned by any agency.${tg&&tg.hz?` <b style="color:var(--red)">${esc(tg.host)} has a habitable-zone planet: highest contamination concern.</b>`:''}</div></div>
   <div class="row"><button class="btn" data-act="deepCrew" ${(sh&&!sh.done)||!tg?'disabled':''}>🛰 Send uncrewed to ${tg?esc(tg.host):'(no colony yet)'}</button>${sh&&!sh.done?'<button class="btn ghost" data-act="deepFollow">🎥 Follow ship</button>':''}</div>${route?`<div style="margin-top:6px">${route}</div>`:''}</div>
   <div class="card"><h4>📜 Log</h4>${D.log.slice(0,8).map(l=>`<div class="dim" style="font-size:12px">+${fmtYr(l.y)} · ${esc(l.m)}</div>`).join('')||'<span class="dim">Nothing yet.</span>'}</div>`;}
  if(D.tab==='net'&&D.ship&&!D.ship.done){const i=body.indexOf('<div class="card"><h4>🛰 The Marauder');const j=body.indexOf('<div class="card"><h4>📜 Log');if(i>0&&j>i)body=body.slice(i,j)+body.slice(0,i)+body.slice(j);}
- if(D.tab==='info'){const s=D.sel&&Dp.byId(D.sel);if(!s)body=`<div class="card"><h4>🪐 Tap a star system</h4><p class="dim">Tap any labeled system on the map. Colors: <span style="color:${PLT.rocky.c}">● rocky</span> <span style="color:${PLT.sub.c}">● super-Earth/sub-Neptune</span> <span style="color:${PLT.nep.c}">● Neptune-like</span> <span style="color:${PLT.giant.c}">● gas giant</span> <span style="color:var(--green)">● colonized</span>.</p></div>`;
+ if(D.tab==='info'){const s=D.sel&&Dp.byId(D.sel);if(!s)body=`<div class="card"><h4>🪐 Tap a star system</h4><p class="dim">Tap any labeled system on the map. Colors: <span style="color:${PLT.rocky.c}">● rocky</span> <span style="color:${PLT.sub.c}">● super-Earth/sub-Neptune</span> <span style="color:${PLT.nep.c}">● Neptune-like</span> <span style="color:${PLT.giant.c}">● gas giant</span> <span style="color:var(--green)">● colonized</span> <span style="color:#ff5cf0">● seeded (hypothetical)</span>.</p></div>`;
   else{const f=Dp.feas(s),c=D.col[s.id];body=`<div class="card"><h4>${s.fam[0]} ${esc(s.host)} <span class="dim">${s.sp?esc(s.sp):''}</span></h4>
   <div class="dim" style="font-size:12px">${fmtLy(s.ly)} · galactic l ${s.l.toFixed(1)}°, b ${s.b.toFixed(1)}° · signal delay ${fmtYr(s.ly)} each way · ${s.fam[1]}</div>
   <div style="font-size:12px;margin:4px 0">${s.star?'No confirmed planets — a stepping-stone star for asteroid/comet resources (speculative).':s.pls.map(p=>`• <b>${esc(p.n)}</b> — ${PLT[p.t].n}${p.R!=null?`, ${p.R.toFixed(2)} R⊕`:''}${p.M!=null?`, ${p.M.toFixed(p.M<10?2:0)} M⊕`:''}${p.P!=null?`, orbit ${p.P<2?p.P.toFixed(2):fmt(p.P)} d`:''}${p.a!=null?` (${p.a<0.1?p.a.toFixed(3):p.a.toFixed(2)} AU)`:''}${p.T!=null?`, T<sub>eq</sub> ≈ ${Math.round(p.T)} K${p.hz?' 🌍':''}`:''} · ${esc(p.m)} ${p.y}`).join('<br>')}</div>
-  <div style="font-size:12px">Probe trip at ${(Dp.vOf()*100).toFixed(1)}% c (${DPROPS[D.prop].n}): <b>${fmtYr(f.trip)}</b> · mass ratio ${fmt(f.mr)} ${f.ok?'✔ admissible':'✕ '+f.why}${c?` · ${D.yr>=c.ready?'🏭 colony ready':'🛠 building (ready +'+fmtYr(c.ready)+')'} via ${c.via}`:''}</div>
+  <div style="font-size:12px">Probe trip at ${(Dp.vOf()*100).toFixed(1)}% c (${DPROPS[D.prop].n}): <b>${fmtYr(f.trip)}</b> · mass ratio ${fmt(f.mr)} ${f.ok?'✔ admissible':'✕ '+f.why}${D.seeded&&D.seeded[s.id]?' · <b style="color:#ff5cf0">🧬 seeded by the Marauder’s Daughter (hypothetical)</b>':''}${c?` · ${D.yr>=c.ready?'🏭 colony ready':'🛠 building (ready +'+fmtYr(c.ready)+')'} via ${c.via}`:''}</div>
   <p style="font-size:11px" class="dim"><span class="badge b-imp">IMPORTED · NASA Exoplanet Archive snapshot ${EXO_SNAPSHOT}</span> ${s.star?'(star from SIMBAD)':''} · resources <span class="badge b-sim">SPECULATIVE · SIMULATED</span></p></div>`;}}
  el.innerHTML=head+body+`<p class="dim disc" style="font-size:11px;margin:6px 2px">Interstellar propulsion is FUTURE TECH; nothing here is flight-certified. Planet data: NASA Exoplanet Archive; galaxy arms are a procedural model.</p>`;}
 
@@ -2455,7 +2468,7 @@ const Opener={alive:0,phase:'',prompt:null,hits:{},
   // 6 · WAYSTATION + crewed ship
   ['ceres','vesta'].forEach(id=>{const w=S.ways[id]||(S.ways[id]={fuel:0,parts:0,water:0,proc:0});w.fuel=Math.max(w.fuel,id==='ceres'?260:180);w.water=Math.max(w.water,200);w.hab={food:1,water:1,air:1,shelter:1,power:1};w._habT=1;});
   Music.jingle();this.cap('WAYSTATION ONLINE','Ice → H₂/O₂ propellant · habitat ready for crew');W.burst(W.T.ceres.pos,[0.4,1,0.6],120,1.4);if(!await this.wait(1400,tok))return;
-  Continuum.dispatch();this.cap('REFUEL','The Marauder’s Daughter tops up along the chain');this.follow(()=>W.ship.position,9,1.2);
+  Continuum.dispatch();this.cap('REFUEL','The Marauder tops up along the chain');this.follow(()=>W.ship.position,9,1.2);
   await this.until(()=>S.ship&&S.ship.status==='done',13000,tok);if(!this.ok(tok))return;
   // END
   gen.classList.remove('show');$('#op-cap').classList.remove('show');$('#op-end').classList.add('show');sfx('success');
@@ -2473,6 +2486,63 @@ const Opener={alive:0,phase:'',prompt:null,hits:{},
 };
 
 'use strict';
+// ---------- Multi-slot saved games: up to 20 named slots + 1 autosave, stored in localStorage ----------
+const SAVE_MAX=20,SAVE_IDX='abmc_saves_idx',SAVE_KEY=id=>'abmc_save_'+id;
+const Saves={
+ idx(){const l=LS.get(SAVE_IDX,[]);return Array.isArray(l)?l:[];},
+ setIdx(l){return this.put(SAVE_IDX,l);},
+ put(k,v){try{localStorage.setItem(k,JSON.stringify(v));return true;}catch(e){return false;}},
+ read(id){return LS.get(SAVE_KEY(id),null);},
+ migrate(){const ms=LS.get('abmc_mission',null);let n=0;
+  if(ms&&ms.s){const id=this.newId();const meta=this.meta(ms.s,'Saved mission (from older version)');meta.when=Date.parse(ms.when)||Date.now();meta.id=id;
+   if(this.put(SAVE_KEY(id),{v:2,s:ms.s,player:ms.player})){const l=this.idx();l.unshift(meta);if(this.setIdx(l)){try{localStorage.removeItem('abmc_mission');}catch(e){}n=1;}}}
+  try{localStorage.setItem('abmc_saves_migrated','1');}catch(e){}return n;},
+ newId(){return Date.now().toString(36)+Math.random().toString(36).slice(2,6);},
+ snap(){const o={};for(const k in S){if(k.startsWith('_')||k==='rally')continue;o[k]=S[k];}o.waypoint=null;return{v:2,s:o,player:World.player.p.toArray()};},
+ stage(s){const d=s.deep;if(d&&(d.probes&&d.probes.length||d.hubs&&d.hubs.jump))return'deep';if(d&&d.hubs&&Object.keys(d.hubs).length)return'outer';return'belt';},
+ meta(s,name){const d=s.deep;const st=this.stage(s);const stats=[];
+  stats.push((SCENARIOS[s.design&&s.design.scenario]||{name:'Mission'}).name);stats.push('phase '+s.phase);if(s.day)stats.push('day '+Math.round(s.day));if(s.stats&&s.stats.delivered)stats.push(fmt(s.stats.delivered,1)+' t delivered');if(s.report)stats.push('score '+s.report.score);
+  if(d){if(d.yr)stats.push('+'+fmtYr(d.yr));const nc=d.col?Object.keys(d.col).length:0;if(nc)stats.push(nc+' star systems');}
+  return{name:name||'Game',when:Date.now(),play:Math.round(s.playSec||0),stage:st,stats:stats.join(' · ')};},
+ thumb(){try{const c=document.createElement('canvas');c.width=128;c.height=72;const g=World.renderer.domElement;World.frame(0,performance.now()/1000);const x=c.getContext('2d');const r=g.width/g.height,tr=128/72;let sw=g.width,sh=g.height,sx=0,sy=0;if(r>tr){sw=g.height*tr;sx=(g.width-sw)/2;}else{sh=g.width/tr;sy=(g.height-sh)/2;}x.drawImage(g,sx,sy,sw,sh,0,0,128,72);return c.toDataURL('image/jpeg',0.6);}catch(e){return'';}},
+ full(){toast('💾 Device storage is full. Delete or export an old save, then try again.','r');},
+ write(id,name,{auto=false,thumb=true}={}){const data=this.snap();const meta=this.meta(data.s,name);meta.id=id;if(auto)meta.auto=true;
+  const l=this.idx();const old=l.find(x=>x.id===id);meta.thumb=thumb?this.thumb():(old&&old.thumb)||'';
+  if(!this.put(SAVE_KEY(id),data)){if(!auto)this.full();return false;}
+  const nl=l.filter(x=>x.id!==id);if(auto)nl.push(meta);else{const i=l.findIndex(x=>x.id===id);if(i>=0)nl.splice(Math.min(i,nl.length),0,meta);else nl.unshift(meta);}
+  if(!this.setIdx(nl)){meta.thumb='';const nl2=nl.map(x=>x.id===id?meta:x);if(!this.setIdx(nl2)){if(!auto)this.full();return false;}}return true;},
+ manual(){return this.idx().filter(x=>!x.auto);},
+ saveNew(name){if(this.manual().length>=SAVE_MAX){toast(`All ${SAVE_MAX} slots are used — overwrite or delete one.`,'y');return false;}const id=this.newId();const ok=this.write(id,name||this.defName());if(ok)toast('💾 Saved as a new game.','g');return ok;},
+ defName(){return `${(SCENARIOS[S.design.scenario]||{name:'Mission'}).name} · ${({belt:'Belt',outer:'Outer planets',deep:'Deep space'})[this.stage(S)]}`;},
+ overwrite(id){const m=this.idx().find(x=>x.id===id);if(!m)return false;const ok=this.write(id,m.name);if(ok)toast(`💾 Overwrote “${esc(m.name)}”.`,'g');return ok;},
+ autosave(){return this.write('auto','Autosave',{auto:true,thumb:false});},
+ fixNames(s){if(s&&Array.isArray(s.log))s.log.forEach(l=>{if(l&&typeof l.msg==='string')l.msg=l.msg.replace(/Marauder’s Daughter|Marauder's Daughter/g,'Marauder');});if(s&&s.deep&&s.deep.crew&&!s.deep.ship)delete s.deep.crew;return s;},
+ load(id){const d=this.read(id);if(!d||!d.s){toast('That save could not be read.','r');return false;}loadMission(d);return true;},
+ rename(id,name){const l=this.idx();const m=l.find(x=>x.id===id);if(!m)return;m.name=(name||'').trim().slice(0,40)||m.name;this.setIdx(l);},
+ del(id){try{localStorage.removeItem(SAVE_KEY(id));}catch(e){}this.setIdx(this.idx().filter(x=>x.id!==id));},
+ dup(id){if(this.manual().length>=SAVE_MAX){toast(`All ${SAVE_MAX} slots are used.`,'y');return;}const d=this.read(id);const l=this.idx();const m=l.find(x=>x.id===id);if(!d||!m)return;const nid=this.newId();if(!this.put(SAVE_KEY(nid),d)){this.full();return;}const nm={...m,id:nid,auto:false,name:(m.name+' (copy)').slice(0,40),when:Date.now()};const i=l.indexOf(m);l.splice(m.auto?0:i,0,nm);if(!this.setIdx(l))this.full();},
+ code(id){const d=this.read(id),m=this.idx().find(x=>x.id===id);return 'OCSAVE1:'+btoa(unescape(encodeURIComponent(JSON.stringify({game:'Operation Cosmoform',name:m?m.name:'Game',save:d}))));},
+ exportFile(id){const m=this.idx().find(x=>x.id===id);const blob=new Blob([JSON.stringify({game:'Operation Cosmoform',name:m?m.name:'Game',save:this.read(id)})],{type:'application/json'});const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download=`operation-cosmoform-${(m?m.name:'save').replace(/[^\w-]+/g,'-').slice(0,40)}.json`;document.body.appendChild(a);a.click();setTimeout(()=>{URL.revokeObjectURL(a.href);a.remove();},500);},
+ importObj(o){const d=o&&o.save||o;if(!d||!d.s||!d.s.design)throw new Error('bad');if(this.manual().length>=SAVE_MAX){toast(`All ${SAVE_MAX} slots are used — delete one first.`,'y');return false;}const id=this.newId();if(!this.put(SAVE_KEY(id),d)){this.full();return false;}const meta=this.meta(d.s,((o&&o.name)||'Imported game').slice(0,34)+' (imported)');meta.id=id;meta.thumb='';const l=this.idx();l.unshift(meta);if(!this.setIdx(l)){this.full();return false;}toast('📥 Save imported.','g');return true;},
+ importCode(c){return this.importObj(JSON.parse(decodeURIComponent(escape(atob(c.trim().replace(/^OCSAVE1:/,'')))))); }
+};
+function fmtPlay(sec){sec=Math.round(sec||0);const h=Math.floor(sec/3600),m=Math.floor(sec%3600/60);return h?`${h} h ${m} min`:m?`${m} min`:`${sec} s`;}
+const STAGE_BADGE={belt:['☄','Asteroid belt','b-imp'],outer:['🪐','Outer planets','b-sim'],deep:['🌌','Deep space','b-fut']};
+function savesScreen(){const l=Saves.idx();const auto=l.find(x=>x.auto),man=l.filter(x=>!x.auto);
+ const card=m=>{const b=STAGE_BADGE[m.stage]||STAGE_BADGE.belt;return`<div class="savecard" data-id="${m.id}">${m.thumb?`<img src="${m.thumb}" alt="">`:`<div class="noimg">${b[0]}</div>`}<div class="si"><b class="sn">${esc(m.name)}</b>${m.auto?' <span class="badge b-cy">AUTO</span>':''}
+  <div class="dim">${new Date(m.when).toLocaleString([], {dateStyle:'medium',timeStyle:'short'})} · played ${fmtPlay(m.play)}</div><div><span class="badge ${b[2]}">${b[0]} ${b[1]}</span></div><div class="dim st">${esc(m.stats||'')}</div></div>
+  <div class="sa"><button class="btn g" data-act="svLoad" data-id="${m.id}">▶ Load</button>${m.auto?'':`<button class="btn" data-act="svOver" data-id="${m.id}">💾 Overwrite</button><button class="btn" data-act="svRename" data-id="${m.id}">✎ Rename</button>`}<button class="btn" data-act="svDup" data-id="${m.id}">📑 Duplicate</button><button class="btn" data-act="svExport" data-id="${m.id}">⬆ Export</button><span class="sp"></span><button class="btn r svdel" data-act="svDelAsk" data-id="${m.id}" aria-label="Delete ${esc(m.name)}">🗑 Delete</button></div></div>`;};
+ showModal(`<h2>💾 Saved games</h2><p class="dim" style="font-size:12px">${man.length}/${SAVE_MAX} slots used, plus autosave. Saves stay on this device (browser storage), including deep-space progress.</p>
+ <div class="row"><input type="text" id="svname" maxlength="40" placeholder="Name for a new save" value="${esc(Saves.defName())}" style="flex:1;min-width:150px"><button class="btn solid" data-act="svNew">💾 Save as new</button></div>
+ <div class="row" style="margin-top:6px"><button class="btn y" data-act="svNewGame">✦ New game</button><button class="btn" data-act="svImport">📥 Import save</button><button class="btn" data-act="openDesigns">🧬 Designs & share codes</button></div>
+ <div class="savelist">${auto?card(auto):''}${man.map(card).join('')||'<p class="dim">No saved games yet. Use “Save as new” above.</p>'}</div>`);}
+function svConfirmDelete(id){const m=Saves.idx().find(x=>x.id===id);if(!m)return;showModal(`<h2>🗑 Delete save?</h2><p style="font-size:15px">Delete “<b>${esc(m.name)}</b>”? This can't be undone.</p><div class="row" style="margin-top:14px;justify-content:space-between"><button class="btn solid big" data-act="svList">Cancel</button><button class="btn r" data-act="svDelYes" data-id="${id}">Delete forever</button></div>`,true);}
+function svRenameDlg(id){const m=Saves.idx().find(x=>x.id===id);if(!m)return;showModal(`<h2>✎ Rename save</h2><input type="text" id="svren" maxlength="40" value="${esc(m.name)}" style="width:100%"><div class="row" style="margin-top:12px"><button class="btn solid" data-act="svRenameOk" data-id="${id}">Save name</button><button class="btn" data-act="svList">Cancel</button></div>`,true);setTimeout(()=>{const i=$('#svren');i&&i.select();},50);}
+function svImportDlg(){showModal(`<h2>📥 Import a save</h2><p class="dim" style="font-size:12px">Choose an exported .json file or paste a save code (starts with OCSAVE1:).</p><label class="btn">📂 Choose file<input type="file" id="svfile" accept=".json,application/json" style="display:none"></label><textarea id="svcode" placeholder="OCSAVE1:…" style="width:100%;min-height:80px;margin-top:8px"></textarea><div class="row" style="margin-top:8px"><button class="btn solid" data-act="svImportCode">Import code</button><button class="btn" data-act="svList">Back</button></div>`,true);
+ const f=$('#svfile');f.addEventListener('change',()=>{const file=f.files[0];file&&file.text().then(t=>{try{if(Saves.importObj(JSON.parse(t)))savesScreen();}catch(e){toast('That file is not an Operation Cosmoform save.','r');}});});}
+function svExportDlg(id){const m=Saves.idx().find(x=>x.id===id);showModal(`<h2>⬆ Export “${esc(m.name)}”</h2><div class="row"><button class="btn solid" data-act="svExportFile" data-id="${id}">⬇ Download .json file</button><button class="btn" data-act="svCopyCode">📋 Copy save code</button></div><textarea id="svcodeout" readonly style="width:100%;min-height:90px;margin-top:8px">${Saves.code(id)}</textarea><button class="btn" data-act="svList" style="margin-top:8px">◀ Back to saves</button>`);}
+
+'use strict';
 const App={last:0,acc:0,hudT:0,panelT:0,ptr:false,demo:false,CRUISE_SEC:24,OPS_DPS:1.6,
  refresh(full){const v=View.cur;updateHUD();if(v==='console'){renderStage1();}if(v==='swarm')renderSwarmUI();if(v==='solar'){renderSolarUI();if(View.lock&&full!==false)renderInfo(View.lock);}if(v==='arch'&&full)renderArch();if(v==='fab')renderFab();if(v==='status')renderStatus();if(v==='studio')renderStudio();if(v==='he3')renderHe3();if(v==='deep')renderDeep();if(v==='pov')Pov.renderTypes();}};
 window.addEventListener('pointerdown',()=>App.ptr=true,true);window.addEventListener('pointerup',()=>setTimeout(()=>App.ptr=false,60),true);
@@ -2482,7 +2552,7 @@ const Coach={i:-1,steps:[
  {t:'② Open <b>Swarm Operations</b>. <b>Tap</b> empty space = waypoint. <b>Press & hold</b> = rally. Release = resume.',done:()=>Coach.rallied},
  {t:'③ Open <b>Drone POV</b>. Steer with the stick, hold <b>THRUST</b>, aim at a rock and hold <b>MINE</b>, then <b>TRANSFER</b>.',done:()=>Coach.transferred},
  {t:'④ Open <b>Drone Fabrication</b>: drones build drones. Watch the generation counter and waystation fuel stocks.',done:()=>View.cur==='fab'},
- {t:'⑤ Open <b>Mission Status</b>: dispatch the crewed ship <b>the Marauder’s Daughter</b> along the refuel chain, then <b>End mission</b> for the debrief.',done:()=>S.phase==='ended'}],
+ {t:'⑤ Open <b>Mission Status</b>: dispatch the crewed ship <b>the Marauder</b> along the refuel chain, then <b>End mission</b> for the debrief.',done:()=>S.phase==='ended'}],
  start(){this.i=0;this.rallied=false;this.transferred=false;this.show();},
  show(){let el=$('#coach');if(!el){el=document.createElement('div');el.id='coach';el.style.cssText='position:fixed;left:50%;transform:translateX(-50%);bottom:calc(12px + env(safe-area-inset-bottom,0px));z-index:30;width:min(520px,94vw);background:rgba(6,18,40,.96);border:1px solid var(--gold);border-radius:14px;padding:10px 12px;font-size:13.5px;box-shadow:0 0 24px rgba(255,198,64,.3);display:flex;gap:8px;align-items:center';document.body.appendChild(el);}
   if(this.i<0||this.i>=this.steps.length){el.remove();document.body.classList.remove('coaching','coachon');return;}document.body.classList.toggle('coaching',!['console','fab','arch','status'].includes(View.cur));document.body.classList.add('coachon');el.innerHTML=`<div style="flex:1"><span class="lbl">Demo ${this.i+1}/${this.steps.length}</span><br>${this.steps[this.i].t}</div><button class="ib" data-act="coachNext">▶</button><button class="ib" data-act="coachX">✕</button>`;
@@ -2492,13 +2562,13 @@ const Coach={i:-1,steps:[
 function introModal(){showModal(`<div class="logo" style="font-size:26px;text-align:left">Operation<br>Cosmoform</div><div class="lbl">Asteroid Belt Mining Continuum</div>
  <p><b>Mission thesis: automate assisted travel.</b> Replicator drones launch, pick the best site, land and swarm, turn themselves into factories, mine, and build more drones. New drones carry seed payloads onward and build <b>waystations</b> that turn water ice into propellant — so crewed ships can refuel along the way.</p>
  <p style="font-size:13px"><b>Stage 1</b> starts in the Drone Design Studio: engineer four drone families (replicators, builders, miners, payload transporters) plus terraformer kits, using the TCTA design method, then set the fleet ratio.</p>
- <p style="font-size:13px;color:var(--dim)">Built on open NASA/JPL data (JPL Small-Body Database snapshot) with simulated sensors, clearly labeled. Arcade game — not a flight-certified planner. No login, works offline.</p>
+ <p style="font-size:13px;color:var(--dim)">Built on open NASA/JPL data (JPL Small-Body Database snapshot) with simulated sensors, clearly labeled. Arcade game — not a flight-certified planner. No login, works offline.<br>NASA Space Apps Challenge entry · not affiliated with or endorsed by NASA.</p>
  <div class="row"><button class="btn solid big" data-act="demo">▶ 90-second demo</button><button class="btn y big" data-act="planStart">🛠 Stage 1: design drones</button></div>
- <div class="row" style="margin-top:8px"><button class="btn" data-act="openCrew">👥 Team play (1–4, same device)</button><button class="btn" data-act="openAbout">📚 Data sources</button><button class="btn" data-act="tutorial">🎓 Tutorial</button></div>`,true);}
+ <div class="row" style="margin-top:8px"><button class="btn" data-act="openSaves">💾 Saved games</button><button class="btn" data-act="openCrew">👥 Team play (1–4, same device)</button><button class="btn" data-act="openAbout">📚 Data sources</button><button class="btn" data-act="tutorial">🎓 Tutorial</button></div>`,true);}
 function briefModal(){const k=S.design.scenario,sc=SCENARIOS[k],t=TMAP[sc.primary];showModal(`<h2>${sc.icon} ${sc.name}</h2>${STORY[k].map(p=>`<p>${p}</p>`).join('')}
  <div class="card"><div class="lbl">Objectives</div>${sc.goals.map(g=>`<div>• ${g.label}${g.u?` (${g.v} ${g.u})`:''}</div>`).join('')||'None — sandbox'}<div class="lbl" style="margin-top:6px">Operations deadline</div>${sc.deadline>9000?'None':Math.round(sc.deadline*DIFFS[S.design.difficulty].dead)+' days after arrival'}</div>
  <p style="font-size:12px">${(MISSIONS[sc.primary]||[]).map(([n,u])=>`<a href="${u}" target="_blank" rel="noopener">${n} ↗</a>`).join(' · ')}</p><button class="btn solid" data-act="closeModal">Got it</button>`);}
-function aboutModal(){showModal(`<h2>📚 About & data sources</h2><p>Target orbital and physical values come from a <b>bundled snapshot of the JPL Small-Body Database API</b>, fetched ${SBDB_SNAPSHOT.date}. They are labeled <span class="badge b-imp">IMPORTED · JPL SBDB snapshot</span>. Sensor readings during play are <span class="badge b-sim">SIMULATED</span> and never measurements. Live fetches are only labeled <span class="badge b-cy">LIVE</span> if a request to JPL actually succeeds.</p>
+function aboutModal(){showModal(`<h2>📚 About & data sources</h2><p style="font-size:12px;color:var(--dim)">NASA Space Apps Challenge entry · not affiliated with or endorsed by NASA. NASA and JPL are named only as data sources.</p><p>Target orbital and physical values come from a <b>bundled snapshot of the JPL Small-Body Database API</b>, fetched ${SBDB_SNAPSHOT.date}. They are labeled <span class="badge b-imp">IMPORTED · JPL SBDB snapshot</span>. Sensor readings during play are <span class="badge b-sim">SIMULATED</span> and never measurements. Live fetches are only labeled <span class="badge b-cy">LIVE</span> if a request to JPL actually succeeds.</p>
  <table class="tb"><tr><th>Target</th><th>a (AU)</th><th>e</th><th>i°</th><th>Period (d)</th><th>D (km)</th><th>Type</th></tr>${TARGETS.map(t=>{const s=SBDB_SNAPSHOT.data[t.id];return`<tr><td>${esc(s.fullname)}</td><td>${s.a}</td><td>${s.e}</td><td>${s.i}</td><td>${s.per_d}</td><td>${s.diameter_km}</td><td>${[s.spec_B,s.spec_T].filter(Boolean).join('/')}</td></tr>`;}).join('')}</table>
  <div class="lbl" style="margin-top:8px">Sources</div>${SOURCES.map(([n,u])=>`<div style="font-size:13px;margin:4px 0">• <a href="${u}" target="_blank" rel="noopener">${n}</a></div>`).join('')}
  <div class="lbl" style="margin-top:8px">Models used</div><p style="font-size:13px">Hohmann transfer time and Δv; Tsiolkovsky rocket equation; solar flux ∝ 1/r²; radio light-time 8.317 min/AU; equilibrium temperature T ≈ 278 K·(1−A)<sup>¼</sup>/√a; water electrolysis minimum ≈ 4.4 kWh/kg. Game rates (mining, build speed, events, composition fractions) are simplified and labeled simulated. Stage 3 (deep space): probe trip time = distance ÷ cruise speed; accelerate-and-brake mass ratio = e<sup>2v/vₑ</sup>; light-time = 1 year per light-year; exoplanet values from the bundled NASA Exoplanet Archive snapshot (${EXO_SNAPSHOT}); the spiral-arm map is a procedural model; interstellar propulsion and colony resources are FUTURE TECH / SPECULATIVE. Not a flight-certified planning system.</p>`);}
@@ -2611,7 +2681,7 @@ const ACT={
  openCrew:()=>crewModal(),crewMode:el=>{readCrew();S.team.mode=el.dataset.val;if(el.dataset.val!=='solo'&&S.team.players.length<2)setPlayers(2);if(el.dataset.val==='compete'){S.team.cur=0;S.team.results=[];}crewModal();},
  crewN:el=>{readCrew();setPlayers(+el.dataset.val);crewModal();},teamN:el=>{readCrew();const n=+el.dataset.val;S.team.teams=Array.from({length:n},(_,i)=>S.team.teams[i]||'Team '+'ABCD'[i]);crewModal();},
  crewSave:()=>{readCrew();hideModal();toast(S.team.mode==='solo'?'Solo mode.':`${S.team.mode==='coop'?'Co-op':'Competitive'}: ${S.team.players.map(p=>p.name+' ('+p.roles.map(r=>ROLES[r].short).join('/')+')').join(', ')}`,'g');},
- openLearn:()=>learnModal(),opStart:()=>Opener.start(),opSkip:()=>Opener.skip(),opFinish:()=>Opener.finish(false),replayIntro:()=>{audioInit();Opener.open();},openAbout:()=>aboutModal(),openData:()=>dataModal(),openBoard:()=>boardModal(),openSettings:()=>settingsModal(),openSaves:()=>savesModal(),
+ openLearn:()=>learnModal(),opStart:()=>Opener.start(),opSkip:()=>Opener.skip(),opFinish:()=>Opener.finish(false),replayIntro:()=>{audioInit();Opener.open();},openAbout:()=>aboutModal(),openData:()=>dataModal(),openBoard:()=>boardModal(),openSettings:()=>settingsModal(),openSaves:()=>savesScreen(),openDesigns:()=>savesModal(),
  dataMode:el=>{const v=el.dataset.val;if(v==='user'&&!Object.keys(S.data.imp).length&&S.data.mode!=='user'){toast('Paste or load data first, then tap Import.','y');return;}S.data.mode=v;applyDesignToState();toast(`Data source: ${activeRef(S.design.primary).src}`,'g');dataModal();App.refresh(true);},
  dataImport:()=>{try{const imp=parseData($('#dsText').value);const n=Object.keys(imp).length;if(!n)return toast('No matching targets found in that data.','y');S.data={...S.data,mode:'user',label:$('#dsLabel').value||'User-imported file (source not specified)',imp,date:new Date().toISOString().slice(0,10)};applyDesignToState();toast(`<b>Imported ${n} target(s)</b> — labeled IMPORTED · ${esc(S.data.label)}`,'g');hideModal();App.refresh(true);}catch(e){toast('Could not parse that data: '+esc(e.message),'r');}},
  dataLive:()=>liveFetch(),
@@ -2621,6 +2691,15 @@ const ACT={
  loadCode:()=>{try{loadDesignObj(fromCode($('#scode').value));}catch(e){toast('That share code is not valid.','r');}},
  exportJSON:()=>{const b=new Blob([JSON.stringify({game:'Operation Cosmoform',v:3,design:S.design,metrics:S.m},null,2)],{type:'application/json'});const a=document.createElement('a');a.href=URL.createObjectURL(b);a.download=(S.design.name||'abmc-design')+'.json';a.click();toast('Design exported.','g');},
  saveMission:()=>{saveMission(true);},loadMission:()=>{loadMission();},
+ svList:()=>savesScreen(),svNew:()=>{const n=($('#svname')||{}).value;if(Saves.saveNew(n))savesScreen();},
+ svOver:el=>{if(Saves.overwrite(el.dataset.id))savesScreen();},svLoad:el=>{Saves.load(el.dataset.id);},
+ svRename:el=>svRenameDlg(el.dataset.id),svRenameOk:el=>{Saves.rename(el.dataset.id,$('#svren').value);savesScreen();},
+ svDup:el=>{Saves.dup(el.dataset.id);savesScreen();},svExport:el=>svExportDlg(el.dataset.id),svExportFile:el=>Saves.exportFile(el.dataset.id),
+ svCopyCode:()=>{const t=$('#svcodeout');t.select();(navigator.clipboard?navigator.clipboard.writeText(t.value):Promise.reject()).then(()=>toast('Save code copied.','g')).catch(()=>{document.execCommand&&document.execCommand('copy');toast('Save code selected — copy it.','y');});},
+ svImport:()=>svImportDlg(),svImportCode:()=>{try{if(Saves.importCode($('#svcode').value))savesScreen();}catch(e){toast('That code is not a valid save code.','r');}},
+ svDelAsk:el=>svConfirmDelete(el.dataset.id),svDelYes:el=>{const m=Saves.idx().find(x=>x.id===el.dataset.id);Saves.del(el.dataset.id);toast(`🗑 Deleted “${esc(m?m.name:'save')}”.`);savesScreen();},
+ svNewGame:()=>showModal(`<h2>✦ Start a new game?</h2><p>Your current game is autosaved first, so you can load it from <b>Saved games</b> later.</p><div class="row" style="margin-top:12px"><button class="btn solid big" data-act="svNewGameYes">✦ New game</button><button class="btn" data-act="svList">Cancel</button></div>`,true),
+ svNewGameYes:()=>{Saves.autosave();hideModal();S=newState('psyche');applyDesignToState();World.resetSwarm();View.lock=null;renderInfo(null);Deep.netDirty=1;Deep.redrawChain();go('console');toast('✦ New game started.','g');},
  saveScore:()=>{const b=LS.get('abmc_board',{});const k=`${S.design.scenario}|${S.design.difficulty}|${S.design.physics}`;(b[k]=b[k]||[]).push({name:$('#lbname').value||'Crew',score:S.report.score,grade:S.report.grade,date:new Date().toLocaleDateString()});b[k].sort((x,y)=>y.score-x.score);b[k]=b[k].slice(0,20);LS.set('abmc_board',b);toast('Score saved to leaderboard.','g');boardModal();},
  newMission:()=>{hideModal();const scn=S.design.scenario,df=S.design.difficulty,ph=S.design.physics;S=newState(scn);S.design.difficulty=df;S.design.physics=ph;applyDesignToState();World.resetSwarm();View.lock=null;renderInfo(null);go('console');toast('New mission ready. Plan it in Mission Architecture.','g');},
  nextTeam:()=>{const T=S.team;const seed=S.seed,scn=S.design.scenario,df=S.design.difficulty,ph=S.design.physics;T.cur++;S=newState(scn);S.seed=seed;S.design.difficulty=df;S.design.physics=ph;applyDesignToState();World.resetSwarm();go('arch');toast(`<b>${esc(T.teams[T.cur])}</b>, your turn — same scenario & events.`,'g');},
@@ -2635,7 +2714,7 @@ const ACT={
  deepProp:el=>{const D=Deep.st();D.prop=el.dataset.v;D.v=DPROPS[D.prop].v0;App.refresh(true);},
  deepPick:el=>{const D=Deep.st();D.pick[el.dataset.id]=!D.pick[el.dataset.id];App.refresh(true);},
  deepAuto:()=>{Deep.autoPick();App.refresh(true);},
- deepLaunch:()=>Deep.launch(),deepCrew:()=>Deep.shipGo(),deepFollow:()=>Deep.followShip(),
+ deepLaunch:()=>Deep.launch(),deepCrew:()=>Deep.shipGo(),deepFollow:()=>Deep.followShip(),deepVault:()=>{const D=Deep.st();D.vault=!D.vault;toast(D.vault?'🧬 Seed vault ARMED: hypothetical directed panspermia. Read the planetary-protection note.':'🧬 Seed vault disarmed.',D.vault?'y':'');App.refresh(true);},
  deepSel:el=>Deep.select(el.dataset.id),deepScale:el=>Deep.scaleTo(el.dataset.v),
  deepSheet:el=>{const s=$('#v-deep .deepsheet');s.classList.toggle('min');el.textContent=s.classList.contains('min')?'▴':'▾';},
  openDeep:()=>Deep.enter(false),
@@ -2653,15 +2732,15 @@ document.addEventListener('input',e=>{const k=e.target.dataset.inp;if(k==='mvol'
   if(k==='closure'||k==='kits')d.rep[k]=v;else if(k==='altitude')d.altitude=v;else if(k==='total'){d.fleet.total=v;Studio.ensure(d);Studio.normMix(d);Studio.sync();if(View.cur==='studio'){const y=$('#v-studio .panelbody').scrollTop;renderStudio();$('#v-studio .panelbody').scrollTop=y;return;}}else if(GKEYS.includes(k)){d.fleet[k]=Math.min(v,d.fleet.total);rebalanceFleet(d,k);}
   clearTimeout(App._inT);App._inT=setTimeout(()=>{const y=$('#arch-scroll').scrollTop;archChange();$('#arch-scroll').scrollTop=y;},120);});
 function startDemo(){App.demo=true;S=newState('ceres');S.design.difficulty='cadet';Studio.autoAll();applyDesignToState();World.resetSwarm();S.speed=2;App.CRUISE_SEC=10;launchMission();go('swarm');Coach.start();toast('<b>Demo launched!</b> The swarm is heading for Ceres. Follow the coach card.','g');}
-function saveMission(manual){try{const o={};for(const k in S){if(k.startsWith('_')||k==='rally')continue;o[k]=S[k];}o.waypoint=null;LS.set('abmc_mission',{when:new Date().toLocaleString(),s:o,player:World.player.p.toArray()});if(manual){toast('Mission saved on this device.','g');}}catch(e){if(manual)toast('Save failed.','r');}}
-function loadMission(){const ms=LS.get('abmc_mission',null);if(!ms)return;S=Object.assign(newState(ms.s.design.scenario),ms.s);World.resetSwarm();
+function saveMission(manual){if(manual){savesScreen();return;}Saves.autosave();}
+function loadMission(ms){if(!ms||!ms.s){const l=Saves.idx();const a=l.find(x=>x.auto)||l[0];ms=a&&Saves.read(a.id);}if(!ms||!ms.s)return;Saves.fixNames(ms.s);S=Object.assign(newState(ms.s.design.scenario),ms.s);World.resetSwarm();
   // rebuild drones at their work sites
   World.drones.length=0;GKEYS.forEach(g=>{for(let i=0;i<S.groups[g].n;i++){const at=S.phase==='plan'?World.launchPos:S.phase==='cruise'?World.launchPos:World.T[World.groupTarget(g)].pos;World.drones.push({...World._mk(g,at)});}});
   World.drones.forEach(d=>{if(!d.hist.length)for(let k=0;k<World.TR;k++)d.hist.push(d.p.clone());});
   if(S.phase==='cruise')World.onLaunchQuiet();if(S.phase==='ops'||S.phase==='ended'){World.onArrive();for(const id in S.mfac)if(S.mfac[id].online)World.onFactory(id);if(S.dfac.online)World.onDepotFactory();}
-  hideModal();go('console');toast('Mission resumed.','g');}
+  hideModal();View.lock=null;go('console');Deep.netDirty=1;Deep.lock=null;Deep.lockShip=false;Deep.redrawChain();if(He3.built)He3.redraw();toast('Game loaded.','g');}
 // ---------- loop ----------
-function loop(now){requestAnimationFrame(loop);const t=now/1000;let dt=Math.min(0.05,(now-(App.last||now))/1000);App.last=now;Opener.frame();
+function loop(now){requestAnimationFrame(loop);const t=now/1000;let dt=Math.min(0.05,(now-(App.last||now))/1000);App.last=now;Opener.frame();S.playSec=(S.playSec||0)+dt;
   if(!S.paused&&!S._decision&&(S.phase==='cruise'||S.phase==='ops')){let days=(S.phase==='cruise'?S.cruiseDays/App.CRUISE_SEC*Math.min(S.speed,2):App.OPS_DPS*S.speed)*dt;while(days>0&&(S.phase==='cruise'||S.phase==='ops')&&!S._decision){const st=Math.min(days,0.5);simStep(st);days-=st;}}
   // waypoint expiry
   if(S.waypoint){const wp=S.waypoint;const c=World.groupCentroid(wp.groups[0]);const p=new V3().fromArray(wp.pos);if(!wp.reached&&c.distanceTo(p)<wp.scale*1.4){wp.reached=performance.now();}
@@ -2669,17 +2748,17 @@ function loop(now){requestAnimationFrame(loop);const t=now/1000;let dt=Math.min(
   World.frame(S.paused&&View.cur!=='pov'?dt*0.15:dt,t);updateLabels();He3.updLabels();Deep.frame(dt);Deep.updLabels();
   App.hudT+=dt;if(App.hudT>0.25){App.hudT=0;updateHUD();Coach.tick();}
   App.panelT+=dt;if(App.panelT>1){App.panelT=0;if(!App.ptr&&!$('#modal').classList.contains('show')||View.cur==='swarm'){if(View.cur==='swarm')renderSwarmUI();if(View.cur==='fab'&&!App.ptr)renderFab();if(View.cur==='status'&&!App.ptr){const y=$('#v-status .panelbody').scrollTop;renderStatus();$('#v-status .panelbody').scrollTop=y;}if(View.cur==='solar'){renderSolarUI();}if(View.cur==='deep'&&S.deep&&S.deep.run&&!App.ptr){const sh=$('#v-deep .deepsheet');const y=sh.scrollTop;renderDeep();sh.scrollTop=y;}}
-    if(S.phase!=='plan'&&Math.random()<0.1)saveMission(false);}
+    if((S.phase!=='plan'||(S.deep&&S.deep.run))&&Math.random()<0.1)saveMission(false);}
 }
 function boot(){
   S=newState('psyche');
   $$('.topbar[data-title]').forEach(el=>el.innerHTML=topbar(el.dataset.title));
   World.init();Deep.initSolar();renderConsole();buildLabels();canvasInput();Opener.bind();bindPov();applyDesignToState();setMute(AUD.muted);
   window.addEventListener('resize',()=>World.resize());window.addEventListener('orientationchange',()=>setTimeout(()=>World.resize(),200));
-  document.addEventListener('visibilitychange',()=>{if(document.hidden&&S.phase!=='plan')saveMission(false);});
+  document.addEventListener('visibilitychange',()=>{if(document.hidden&&(S.phase!=='plan'||S.deep))saveMission(false);});
   go('console');requestAnimationFrame(loop);
-  const ms=LS.get('abmc_mission',null);
-  if(!Opener.seen()){Opener.open();}else introModal();if(!App.opener&&ms&&ms.s&&ms.s.phase!=='plan'&&ms.s.phase!=='ended'){$('#mbox').insertAdjacentHTML('beforeend',`<div class="row" style="margin-top:8px"><button class="btn g" data-act="loadMission">⟲ Resume saved mission (${esc(ms.when)})</button></div>`);}
+  const mig=Saves.migrate();const au=Saves.idx().find(x=>x.auto)||Saves.idx()[0];const ms=au?{s:{phase:'ops'},when:new Date(au.when).toLocaleString()}:null;
+  if(!Opener.seen()){Opener.open();}else introModal();if(!App.opener&&ms){$('#mbox').insertAdjacentHTML('beforeend',`<div class="row" style="margin-top:8px"><button class="btn g" data-act="loadMission">⟲ Resume latest (${esc(ms.when)})</button><button class="btn" data-act="openSaves">💾 Saved games</button></div>`);}if(mig)setTimeout(()=>toast('💾 Your saved mission was moved into the new Saved games list.','g'),800);
   window.__ABMC_READY=true;
 }
 boot();
