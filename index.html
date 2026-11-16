@@ -316,6 +316,47 @@ label.sl{display:flex;flex-direction:column;font-size:12px;margin:6px 0}label.sl
 .savecard .sa .sp{flex:1 1 12px;min-width:12px}.savecard .svdel{margin-left:auto;opacity:.85}
 .vault{margin:6px 0;padding:6px 8px;border-radius:10px;border:1px dashed rgba(255,92,240,.45);background:rgba(255,92,240,.05)}
 .savecard .si .badge{align-self:flex-start}
+
+/* ---------- guided tutorial ---------- */
+#tour{position:fixed;inset:0;z-index:9000;pointer-events:none;display:none}
+#tour.on{display:block}
+#tour .t-spot{position:fixed;left:0;top:0;width:60px;height:60px;border-radius:14px;box-shadow:0 0 0 200vmax rgba(1,5,14,.66);transition:transform .28s cubic-bezier(.3,.8,.3,1),width .28s,height .28s,border-radius .28s,opacity .25s;opacity:0}
+#tour.watch .t-spot{box-shadow:0 0 0 200vmax rgba(1,5,14,.28)}
+#tour .t-ring{position:fixed;left:0;top:0;border:3px solid var(--gold);border-radius:14px;opacity:0;transition:transform .28s cubic-bezier(.3,.8,.3,1),width .28s,height .28s;animation:tPulse 1.3s ease-out infinite}
+#tour .t-ring::after{content:'';position:absolute;inset:-3px;border-radius:inherit;border:3px solid var(--gold);animation:tPulse2 1.3s ease-out infinite}
+#tour .t-ring.nudge{animation:tPulse .45s ease-out 3}
+#tour .t-ring.burst{border-color:var(--green);animation:tBurst .6s ease-out forwards}
+#tour .t-ring.burst::after{border-color:var(--green)}
+@keyframes tPulse{0%{box-shadow:0 0 0 0 rgba(255,198,64,.7)}100%{box-shadow:0 0 0 16px rgba(255,198,64,0)}}
+@keyframes tPulse2{0%{transform:scale(1);opacity:.9}100%{transform:scale(1.25);opacity:0}}
+@keyframes tBurst{0%{box-shadow:0 0 0 0 rgba(93,255,138,.9)}100%{box-shadow:0 0 0 28px rgba(93,255,138,0)}}
+#tour .t-hand{position:fixed;left:0;top:0;width:0;height:0;font-size:42px;filter:drop-shadow(0 0 8px rgba(255,255,255,.75));transition:transform .28s cubic-bezier(.3,.8,.3,1),opacity .2s}
+#tour .t-hand span{position:absolute;left:-14px;top:-4px}
+#tour .t-hand .f2{display:none}
+#tour .t-hand.g-tap span{animation:hTap 1.1s ease-in-out infinite}
+#tour .t-hand.g-hold span{animation:hHold 1.8s ease-in-out infinite}
+#tour .t-hand.g-zoom .f2{display:block;left:22px}
+#tour .t-hand.g-zoom span{animation:hSwipe 1.4s ease-in-out infinite}
+#tour .t-hand.g-drag span{animation:tDrag 1.6s ease-in-out infinite}
+#tour .t-hand.g-watch{display:none}
+@keyframes tDrag{0%,100%{transform:translateX(-40px)}50%{transform:translateX(40px)}}
+#tour .t-tip{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(18px + var(--sab,0px));width:min(440px,calc(100vw - 24px));background:rgba(6,16,36,.97);border:2px solid var(--gold);border-radius:16px;padding:12px 16px 12px 58px;font-size:18px;line-height:1.25;color:#fff;box-shadow:0 0 30px rgba(255,198,64,.35);transition:border-color .2s,background .2s}
+#tour .t-tip::before{content:attr(data-n);position:absolute;left:10px;top:50%;transform:translateY(-50%);font:800 12px var(--mono);color:var(--gold);width:40px;text-align:center}
+#tour .t-tip .t-prog{position:absolute;left:12px;right:12px;top:-2px;height:3px;border-radius:2px;background:rgba(255,255,255,.12);overflow:hidden}
+#tour .t-tip .t-prog i{display:block;height:100%;background:var(--gold);transition:width .4s}
+#tour .t-tip.ok{border-color:var(--green);background:rgba(4,30,18,.97);color:var(--green);font-weight:800;box-shadow:0 0 30px rgba(93,255,138,.4)}
+#tour .t-tip.nudge{animation:tShake .4s ease-in-out 2}
+@keyframes tShake{0%,100%{transform:translateX(-50%)}25%{transform:translateX(calc(-50% - 7px))}75%{transform:translateX(calc(-50% + 7px))}}
+#tour .t-skip{position:fixed;right:calc(10px + var(--sar,0px));top:calc(10px + var(--sat,0px));min-width:84px;min-height:44px;padding:0 14px;border-radius:22px;border:1px solid rgba(255,255,255,.35);background:rgba(4,10,24,.85);color:#dfe9f5;font:700 14px var(--mono);pointer-events:auto;z-index:2}
+#tour .t-done{position:fixed;left:50%;top:50%;transform:translate(-50%,-50%) scale(.92);width:min(400px,calc(100vw - 32px));background:rgba(6,16,36,.98);border:2px solid var(--green);border-radius:20px;padding:22px 20px;text-align:center;display:none;flex-direction:column;gap:10px;pointer-events:auto;box-shadow:0 0 0 200vmax rgba(1,5,14,.6),0 0 40px rgba(93,255,138,.35);transition:transform .3s}
+#tour .t-done.show{display:flex;transform:translate(-50%,-50%) scale(1)}
+#tour .t-done .t-big{font:900 28px var(--mono);color:var(--green)}
+#tour .t-done .btn{min-height:48px;justify-content:center}
+body.touring #toasts,body.touring #coach,body.touring .view .hint,body.touring .legend,body.touring #sw-orders,body.touring #sw-assign,body.touring #sw-banner,body.touring .topbar .dsrc,body.touring .topbar .clk,body.touring .topbar .mute,body.touring .topbar .pausebtn,body.touring .side,body.touring #v-solar .bottom,body.touring .deeptop,body.touring #infocard,body.touring .qpath{visibility:hidden!important}
+body.touring:not(.t-back) .topbar .back{visibility:hidden}
+body.touring.t-side #v-swarm .side,body.touring #v-solar .side [data-act="openDeepZ"]{visibility:visible!important}
+.introgo{display:flex;flex-direction:column;gap:8px;margin-top:6px}.introgo .btn{justify-content:center;min-height:50px}
+.qpath{margin:0 0 8px;gap:8px}
 </style></head><body>
 <canvas id="gl" aria-label="3D mission view"></canvas>
 <div id="dim"></div>
@@ -332,10 +373,10 @@ label.sl{display:flex;flex-direction:column;font-size:12px;margin:6px 0}label.sl
     <div class="mstrip" id="mstrip"></div>
     <div id="stage1"></div><div class="tiles" id="tiles"></div>
     <div class="crow">
-      <button class="btn y" data-act="openCrew">👥 Crew &amp; Teams</button>
-      <button class="btn" data-act="openLearn">📘 Learn</button>
-      <button class="btn" data-act="tutorial">🎓 Tutorial</button>
+      <button class="btn y" data-act="tutorial">🎓 Tutorial</button>
       <button class="btn" data-act="openSaves">💾 Saved games</button>
+      <button class="btn" data-act="openCrew">👥 Crew &amp; Teams</button>
+      <button class="btn" data-act="openLearn">📘 Learn</button>
       <button class="btn" data-act="openBoard">🏆 Leaderboard</button>
       <button class="btn" data-act="openSettings">⚙ Settings</button>
     </div>
@@ -351,6 +392,7 @@ label.sl{display:flex;flex-direction:column;font-size:12px;margin:6px 0}label.sl
     <button class="ib" data-act="zoomIn" aria-label="Zoom in">＋</button>
     <button class="ib" data-act="zoomOut" aria-label="Zoom out">－</button>
     <button class="ib" data-act="followFleet" title="Follow fleet">🐝</button>
+    <button class="ib" data-act="openDeepZ" title="Zoom out to deep space" aria-label="Zoom out to deep space">🌌</button>
   </div>
   <div class="bottom">
     <div class="row" style="justify-content:center">
@@ -906,7 +948,7 @@ const ARRIVAL={id:'arrival',title:'Arrival: choose how close to operate',
    {l:'Keep the planned orbit',d:'Stay the course.',ax:{deadline:0,risk:0,power:0,yield:0},fx:()=>{}},
    {l:'Go high & safe',d:'Switch to high orbit: −risk, less power, slower mining & mapping.',ax:{deadline:-1,risk:1,power:1,yield:-1},fx:()=>{S.design.altitude=3;S.res.risk=Math.max(0,S.res.risk-6);S.m=computeMetrics(S.design);}}]};
 
-function randomEvent(cruise){if(App.opener)return;
+function randomEvent(cruise){if(App.opener||App.tour)return;
   const pool=cruise?EVENTS.filter(e=>e.id==='blackout'||e.id==='dust'):EVENTS;
   let tot=pool.reduce((a,e)=>a+e.w,0),r=R()()*tot,ev=pool[0];for(const e of pool){r-=e.w;if(r<=0){ev=e;break;}}
   if(S._decision||S._pendDec)return;
@@ -919,7 +961,7 @@ function arrivalDecision(){if(S.phase==='ops')openDecision(ARRIVAL);}
 // players for the current team
 function players(){return S.team.mode==='solo'?[{name:'You',roles:RKEYS}]:S.team.players;}
 function roleOwner(r){return players().findIndex(p=>p.roles.includes(r));}
-function openDecision(ev){if(App.opener)return;
+function openDecision(ev){if(App.opener||App.tour)return;
   if($('#modal').classList.contains('show')&&$('#mbox').querySelector('[data-act^="sv"],#svren,#svcode')){S._pendDec=ev;return;} // don't pop over the Saved games screen; show it when that closes
   S._pendDec=null;
   S._decision={ev,votes:{},t0:performance.now(),viewer:0};
@@ -1278,7 +1320,7 @@ function renderStudio(){const d=S.design,st=Studio.ensure(d);const el=$('#studio
   const fam=ps.fam;const R=fam?om.total/Math.max(1,om.fam[fam]):1;const hp=D.R0?hdrp(D):null;
   const Ts=transformsFor(s).map(T=>{const s2=applyT(s,T);const c2=checksOf(statsOf(s2,C),C);const ok=c2.every(c=>c.ok);const bad=c2.find(c=>!c.ok);const toward=((FAMILIES[fam||PURPOSES[p].f].sig[T.sg]||0)*T.dir>0)||(T.tool&&T.dir>0&&reqTools(p).includes(T.tool)&&!s.tools.includes(T.tool));
    return`<button class="tx ${ok?'':'off'} ${ok&&toward?'hl':''}" data-act="stT" data-id="${T.id}" title="${ok?'Admissible':esc('Blocked: '+bad.n)}">${T.n}${ok?'':`<small>✕ ${bad.n}</small>`}</button>`;}).join('');
-  body=`<div class="lbl">Purpose (domain <i>D</i>) — design one drone for each job, family by family</div>${FKEYS.map(f=>`<div class="famline"><b style="color:${GROUPS[FAMILIES[f].g].col}">${FAMILIES[f].ic} ${FAMILIES[f].n}</b><div class="hscroll">${PKEYS.filter(k=>PURPOSES[k].f===f).map(k=>`<button class="chip ${k===p?'on':''}" data-act="stP" data-k="${k}" style="${st.drones[k].committed?'border-color:var(--green)':''}">${PURPOSES[k].ic} ${PURPOSES[k].n.split(' (')[0]} ${st.drones[k].committed?'✓':''}</button>`).join('')}</div></div>`).join('')}<p style="font-size:12px;margin:2px 0 6px"><b>${PURPOSES[p].ic} ${PURPOSES[p].n}</b> — ${PURPOSES[p].d}</p>
+  body=`${S.phase==='plan'&&!App.tour?`<div class="row qpath"><button class="btn y" data-act="stAutoAll">✨ Auto-design all</button><button class="btn" data-act="stTab" data-k="mix">Next: ② Fleet mix ▸</button></div>`:''}<div class="lbl">Purpose (domain <i>D</i>) — design one drone for each job, family by family</div>${FKEYS.map(f=>`<div class="famline"><b style="color:${GROUPS[FAMILIES[f].g].col}">${FAMILIES[f].ic} ${FAMILIES[f].n}</b><div class="hscroll">${PKEYS.filter(k=>PURPOSES[k].f===f).map(k=>`<button class="chip ${k===p?'on':''}" data-act="stP" data-k="${k}" style="${st.drones[k].committed?'border-color:var(--green)':''}">${PURPOSES[k].ic} ${PURPOSES[k].n.split(' (')[0]} ${st.drones[k].committed?'✓':''}</button>`).join('')}</div></div>`).join('')}<p style="font-size:12px;margin:2px 0 6px"><b>${PURPOSES[p].ic} ${PURPOSES[p].n}</b> — ${PURPOSES[p].d}</p>
   <div class="steprail">${STUDIO_METHOD.steps.map((x,i)=>`<span class="${i<=(D.committed?4:D.tau.length?(fam?3:2):1)?'on':''}"><i>${x.k}</i>${x.n}</span>`).join('')}</div>
   <div class="card"><h4>SR = (s, <i>D</i>, <i>C</i>) · current design state <span class="badge b-sim">GAME MODEL</span></h4>
    <div class="srgrid"><div><span>Frame</span><b>${FRAMES[s.frame].n}</b></div><div><span>Arrays</span><b>${PANELS[s.power]} m²</b></div><div><span>Propulsion</span><b>${PROPT[s.prop].n}</b></div><div><span>Comms</span><b>${COMMT[s.comms].n}</b></div><div><span>Radiator</span><b>${RADT[s.rad]} W</b></div><div><span>Tools</span><b>${s.tools.map(t=>TOOLS[t].ic).join(' ')||'none'}</b></div></div>
@@ -1300,7 +1342,7 @@ function renderStudio(){const d=S.design,st=Studio.ensure(d);const el=$('#studio
   <button class="btn g big" data-act="stCommit" style="width:100%">${D.committed?'✔ Committed — re-commit after changes':'Commit this '+PURPOSES[p].n+' design'}</button>`;}
  else if(tab==='mix'){const pv=Studio.preview(d),mx=st.mix;const W=300,H=90;const ser=pv.series;const mxP=Math.max(...ser.map(r=>r[1]),1),mxF=Math.max(...ser.map(r=>r[2]),1);
   const line=(k,m,col)=>`<polyline fill="none" stroke="${col}" stroke-width="2" points="${ser.map(r=>`${r[0]/365*W},${H-4-r[k]/m*(H-12)}`).join(' ')}"/>`;
-  body=`<div class="card"><h4>Fleet ratio — ${d.fleet.total} drones at launch</h4><div class="meter"><div class="mh"><span>Total drones</span><b>${d.fleet.total}</b></div><input type="range" min="30" max="160" step="2" value="${d.fleet.total}" data-inp="total"></div>
+  body=`<div class="card"><h4>Fleet ratio — ${d.fleet.total} drones at launch</h4><div class="meter"><div class="mh"><span>Total drones</span><b>${d.fleet.total}</b></div><input type="range" min="30" max="160" step="2" value="${d.fleet.total}" data-inp="total"></div>${S.phase==='plan'&&st.committed?`<div class="row" style="margin:8px 0 2px"><button class="btn solid big" id="mixLaunch" data-act="launch">🚀 Launch mission</button><span class="dim" style="font-size:12px">or fine-tune the jobs below</span></div>`:''}
    ${FKEYS.map(f=>{const ks=PKEYS.filter(k=>PURPOSES[k].f===f);const tot=ks.reduce((a,k)=>a+mx[k],0);return `<div class="famhd"><b style="color:${GROUPS[FAMILIES[f].g].col}">${FAMILIES[f].ic} ${FAMILIES[f].n}</b><span>${tot} · ${fmt(tot/d.fleet.total*100)}% · flies as ● ${GROUPS[FAMILIES[f].g].name}</span></div>`+ks.map(p=>`<div class="meter"><div class="mh"><span>${PURPOSES[p].ic} ${PURPOSES[p].n} ${st.drones[p].committed?'':'<small style="color:var(--gold)">(not committed)</small>'}</span><b>${mx[p]}</b></div><input type="range" min="0" max="${d.fleet.total}" value="${mx[p]}" data-inp="mix_${p}"></div>`).join('');}).join('')}
    <div class="famhd"><b style="color:#9dff6a">🌿 Terraformer module</b><span>${st.terraN?`1 in ${st.terraN} → ${Studio.terraCount(d)} drones`:'off'}</span></div>
    <div class="meter"><div class="mh"><span>Every Nth drone also carries a ${TERRA.n} (+${TERRA.mass} kg, +${TERRA.pw} W, slower to replicate)</span><b>${st.terraN?'1/'+st.terraN:'off'}</b></div><input type="range" min="0" max="6" step="1" value="${[0,50,30,20,10,5,3].indexOf(st.terraN)<0?3:[0,50,30,20,10,5,3].indexOf(st.terraN)}" data-inp="terraN"></div>
@@ -1696,10 +1738,10 @@ W.pointOnFocusPlane=function(x,y){const ray=W.screenRay(x,y);const n=new V3();ca
 // ---------- View manager, toasts, modal, concepts ----------
 const View={cur:'console',lock:null,track:'fleet'};
 const VIEWS={solar:'Solar System & Targets',swarm:'Swarm Operations',pov:'Individual Drone POV',fab:'Drone Fabrication',arch:'Mission Architecture',status:'Mission Status & Debrief'};
-function toast(html,cls=''){if(App.opener)return;const el=document.createElement('div');el.className='toast '+cls;el.innerHTML=html;$('#toasts').appendChild(el);setTimeout(()=>{el.style.transition='opacity .4s';el.style.opacity='0';setTimeout(()=>el.remove(),400);},cls==='r'?5000:3600);while($('#toasts').children.length>2)$('#toasts').firstChild.remove();}
+function toast(html,cls=''){if(App.opener||App.tour)return;const el=document.createElement('div');el.className='toast '+cls;el.innerHTML=html;$('#toasts').appendChild(el);setTimeout(()=>{el.style.transition='opacity .4s';el.style.opacity='0';setTimeout(()=>el.remove(),400);},cls==='r'?5000:3600);while($('#toasts').children.length>2)$('#toasts').firstChild.remove();}
 function showModal(html,sticky=false){$('#mbox').innerHTML=(sticky?'':'<button class="ib" style="float:right" data-act="closeModal" aria-label="Close">✕</button>')+html;$('#modal').classList.add('show');$('#modal').dataset.sticky=sticky?'1':'';}
 function hideModal(){$('#modal').classList.remove('show');if(S&&S._pendDec){const e=S._pendDec;S._pendDec=null;setTimeout(()=>{if(!S._decision)openDecision(e);},0);}}
-function concept(k){if(App.opener)return;if(!S.concepts)S.concepts={};if(S.concepts[k]||localStorage.getItem('abmc_tips')==='0')return;const c=CONCEPTS[k];if(!c)return;
+function concept(k){if(App.opener||App.tour)return;if(!S.concepts)S.concepts={};if(S.concepts[k]||localStorage.getItem('abmc_tips')==='0')return;const c=CONCEPTS[k];if(!c)return;
   const now=Date.now();if(now-(window._lastC||0)<9000){return;}window._lastC=now;S.concepts[k]=1;setTimeout(()=>toast(`💡 <b>${c.t}</b> — ${c.x.split('. ')[0]}. <button data-act="concept" data-k="${k}">Learn more</button>`,''),400);}
 function conceptModal(k){const c=CONCEPTS[k];showModal(`<h2>💡 ${c.t}</h2><p>${c.x}</p>${conceptNow(k)}<p><a href="${c.l}" target="_blank" rel="noopener">Learn more (NASA) ↗</a></p>`);}
 function conceptNow(k){if(!S.m)return'';const m=S.m,d=S.design;const L=s=>`<div class="card"><div class="lbl">In your mission (simulated / computed)</div><p>${s}</p></div>`;
@@ -1724,7 +1766,11 @@ function go(v){
   sfx(v==='console'?'back':'open');const mv=musicForView(v);if(mv)Music.scene(mv);App.refresh(true);
   if(v==='solar'&&!S.concepts.orbitHint){S.concepts.orbitHint=1;}
   if(prev!==v)window.scrollTo(0,0);
+  if(prev!==v&&FIRST_TIPS[v]&&!App.tour&&!App.opener&&!App.demo&&localStorage.getItem('abmc_tips')!=='0'&&!localStorage.getItem('abmc_ft_'+v)){localStorage.setItem('abmc_ft_'+v,'1');setTimeout(()=>toast('💡 <b>First time here?</b> '+FIRST_TIPS[v],'y'),350);}
 }
+const FIRST_TIPS={solar:'Tap an asteroid to fly in. 🌌 zooms out to the stars.',swarm:'Tap space = waypoint · hold = rally · two fingers = zoom.',pov:'Stick steers · hold THRUST · aim and hold MINE · then TRANSFER.',
+ fab:'Drones build drones here. Watch the generation counter climb.',arch:'Fix anything red, then Review plan ▶ to launch.',status:'Send the Marauder along your fuel chain from here.',
+ he3:'Future tech: plot helium-3 mine sites along your routes.',deep:'Pick stars, launch seed probes, then send the uncrewed Marauder’s Daughter.',studio:'Pick a job and tap glowing parts, or ✨ Auto-design all.'};
 function cinematic(){const W=World,c=W.cam;if(S.phase==='plan'){W.flyTo(new V3(0,0,0),W.fitDist(30),1.4);c.auto=0.03;}else{const f=()=>W.groupCentroid('all');W.flyTo(f(),W.fitDist(S.phase==='cruise'?6:4),1.4,f);c.auto=0.05;}c.phi=1.1;}
 function swarmCam(fly){const W=World;const g=S.sel;const tid=g==='all'?S.design.primary:W.groupTarget(g);const r=TMAP[tid].r;
   let dist=S.phase==='plan'?4.5:S.phase==='cruise'?7:r*9+2.4;
@@ -1736,14 +1782,14 @@ function selGroups(){return S.sel==='all'?[...GKEYS]:[S.sel];}
 const Gs={down:false,x0:0,y0:0,x:0,y:0,t0:0,moved:false,hold:null,two:false,ay:0,pd:0};
 function canvasInput(){
   const cv=$('#gl');
-  const startSingle=(x,y)=>{Gs.down=true;Gs.x0=Gs.x=x;Gs.y0=Gs.y=y;Gs.t0=performance.now();Gs.moved=false;clearTimeout(Gs.hold);
-    if(View.cur==='swarm'||View.cur==='opener')Gs.hold=setTimeout(()=>{if(!Gs.moved&&Gs.down&&!Gs.two)startRally(x,y);},380);};
+  const startSingle=(x,y,ts)=>{Gs.down=true;Gs.x0=Gs.x=x;Gs.y0=Gs.y=y;Gs.t0=ts||performance.now();Gs.moved=false;clearTimeout(Gs.hold);
+    if(View.cur==='swarm'||View.cur==='opener')Gs.hold=setTimeout(()=>{if(!Gs.moved&&Gs.down&&!Gs.two)startRally(x,y);},420);};
   const moveSingle=(x,y)=>{if(!Gs.down)return;const dx=x-Gs.x,dy=y-Gs.y;Gs.x=x;Gs.y=y;if(Math.hypot(x-Gs.x0,y-Gs.y0)>9){Gs.moved=true;}
     if(S.rally&&(View.cur==='swarm'||View.cur==='opener')){S.rally.pos.copy(World.pointOnFocusPlane(x,y));return;}
     if(Gs.moved){clearTimeout(Gs.hold);const c=World.cam;c.theta-=dx*0.0065;c.phi-=dy*0.0055;c.auto=0;}};
-  const endSingle=()=>{if(!Gs.down)return;Gs.down=false;clearTimeout(Gs.hold);if(S.rally){endRally();return;}if(!Gs.moved&&performance.now()-Gs.t0<380)tap(Gs.x0,Gs.y0);};
+  const endSingle=ts=>{if(!Gs.down)return;Gs.down=false;clearTimeout(Gs.hold);if(S.rally){endRally();return;}if(!Gs.moved&&(ts||performance.now())-Gs.t0<380)tap(Gs.x0,Gs.y0);}; // event timestamps, so a busy frame can't turn a tap into a hold
   cv.addEventListener('touchstart',e=>{e.preventDefault();audioInit();const t=e.touches;
-    if(t.length===1&&!Gs.two)startSingle(t[0].clientX,t[0].clientY);
+    if(t.length===1&&!Gs.two)startSingle(t[0].clientX,t[0].clientY,e.timeStamp);
     if(t.length===2){Gs.two=true;Gs.down=false;clearTimeout(Gs.hold);if(S.rally)endRally();Gs.ay=(t[0].clientY+t[1].clientY)/2;Gs.pd=Math.hypot(t[0].clientX-t[1].clientX,t[0].clientY-t[1].clientY);}},{passive:false});
   const two0=t=>{Gs.two=true;Gs.down=false;clearTimeout(Gs.hold);if(S.rally)endRally();Gs.ay=(t[0].clientY+t[1].clientY)/2;Gs.pd=Math.hypot(t[0].clientX-t[1].clientX,t[0].clientY-t[1].clientY);};
   // two-finger zoom also works when a finger lands on a map label (labels sit in .ovl overlays)
@@ -1756,15 +1802,16 @@ function canvasInput(){
       let f=Math.exp(-dy*0.007);const pr=Gs.pd/Math.max(1,pd);if(Math.abs(pr-1)>0.015&&Math.abs(pd-Gs.pd)>Math.abs(dy)*1.5)f*=pr; // optional pinch
       World.zoom(f);if(App.opener&&Math.abs(dy)>1)Opener.hit('zoom');Gs.ay=ay;Gs.pd=pd;if(Math.abs(dy)>1)showZoomHint(dy>0);}
     else if(t.length===1&&!Gs.two)moveSingle(t[0].clientX,t[0].clientY);},{passive:false});
-  cv.addEventListener('touchend',e=>{e.preventDefault();if(e.touches.length===0){if(Gs.two){Gs.two=false;return;}endSingle();}},{passive:false});
+  cv.addEventListener('touchend',e=>{e.preventDefault();if(e.touches.length===0){if(Gs.two){Gs.two=false;return;}endSingle(e.timeStamp);}},{passive:false});
   cv.addEventListener('touchcancel',()=>{Gs.two=false;Gs.down=false;clearTimeout(Gs.hold);if(S.rally)endRally();});
-  cv.addEventListener('mousedown',e=>{audioInit();startSingle(e.clientX,e.clientY);});
+  cv.addEventListener('mousedown',e=>{audioInit();startSingle(e.clientX,e.clientY,e.timeStamp);});
   window.addEventListener('mousemove',e=>{if(Gs.down)moveSingle(e.clientX,e.clientY);});
-  window.addEventListener('mouseup',()=>endSingle());
+  window.addEventListener('mouseup',e=>endSingle(e.timeStamp));
   cv.addEventListener('wheel',e=>{e.preventDefault();if(App.opener)Opener.hit('zoom');World.zoom(Math.exp(e.deltaY*0.0012));},{passive:false});
 }
 let zhT=0;function showZoomHint(inn){const now=performance.now();if(now-zhT<600)return;zhT=now;const el=$('#v-'+View.cur+' .hint');if(el){el.innerHTML=inn?'🔍 <b>Zooming IN</b> (two-finger swipe down)':'🔭 <b>Zooming OUT</b> (two-finger swipe up)';clearTimeout(el._t);el._t=setTimeout(()=>App.refresh(),1500);}}
 function tap(x,y){
+  if(App.tour)Tour.ev('tap',{x,y,id:View.cur==='swarm'?World.pickTarget(x,y,26):null});
   if(View.cur==='opener'){Opener.tap(x,y);return;}
   if(View.cur==='deep'){Deep.tap(x,y);return;}
   if(View.cur==='solar'){const id=World.pickTarget(x,y);if(id)selectTarget(id);return;}
@@ -1772,7 +1819,7 @@ function tap(x,y){
     const p=World.pointOnFocusPlane(x,y);const sc=clamp(World.cam.dist*0.09,0.08,3);S.waypoint={pos:p.toArray(),groups:selGroups(),scale:sc,t0:performance.now(),reached:0};
     sfx('waypoint');World.burst(p,[0.3,0.95,1],18,sc*0.6);toast(`📍 Waypoint set — ${selGroups().map(g=>GROUPS[g].name).join(', ')} redirecting.`);App.refresh();}
 }
-function startRally(x,y){const p=World.pointOnFocusPlane(x,y);if(App.opener)Opener.hit('hold');S.rally={pos:p,groups:selGroups(),scale:clamp(World.cam.dist*0.09,0.08,3),age:0};S.waypoint=null;Coach.rallied=true;sfx('rally');navigator.vibrate&&navigator.vibrate(30);App.refresh();
+function startRally(x,y){const p=World.pointOnFocusPlane(x,y);if(App.opener)Opener.hit('hold');if(App.tour)Tour.ev('rally');S.rally={pos:p,groups:selGroups(),scale:clamp(World.cam.dist*0.09,0.08,3),age:0};S.waypoint=null;Coach.rallied=true;sfx('rally');navigator.vibrate&&navigator.vibrate(30);App.refresh();
   const b=$('#sw-banner');b.textContent='🟡 RALLY — drones gathering tightly. Release to resume.';}
 function endRally(){S.rally=null;sfx('select');toast('Rally released — drones resume their assignments.');App.refresh();}
 function selectTarget(id){
@@ -2421,7 +2468,7 @@ const Opener={alive:0,phase:'',prompt:null,hits:{},
   go('opener');const W=World;W.flyTo(W.launchPos.clone(),3.2,0.01,()=>W.launchPos);W.cam.auto=0.12;W.cam.phi=1.15;
   ['op-cap','op-gen','op-prompt','op-hand','op-end'].forEach(id=>$('#'+id).classList.remove('show'));$('#op-title').className='op-title show';
   if(AUD.ctx&&AUD.ctx.state==='running'){Music.scene('title');}},
- start(){if(this.phase!=='title')return;audioInit();Music.scene('title');this.phase='run';$('#op-title').classList.add('out');setTimeout(()=>$('#op-title').classList.remove('show','out'),800);this.run(this.alive);},
+ start(){if(this.phase!=='title')return;audioInit();if(!Tour.done()){Tour.start(false);return;}Music.scene('title');this.phase='run';$('#op-title').classList.add('out');setTimeout(()=>$('#op-title').classList.remove('show','out'),800);this.run(this.alive);},
  ok(tok){return tok===this.alive&&App.opener;},
  wait(ms,tok){return new Promise(r=>setTimeout(()=>r(this.ok(tok)),ms));},
  async until(fn,ms,tok){const t0=performance.now();while(this.ok(tok)&&!fn()&&performance.now()-t0<ms)await this.wait(100,tok);return this.ok(tok);},
@@ -2480,9 +2527,9 @@ const Opener={alive:0,phase:'',prompt:null,hits:{},
  skip(){if(!App.opener)return;audioInit();sfx('whoosh');this.finish(true);},
  bind(){let f4=null;
   const ts=e=>{if(e.touches.length>=4){let x=0,y=0;for(const t of e.touches){x+=t.clientX;y+=t.clientY;}f4={x:x/e.touches.length,y:y/e.touches.length};}};
-  const tm=e=>{if(!f4||e.touches.length<4)return;let x=0,y=0;for(const t of e.touches){x+=t.clientX;y+=t.clientY;}x/=e.touches.length;y/=e.touches.length;if(Math.hypot(x-f4.x,y-f4.y)>40){f4=null;if(App.opener)this.skip();}};
+  const tm=e=>{if(!f4||e.touches.length<4)return;let x=0,y=0;for(const t of e.touches){x+=t.clientX;y+=t.clientY;}x/=e.touches.length;y/=e.touches.length;if(Math.hypot(x-f4.x,y-f4.y)>40){f4=null;if(App.opener)this.skip();else if(App.tour)Tour.skip();}};
   window.addEventListener('touchstart',ts,{passive:true,capture:true});window.addEventListener('touchmove',tm,{passive:true,capture:true});window.addEventListener('touchend',e=>{if(e.touches.length<4)f4=null;},{passive:true,capture:true});
-  window.addEventListener('keydown',e=>{if(!App.opener)return;if(e.code==='Escape'||e.code==='Enter'){e.preventDefault();e.stopImmediatePropagation();if(this.phase==='title'&&e.code==='Enter')this.start();else this.skip();}else if(this.phase==='title'&&e.code==='Space'){e.preventDefault();this.start();}},true);}
+  window.addEventListener('keydown',e=>{if(App.tour&&e.code==='Escape'){e.preventDefault();e.stopImmediatePropagation();Tour.skip();return;}if(!App.opener)return;if(e.code==='Escape'||e.code==='Enter'){e.preventDefault();e.stopImmediatePropagation();if(this.phase==='title'&&e.code==='Enter')this.start();else this.skip();}else if(this.phase==='title'&&e.code==='Space'){e.preventDefault();this.start();}},true);}
 };
 
 'use strict';
@@ -2543,6 +2590,128 @@ function svImportDlg(){showModal(`<h2>📥 Import a save</h2><p class="dim" styl
 function svExportDlg(id){const m=Saves.idx().find(x=>x.id===id);showModal(`<h2>⬆ Export “${esc(m.name)}”</h2><div class="row"><button class="btn solid" data-act="svExportFile" data-id="${id}">⬇ Download .json file</button><button class="btn" data-act="svCopyCode">📋 Copy save code</button></div><textarea id="svcodeout" readonly style="width:100%;min-height:90px;margin-top:8px">${Saves.code(id)}</textarea><button class="btn" data-act="svList" style="margin-top:8px">◀ Back to saves</button>`);}
 
 'use strict';
+// ---------- Guided tutorial: one spotlighted action at a time, with a payoff, then auto-advance ----------
+const Tour={i:-1,step:null,flags:{},log:[],t0:0,st0:0,lastAct:0,okAt:0,replayed:false,
+ done(){return localStorage.getItem('abmc_tour')==='1'||localStorage.getItem('abmc_opener')==='1';},
+ $:s=>document.querySelector(s),
+ near(o,k){const p={};World.project(o,p);return p.vis?p:null;},
+ ceres(){return World.T.ceres.pos;},
+ steps:[
+  // --- your swarm: controls (pre-launch preview at the launch station) ---
+  {id:'select',txt:'Tap Miners to select them',ok:'Miners selected',g:'tap',view:'swarm',
+   el:()=>Tour.$('#sw-groups [data-g="miner"]'),done:()=>S.sel==='miner'},
+  {id:'send',txt:'Tap empty space to send them',ok:'They fly to your mark',g:'tap',view:'swarm',allow:'#gl',
+   xy:()=>({x:innerWidth*0.72,y:innerHeight*0.30,r:56}),done:()=>Tour.flags.tap},
+  {id:'rally',txt:'Press and hold to rally',ok:'The swarm rallies to you',g:'hold',view:'swarm',allow:'#gl',
+   xy:()=>({x:innerWidth*0.4,y:innerHeight*0.42,r:60}),done:()=>Tour.flags.rally},
+  {id:'zoom',txt:'Two fingers: swipe down to zoom',ok:'Zoom in and out anytime',g:'zoom',view:'swarm',allow:'#gl,#v-swarm .side',side:1,
+   xy:()=>({x:innerWidth*0.5,y:innerHeight*0.45,r:80}),enter(){Tour.d0=World.cam.dist;},done:()=>Math.abs(Math.log(World.cam.dist/Tour.d0))>0.3},
+  // --- design (Stage 1) ---
+  {id:'family',txt:'Tap Ice Harvester to design it',ok:'Ice is rocket fuel',g:'tap',
+   enter(){S.waypoint=null;S.rally=null;S.sel='all';Studio.tab='design';Studio.cur='seed';go('studio');},
+   el:()=>Tour.$('#studio-body [data-act="stP"][data-k="iceharv"]'),done:()=>Studio.cur==='iceharv'},
+  {id:'tcta',txt:'Tap a glowing part — watch it narrow',ok:'',g:'tap',
+   enter(){Tour.n0=Studio.D().tau.length;},
+   el:()=>Tour.$('#studio-body .txgrid .tx.hl')||Tour.$('#studio-body .txgrid .tx:not(.off)'),
+   done:()=>Studio.D().tau.length>Tour.n0,
+   okf(){return 'Design space narrowed — TCTA ✓';},
+   after(){Studio.autoAll();Studio.tab='mix';App.refresh(true);}},
+  {id:'ratio',txt:'Drag to set your fleet size',ok:'Bigger fleet, faster growth',g:'drag',
+   enter(){Studio.tab='mix';App.refresh(true);Tour.f0=S.design.fleet.total;},
+   el:()=>Tour.$('#studio-body input[data-inp="total"]'),done:()=>S.design.fleet.total!==Tour.f0},
+  {id:'launch',txt:'Tap Launch!',ok:'Liftoff!',g:'tap',enter(){App.CRUISE_SEC=2.5;},
+   el:()=>Tour.$('#mixLaunch'),done:()=>S.phase!=='plan'},
+  // --- watch it work ---
+  {id:'land',txt:'Watch: they land and build',ok:'A factory is online',g:'watch',
+   enter(){if(View.cur!=='swarm')go('swarm');Tour.lt0=performance.now();Tour.ot0=0;},
+   tick(){if(S.phase==='cruise'&&performance.now()-Tour.lt0>2600&&S.day<S.arriveDay-0.02)S.day=S.arriveDay-0.02;if(S.phase==='ops'){if(!Tour._arr){Tour._arr=1;const W=World;W.flyTo(W.T.ceres.pos,W.T.ceres.t.r*7,1.4,()=>W.T.ceres.pos);W.cam.auto=0.05;}const f=S.mfac.ceres;if(!Tour.ot0)Tour.ot0=performance.now();if(!f.online){f.progress=Math.max(f.progress,0.999);if(performance.now()-Tour.ot0>1800){f.online=true;f.progress=1;World.onFactory('ceres');Continuum.onMfac('ceres');}}}},
+   pt:()=>S.phase==='ops'?World.T.ceres.pos:World.groupCentroid('all'),done:()=>S.phase==='ops'&&S.mfac.ceres.online},
+  {id:'way',txt:'Tap Ceres to see its waystation',ok:'Ice → rocket fuel here',g:'tap',allow:'#gl',near:1,
+   pt:()=>World.T.ceres.pos,r:64,done:()=>Tour.flags.tapNear,
+   after(){const w=S.ways.ceres||(S.ways.ceres={fuel:0,parts:0,water:0,proc:0});w.fuel=Math.max(w.fuel,260);w.water=Math.max(w.water,200);w.hab={food:1,water:1,air:1,shelter:1,power:1};w._habT=1;
+    World.burst(World.T.ceres.pos,[0.4,1,0.6],90,1.2);Music.jingle&&Music.jingle();}},
+  {id:'ship',txt:'Tap to send the Marauder',ok:'The crew refuels on the way',g:'tap',
+   enter(){go('status');},el:()=>Tour.$('#status-body [data-act="ship"]'),done:()=>S.ship&&S.ship.status==='flying',hold:1600},
+  // --- deep space ---
+  {id:'deep',txt:'Tap 🌌 to zoom out to the stars',ok:'Welcome to the galaxy',g:'tap',
+   enter(){const D=Deep.st();D.sandbox=true;DEEP_HUBS.forEach(h=>D.hubs[h.id]=1);D.tab='target';if(!Object.keys(D.pick).length)Deep.autoPick();Deep.netDirty=1;if(View.cur!=='solar')go('solar');},
+   el:()=>Tour.$('#v-solar [data-act="openDeepZ"]'),done:()=>View.cur==='deep',hold:1800},
+  {id:'probe',txt:'Tap to launch seed probes',ok:'Probes build new waystations',g:'tap',
+   enter(){const D=Deep.st();D.tab='target';const sh=$('#v-deep .deepsheet');sh.classList.remove('min');const tg=sh.querySelector('.sheettog');if(tg)tg.textContent='▾';renderDeep();},
+   el:()=>Tour.$('#deep-body [data-act="deepLaunch"]'),done:()=>S.deep&&S.deep.probes.length>0,
+   after(){const D=S.deep;D.run=true;D.rate=3000;Deep.tween(60,1.6);},hold:1500},
+  // --- home base + save ---
+  {id:'home',txt:'Tap Console to go home',ok:'Console is home base',g:'tap',back:1,
+   el:()=>Tour.$('#v-'+View.cur+' .topbar .back'),done:()=>View.cur==='console',after(){S.deep&&(S.deep.run=false);}},
+  {id:'saves',txt:'Tap Saved games',ok:'',g:'tap',
+   el:()=>Tour.$('#v-console [data-act="openSaves"]'),done:()=>!!Tour.$('#mbox .savelist')},
+  {id:'save',txt:'Tap Save as new',ok:'Saved! Load it anytime',g:'tap',
+   enter(){Tour.sv0=Saves.idx().filter(x=>!x.auto).length;const n=Tour.$('#svname');if(n)n.value='My first swarm';},
+   el:()=>Tour.$('#mbox [data-act="svNew"]'),done:()=>Saves.idx().filter(x=>!x.auto).length>Tour.sv0,after(){hideModal();}}],
+ ui(){let r=$('#tour');if(r)return r;r=document.createElement('div');r.id='tour';
+  r.innerHTML=`<div class="t-spot"></div><div class="t-ring"></div><div class="t-hand"><span class="f1">👆</span><span class="f2">👆</span></div><div class="t-tip"><div class="t-prog"><i></i></div><div class="t-txt"></div></div><button class="t-skip" data-tskip="1" aria-label="Skip tutorial">Skip ▸▸</button><div class="t-done"></div>`;
+  document.body.appendChild(r);r.querySelector('.t-skip').addEventListener('click',e=>{e.stopPropagation();Tour.skip();});return r;},
+ start(replay){audioInit();hideModal();if(Coach.i>=0){Coach.i=-1;Coach.show();}
+  if(replay&&(S.phase!=='plan'||S.deep)){try{Saves.autosave();}catch(e){}this.replayed=Saves.idx().some(x=>x.auto);}else this.replayed=!!replay&&Saves.idx().some(x=>x.auto);
+  App.opener=false;Opener.alive++;['op-cap','op-gen','op-prompt','op-hand','op-end','op-title'].forEach(id=>$('#'+id)&&$('#'+id).classList.remove('show'));
+  App.tour=true;this.log=[];this.t0=performance.now();this.flags={};this._arr=0;
+  S=newState('ceres');S.design.difficulty='cadet';applyDesignToState();World.resetSwarm();World.cam.follow=null;S.speed=1;S.sel='all';
+  document.body.classList.add('touring');const r=this.ui();r.classList.add('on');r.querySelector('.t-done').classList.remove('show');
+  Music.scene&&Music.scene('calm');go('swarm');this.go(0);},
+ go(i){this.i=i;this.flags={};const st=this.steps[i];this.step=st;if(!st){this.complete();return;}
+  document.body.classList.toggle('t-side',!!st.side);document.body.classList.toggle('t-back',!!st.back);
+  try{st.enter&&st.enter();}catch(e){console.error(e);}
+  const r=this.ui();r.querySelector('.t-tip').classList.remove('ok','nudge');r.querySelector('.t-txt').innerHTML=`<b>${st.txt}</b>`;
+  r.querySelector('.t-prog i').style.width=(i/this.steps.length*100)+'%';r.querySelector('.t-tip').dataset.n=`${i+1}/${this.steps.length}`;
+  r.querySelector('.t-hand').className='t-hand g-'+st.g;r.classList.toggle('watch',st.g==='watch');r.querySelector('.t-ring').className='t-ring';
+  this.st0=performance.now();this.lastAct=this.st0;this.okAt=0;this._scrolled=0;},
+ target(){const st=this.step;if(!st)return null;
+  if(st.el){const e=st.el();if(!e)return null;const b=e.getBoundingClientRect();if(!b.width&&!b.height)return null;return{x:b.left+b.width/2,y:b.top+b.height/2,w:b.width,h:b.height,el:e};}
+  if(st.xy){const p=st.xy();return{x:p.x,y:p.y,w:p.r*2,h:p.r*2,round:1};}
+  if(st.pt){const p={};World.project(st.pt(),p);if(!p.vis)return null;const r=st.r||70;return{x:p.x,y:p.y,w:r*2,h:r*2,round:1};}return null;},
+ frame(){if(!App.tour||!this.step)return;const st=this.step,r=this.ui(),now=performance.now();
+  if(!this.okAt){try{st.tick&&st.tick();}catch(e){}
+   let ok=false;try{ok=!!st.done();}catch(e){}if(ok)this.success();
+   else if(now-this.lastAct>6000){this.lastAct=now;this.nudge();}}
+  else if(now-this.okAt>(st.hold||950)){this.log.push({id:st.id,ms:Math.round(this.okAt-this.st0)});const a=st.after;try{a&&a.call(st);}catch(e){console.error(e);}this.go(this.i+1);return;}
+  const t=this.target();const spot=r.querySelector('.t-spot'),ring=r.querySelector('.t-ring'),hand=r.querySelector('.t-hand'),tip=r.querySelector('.t-tip');
+  if(t&&t.el&&!this._scrolled){this._scrolled=1;const b=t.el.getBoundingClientRect();if(b.top<70||b.bottom>innerHeight-110||b.left<0||b.right>innerWidth)t.el.scrollIntoView({block:'center',inline:'center'});}
+  else if(t&&t.el&&(t.x<0||t.x>innerWidth)&&now-this.st0>400){t.el.scrollIntoView({block:'nearest',inline:'center'});}
+  if(!t){spot.style.opacity=0;ring.style.opacity=0;hand.style.opacity=0;tip.style.top='auto';tip.style.bottom='calc(18px + var(--sab,0px))';return;}
+  const pad=t.round?0:8,w=Math.max(44,t.w+pad*2),h=Math.max(44,t.h+pad*2);
+  for(const e of [spot,ring]){e.style.opacity=1;e.style.width=w+'px';e.style.height=h+'px';e.style.transform=`translate(${t.x-w/2}px,${t.y-h/2}px)`;e.style.borderRadius=t.round?'50%':'14px';}
+  hand.style.opacity=this.okAt?0:1;hand.style.transform=`translate(${t.x+(t.round?0:Math.min(w/2-14,30))}px,${t.y+(t.round?6:h/2-12)}px)`;
+  const low=t.y>innerHeight*0.5;tip.style.top=low?'calc(64px + var(--sat,0px))':'auto';tip.style.bottom=low?'auto':'calc(18px + var(--sab,0px))';},
+ ev(k,a){if(!App.tour||!this.step||this.okAt)return;this.lastAct=performance.now();
+  if(k==='tap'){this.flags.tap=1;const st=this.step;if(st.near){const t=this.target();if(t&&a&&Math.hypot(a.x-t.x,a.y-t.y)<Math.max(70,t.w*0.8))this.flags.tapNear=1;else if(a&&a.id==='ceres')this.flags.tapNear=1;}}
+  if(k==='rally')this.flags.rally=1;},
+ success(){const st=this.step,r=this.ui();this.okAt=performance.now();const tip=r.querySelector('.t-tip');tip.classList.remove('nudge');tip.classList.add('ok');
+  const txt=st.okf?st.okf():st.ok;r.querySelector('.t-txt').innerHTML=`✓ ${txt||'Nice!'}`;r.querySelector('.t-ring').className='t-ring burst';sfx('success');navigator.vibrate&&navigator.vibrate(18);},
+ nudge(){const r=this.ui(),tip=r.querySelector('.t-tip'),ring=r.querySelector('.t-ring');tip.classList.remove('nudge');ring.classList.remove('nudge');void tip.offsetWidth;tip.classList.add('nudge');ring.classList.add('nudge');sfx('tap');},
+ // block taps on things the current step hasn't introduced (never blocks Skip)
+ guard(e){if(!App.tour||!Tour.step)return;const t=e.target;if(!t||!t.closest)return;if(t.closest('#tour .t-skip,#tour .t-done'))return;
+  if(Tour.okAt){if(e.cancelable)e.preventDefault();e.stopPropagation();return;}
+  const st=Tour.step;let ok=false;
+  if(st.allow)ok=!!t.closest(st.allow)||(/#gl/.test(st.allow)&&!t.closest('button,input,select,a,label,[data-act],.topbar,.bottom,.deepsheet,#modal'));
+  if(!ok&&st.el){const el=st.el();ok=!!(el&&(el===t||el.contains(t)));}
+  if(!ok&&st.g==='watch')ok=!t.closest('button,input,select,a,label,[data-act],.topbar,.bottom,.deepsheet,#modal');
+  if(!ok){if(e.cancelable)e.preventDefault();e.stopPropagation();if(e.type==='pointerdown'||e.type==='touchstart')Tour.nudge();}},
+ bind(){['pointerdown','mousedown','touchstart','click'].forEach(k=>window.addEventListener(k,e=>this.guard(e),{capture:true,passive:false}));},
+ complete(){this.step=null;const total=Math.round(performance.now()-this.t0);this.total=total;localStorage.setItem('abmc_tour','1');localStorage.setItem('abmc_opener','1');
+  const r=this.ui();['t-spot','t-ring','t-hand','t-tip'].forEach(c=>r.querySelector('.'+c).style.opacity=0);document.body.classList.remove('t-side','t-back');
+  const d=r.querySelector('.t-done');d.innerHTML=`<div class="t-big">🎉 You’re ready!</div><p>Select · send · rally · zoom · design · launch · build · refuel · explore · save.</p>
+   <button class="btn y big" data-tdone="new">▶ Start my mission</button>${this.replayed?'<button class="btn" data-tdone="back">⟲ Back to my game</button>':''}<p class="dim" style="font-size:12px">Replay anytime: Console › 🎓 Tutorial</p>`;
+  d.classList.add('show');Music.jingle&&Music.jingle();d.querySelectorAll('[data-tdone]').forEach(b=>b.addEventListener('click',e=>{e.stopPropagation();this.finish(b.dataset.tdone);}));},
+ finish(how){App.tour=false;this.step=null;this.i=-1;const r=this.ui();r.classList.remove('on','watch');r.querySelector('.t-done').classList.remove('show');
+  document.body.classList.remove('touring','t-side','t-back');localStorage.setItem('abmc_tour','1');localStorage.setItem('abmc_opener','1');
+  if(S.deep)S.deep.run=false;
+  if(how==='back'&&Saves.idx().some(x=>x.auto)){Saves.load('auto');return;}
+  S=newState('psyche');applyDesignToState();World.resetSwarm();World.cam.follow=null;App.CRUISE_SEC=24;renderConsole();Studio.tab='design';Studio.cur='seed';go('studio');
+  setTimeout(()=>toast(how==='skip'?'Tutorial skipped — replay it from Console › 🎓 Tutorial.':'<b>Stage 1</b>: design your drones, then launch.','g'),300);},
+ skip(){if(!App.tour)return;sfx('whoosh');this.log.push({id:'skip',at:this.i});this.finish('skip');}
+};
+
+'use strict';
 const App={last:0,acc:0,hudT:0,panelT:0,ptr:false,demo:false,CRUISE_SEC:24,OPS_DPS:1.6,
  refresh(full){const v=View.cur;updateHUD();if(v==='console'){renderStage1();}if(v==='swarm')renderSwarmUI();if(v==='solar'){renderSolarUI();if(View.lock&&full!==false)renderInfo(View.lock);}if(v==='arch'&&full)renderArch();if(v==='fab')renderFab();if(v==='status')renderStatus();if(v==='studio')renderStudio();if(v==='he3')renderHe3();if(v==='deep')renderDeep();if(v==='pov')Pov.renderTypes();}};
 window.addEventListener('pointerdown',()=>App.ptr=true,true);window.addEventListener('pointerup',()=>setTimeout(()=>App.ptr=false,60),true);
@@ -2559,16 +2728,15 @@ const Coach={i:-1,steps:[
   el.style.bottom=(View.cur==='console'||View.cur==='fab'||View.cur==='arch'||View.cur==='status')?'calc(12px + env(safe-area-inset-bottom,0px))':'auto';el.style.top=el.style.bottom==='auto'?'calc(60px + env(safe-area-inset-top,0px))':'auto';},
  tick(){if(this.i<0)return;if(this.steps[this.i]&&this.steps[this.i].done()){this.i++;sfx('success');this.show();}else if(this._v!==View.cur){this._v=View.cur;this.show();}}};
 // ---------- modals ----------
-function introModal(){showModal(`<div class="logo" style="font-size:26px;text-align:left">Operation<br>Cosmoform</div><div class="lbl">Asteroid Belt Mining Continuum</div>
- <p><b>Mission thesis: automate assisted travel.</b> Replicator drones launch, pick the best site, land and swarm, turn themselves into factories, mine, and build more drones. New drones carry seed payloads onward and build <b>waystations</b> that turn water ice into propellant — so crewed ships can refuel along the way.</p>
- <p style="font-size:13px"><b>Stage 1</b> starts in the Drone Design Studio: engineer four drone families (replicators, builders, miners, payload transporters) plus terraformer kits, using the TCTA design method, then set the fleet ratio.</p>
- <p style="font-size:13px;color:var(--dim)">Built on open NASA/JPL data (JPL Small-Body Database snapshot) with simulated sensors, clearly labeled. Arcade game — not a flight-certified planner. No login, works offline.<br>NASA Space Apps Challenge entry · not affiliated with or endorsed by NASA.</p>
- <div class="row"><button class="btn solid big" data-act="demo">▶ 90-second demo</button><button class="btn y big" data-act="planStart">🛠 Stage 1: design drones</button></div>
- <div class="row" style="margin-top:8px"><button class="btn" data-act="openSaves">💾 Saved games</button><button class="btn" data-act="openCrew">👥 Team play (1–4, same device)</button><button class="btn" data-act="openAbout">📚 Data sources</button><button class="btn" data-act="tutorial">🎓 Tutorial</button></div>`,true);}
+function introModal(ms){showModal(`<div class="logo" style="font-size:26px;text-align:left">Operation<br>Cosmoform</div><div class="lbl">Asteroid Belt Mining Continuum</div>
+ <p style="margin:8px 0">Design drones that build drones, mine the asteroid belt, build fuel waystations, then spread to the stars.</p>
+ <div class="introgo">${ms?`<button class="btn g big" data-act="loadMission">⟲ Continue (${esc(ms.when)})</button>`:''}<button class="btn y big" data-act="planStart">🛠 New mission</button><button class="btn solid big" data-act="tutorial">🎓 Tutorial · about 1 min</button></div>
+ <div class="row" style="margin-top:10px"><button class="btn" data-act="openSaves">💾 Saved games</button><button class="btn" data-act="demo">▶ Watch a demo</button><button class="btn" data-act="openCrew">👥 Team play</button><button class="btn" data-act="openAbout">📚 About</button></div>
+ <p style="font-size:11.5px;color:var(--dim);margin-top:10px">Built on open NASA/JPL data with simulated sensors, clearly labeled. Arcade game — not a flight-certified planner. No login, works offline.<br>NASA Space Apps Challenge entry · not affiliated with or endorsed by NASA.</p>`,true);}
 function briefModal(){const k=S.design.scenario,sc=SCENARIOS[k],t=TMAP[sc.primary];showModal(`<h2>${sc.icon} ${sc.name}</h2>${STORY[k].map(p=>`<p>${p}</p>`).join('')}
  <div class="card"><div class="lbl">Objectives</div>${sc.goals.map(g=>`<div>• ${g.label}${g.u?` (${g.v} ${g.u})`:''}</div>`).join('')||'None — sandbox'}<div class="lbl" style="margin-top:6px">Operations deadline</div>${sc.deadline>9000?'None':Math.round(sc.deadline*DIFFS[S.design.difficulty].dead)+' days after arrival'}</div>
  <p style="font-size:12px">${(MISSIONS[sc.primary]||[]).map(([n,u])=>`<a href="${u}" target="_blank" rel="noopener">${n} ↗</a>`).join(' · ')}</p><button class="btn solid" data-act="closeModal">Got it</button>`);}
-function aboutModal(){showModal(`<h2>📚 About & data sources</h2><p style="font-size:12px;color:var(--dim)">NASA Space Apps Challenge entry · not affiliated with or endorsed by NASA. NASA and JPL are named only as data sources.</p><p>Target orbital and physical values come from a <b>bundled snapshot of the JPL Small-Body Database API</b>, fetched ${SBDB_SNAPSHOT.date}. They are labeled <span class="badge b-imp">IMPORTED · JPL SBDB snapshot</span>. Sensor readings during play are <span class="badge b-sim">SIMULATED</span> and never measurements. Live fetches are only labeled <span class="badge b-cy">LIVE</span> if a request to JPL actually succeeds.</p>
+function aboutModal(){showModal(`<h2>📚 About & data sources</h2><div class="row" style="margin:4px 0 8px"><button class="btn solid" data-act="tutorial">🎓 Replay tutorial</button><button class="btn" data-act="replayIntro">▶ Arcade intro</button></div><p style="font-size:13px"><b>Mission thesis: automate assisted travel.</b> Replicator drones launch, land and swarm, turn themselves into factories, mine, and build more drones. New drones carry seed payloads onward and build waystations that turn water ice into propellant, so crewed ships can refuel along the way.</p><p style="font-size:12px;color:var(--dim)">NASA Space Apps Challenge entry · not affiliated with or endorsed by NASA. NASA and JPL are named only as data sources.</p><p>Target orbital and physical values come from a <b>bundled snapshot of the JPL Small-Body Database API</b>, fetched ${SBDB_SNAPSHOT.date}. They are labeled <span class="badge b-imp">IMPORTED · JPL SBDB snapshot</span>. Sensor readings during play are <span class="badge b-sim">SIMULATED</span> and never measurements. Live fetches are only labeled <span class="badge b-cy">LIVE</span> if a request to JPL actually succeeds.</p>
  <table class="tb"><tr><th>Target</th><th>a (AU)</th><th>e</th><th>i°</th><th>Period (d)</th><th>D (km)</th><th>Type</th></tr>${TARGETS.map(t=>{const s=SBDB_SNAPSHOT.data[t.id];return`<tr><td>${esc(s.fullname)}</td><td>${s.a}</td><td>${s.e}</td><td>${s.i}</td><td>${s.per_d}</td><td>${s.diameter_km}</td><td>${[s.spec_B,s.spec_T].filter(Boolean).join('/')}</td></tr>`;}).join('')}</table>
  <div class="lbl" style="margin-top:8px">Sources</div>${SOURCES.map(([n,u])=>`<div style="font-size:13px;margin:4px 0">• <a href="${u}" target="_blank" rel="noopener">${n}</a></div>`).join('')}
  <div class="lbl" style="margin-top:8px">Models used</div><p style="font-size:13px">Hohmann transfer time and Δv; Tsiolkovsky rocket equation; solar flux ∝ 1/r²; radio light-time 8.317 min/AU; equilibrium temperature T ≈ 278 K·(1−A)<sup>¼</sup>/√a; water electrolysis minimum ≈ 4.4 kWh/kg. Game rates (mining, build speed, events, composition fractions) are simplified and labeled simulated. Stage 3 (deep space): probe trip time = distance ÷ cruise speed; accelerate-and-brake mass ratio = e<sup>2v/vₑ</sup>; light-time = 1 year per light-year; exoplanet values from the bundled NASA Exoplanet Archive snapshot (${EXO_SNAPSHOT}); the spiral-arm map is a procedural model; interstellar propulsion and colony resources are FUTURE TECH / SPECULATIVE. Not a flight-certified planning system.</p>`);}
@@ -2703,7 +2871,7 @@ const ACT={
  saveScore:()=>{const b=LS.get('abmc_board',{});const k=`${S.design.scenario}|${S.design.difficulty}|${S.design.physics}`;(b[k]=b[k]||[]).push({name:$('#lbname').value||'Crew',score:S.report.score,grade:S.report.grade,date:new Date().toLocaleDateString()});b[k].sort((x,y)=>y.score-x.score);b[k]=b[k].slice(0,20);LS.set('abmc_board',b);toast('Score saved to leaderboard.','g');boardModal();},
  newMission:()=>{hideModal();const scn=S.design.scenario,df=S.design.difficulty,ph=S.design.physics;S=newState(scn);S.design.difficulty=df;S.design.physics=ph;applyDesignToState();World.resetSwarm();View.lock=null;renderInfo(null);go('console');toast('New mission ready. Plan it in Mission Architecture.','g');},
  nextTeam:()=>{const T=S.team;const seed=S.seed,scn=S.design.scenario,df=S.design.difficulty,ph=S.design.physics;T.cur++;S=newState(scn);S.seed=seed;S.design.difficulty=df;S.design.physics=ph;applyDesignToState();World.resetSwarm();go('arch');toast(`<b>${esc(T.teams[T.cur])}</b>, your turn — same scenario & events.`,'g');},
- tutorial:()=>{hideModal();go('console');Coach.start();toast('Tutorial: follow the gold coach card at the bottom.','y');},
+ tutorial:()=>Tour.start(true),openDeepZ:()=>{Deep.enter(true);},
  demo:()=>{hideModal();startDemo();},planStart:()=>{hideModal();go('studio');briefModal();},
  he3Toggle:el=>He3.toggle(el.dataset.id),
  deepTab:el=>{Deep.st().tab=el.dataset.v;$('#deep-body')&&($('#deep-body').parentElement.scrollTop=0);App.refresh(true);},
@@ -2720,7 +2888,7 @@ const ACT={
  openDeep:()=>Deep.enter(false),
  stTab:el=>{Studio.tab=el.dataset.k;App.refresh(true);},stP:el=>{Studio.cur=el.dataset.k;App.refresh(true);},stT:el=>Studio.apply(el.dataset.id),stUndo:()=>Studio.undo(),stReset:()=>Studio.reset(),stBranch:el=>Studio.branch(+el.dataset.k),
  stAuto:()=>{if(S.phase!=='plan')return;const ok=Studio.autoPath(Studio.cur);Studio.D().committed=false;toast(ok?'Suggested path applied — each step stayed inside Ω(𝒞). Review, then commit.':'No admissible path found from here — try Baseline.',ok?'':'y');App.refresh(true);},
- stCommit:()=>{if(S.phase!=='plan')return;Studio.commitOne(Studio.cur);App.refresh(true);},stAutoAll:()=>{if(S.phase!=='plan')return;Studio.autoAll();toast('Remaining drone types auto-designed and committed. Stage 1 complete.','g');App.refresh(true);},
+ stCommit:()=>{if(S.phase!=='plan')return;Studio.commitOne(Studio.cur);App.refresh(true);},stAutoAll:()=>{if(S.phase!=='plan')return;Studio.autoAll();Studio.tab='mix';toast('All drone types auto-designed. Set the fleet size, then 🚀 Launch.','g');App.refresh(true);$('#v-studio .panelbody')&&($('#v-studio .panelbody').scrollTop=0);},
  coachNext:()=>{Coach.i++;Coach.show();},coachX:()=>{Coach.i=-1;Coach.show();},
  tipsToggle:()=>{localStorage.setItem('abmc_tips',localStorage.getItem('abmc_tips')==='0'?'1':'0');settingsModal();},
 };
@@ -2740,7 +2908,7 @@ function loadMission(ms){if(!ms||!ms.s){const l=Saves.idx();const a=l.find(x=>x.
   if(S.phase==='cruise')World.onLaunchQuiet();if(S.phase==='ops'||S.phase==='ended'){World.onArrive();for(const id in S.mfac)if(S.mfac[id].online)World.onFactory(id);if(S.dfac.online)World.onDepotFactory();}
   hideModal();View.lock=null;go('console');Deep.netDirty=1;Deep.lock=null;Deep.lockShip=false;Deep.redrawChain();if(He3.built)He3.redraw();toast('Game loaded.','g');}
 // ---------- loop ----------
-function loop(now){requestAnimationFrame(loop);const t=now/1000;let dt=Math.min(0.05,(now-(App.last||now))/1000);App.last=now;Opener.frame();S.playSec=(S.playSec||0)+dt;
+function loop(now){requestAnimationFrame(loop);const t=now/1000;let dt=Math.min(0.05,(now-(App.last||now))/1000);App.last=now;Opener.frame();Tour.frame();S.playSec=(S.playSec||0)+dt;
   if(!S.paused&&!S._decision&&(S.phase==='cruise'||S.phase==='ops')){let days=(S.phase==='cruise'?S.cruiseDays/App.CRUISE_SEC*Math.min(S.speed,2):App.OPS_DPS*S.speed)*dt;while(days>0&&(S.phase==='cruise'||S.phase==='ops')&&!S._decision){const st=Math.min(days,0.5);simStep(st);days-=st;}}
   // waypoint expiry
   if(S.waypoint){const wp=S.waypoint;const c=World.groupCentroid(wp.groups[0]);const p=new V3().fromArray(wp.pos);if(!wp.reached&&c.distanceTo(p)<wp.scale*1.4){wp.reached=performance.now();}
@@ -2748,17 +2916,17 @@ function loop(now){requestAnimationFrame(loop);const t=now/1000;let dt=Math.min(
   World.frame(S.paused&&View.cur!=='pov'?dt*0.15:dt,t);updateLabels();He3.updLabels();Deep.frame(dt);Deep.updLabels();
   App.hudT+=dt;if(App.hudT>0.25){App.hudT=0;updateHUD();Coach.tick();}
   App.panelT+=dt;if(App.panelT>1){App.panelT=0;if(!App.ptr&&!$('#modal').classList.contains('show')||View.cur==='swarm'){if(View.cur==='swarm')renderSwarmUI();if(View.cur==='fab'&&!App.ptr)renderFab();if(View.cur==='status'&&!App.ptr){const y=$('#v-status .panelbody').scrollTop;renderStatus();$('#v-status .panelbody').scrollTop=y;}if(View.cur==='solar'){renderSolarUI();}if(View.cur==='deep'&&S.deep&&S.deep.run&&!App.ptr){const sh=$('#v-deep .deepsheet');const y=sh.scrollTop;renderDeep();sh.scrollTop=y;}}
-    if((S.phase!=='plan'||(S.deep&&S.deep.run))&&Math.random()<0.1)saveMission(false);}
+    if(!App.tour&&(S.phase!=='plan'||(S.deep&&S.deep.run))&&Math.random()<0.1)saveMission(false);}
 }
 function boot(){
   S=newState('psyche');
   $$('.topbar[data-title]').forEach(el=>el.innerHTML=topbar(el.dataset.title));
-  World.init();Deep.initSolar();renderConsole();buildLabels();canvasInput();Opener.bind();bindPov();applyDesignToState();setMute(AUD.muted);
+  World.init();Deep.initSolar();renderConsole();buildLabels();canvasInput();Opener.bind();Tour.bind();bindPov();applyDesignToState();setMute(AUD.muted);
   window.addEventListener('resize',()=>World.resize());window.addEventListener('orientationchange',()=>setTimeout(()=>World.resize(),200));
-  document.addEventListener('visibilitychange',()=>{if(document.hidden&&(S.phase!=='plan'||S.deep))saveMission(false);});
+  document.addEventListener('visibilitychange',()=>{if(document.hidden&&!App.tour&&(S.phase!=='plan'||S.deep))saveMission(false);});
   go('console');requestAnimationFrame(loop);
   const mig=Saves.migrate();const au=Saves.idx().find(x=>x.auto)||Saves.idx()[0];const ms=au?{s:{phase:'ops'},when:new Date(au.when).toLocaleString()}:null;
-  if(!Opener.seen()){Opener.open();}else introModal();if(!App.opener&&ms){$('#mbox').insertAdjacentHTML('beforeend',`<div class="row" style="margin-top:8px"><button class="btn g" data-act="loadMission">⟲ Resume latest (${esc(ms.when)})</button><button class="btn" data-act="openSaves">💾 Saved games</button></div>`);}if(mig)setTimeout(()=>toast('💾 Your saved mission was moved into the new Saved games list.','g'),800);
+  if(!Opener.seen()){Opener.open();}else introModal(ms);if(mig)setTimeout(()=>toast('💾 Your saved mission was moved into the new Saved games list.','g'),800);
   window.__ABMC_READY=true;
 }
 boot();
